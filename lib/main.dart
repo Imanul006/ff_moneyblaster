@@ -1,38 +1,43 @@
 import 'package:ff_moneyblaster/firebase_options.dart';
-import 'package:ff_moneyblaster/screens/login_screen.dart';
-import 'package:ff_moneyblaster/screens/onboarding_screen.dart';
-import 'package:ff_moneyblaster/screens/signup_screen.dart';
-import 'package:ff_moneyblaster/services/auth_service.dart';
-import 'package:ff_moneyblaster/widgets/animated_stack_swithcher.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:ff_moneyblaster/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:sizer/sizer.dart';
+
+import 'routes/app_router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
-);
-  runApp(const MyApp());
+  );
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+
+  final _appRouter = AppRouter();
+
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        Provider<AuthService>(
-          create: (_) => AuthService(FirebaseAuth.instance),
-        ),
-        StreamProvider(
-          create: (context) => context.read<AuthService>().authStateChanges, initialData: null,
-        ),
-      ],
-      child: const MaterialApp(
-        home: SignupScreen(),
-      ),
-    );
+    return
+        // providers: [
+        //   Provider<IAuthService>(
+        //     create: (_) => AuthService(FirebaseAuth.instance),
+        //   ),
+        //   StreamProvider(
+        //     create: (context) => context.read<AuthService>().authStateChanges,
+        //     initialData: null,
+        //   ),
+        // ],
+        // child:
+        Sizer(builder: (context, orientation, deviceType) {
+      return MaterialApp.router(
+        debugShowCheckedModeBanner: false,
+        theme: gameThemeDark,
+        routerConfig: _appRouter.config(),
+      );
+    });
   }
 }

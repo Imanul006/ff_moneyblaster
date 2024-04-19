@@ -1,18 +1,38 @@
+// firebase_auth_repository.dart
+
+import 'package:ff_moneyblaster/feautres/auth/domain/i_auth_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class AuthService {
+class FirebaseAuthRepository implements IAuthRepository {
   final FirebaseAuth _firebaseAuth;
 
-  AuthService(this._firebaseAuth);
+  FirebaseAuthRepository(this._firebaseAuth);
 
-  Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges();
+  @override
+  Future<void> signInWithUsernameAndPassword(
+      String username, String password) async {
+    // Implement your custom authentication logic here
+  }
 
-  Future<String?> signUp({required String email, required String password}) async {
+  @override
+  Future<void> signUpWithUsernameAndPassword(
+      String username, String password) async {
+    // Implement your custom authentication logic here
+  }
+
+  @override
+  Future<void> logout() async {
     try {
-      await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
-      return "Signed up";
-    } on FirebaseAuthException catch (e) {
-      return e.message;
+      await _firebaseAuth.signOut();
+    } catch (e) {
+      // Handle error
+      rethrow;
     }
+  }
+
+  @override
+  Future<bool> isUserLoggedIn() async {
+    final user = _firebaseAuth.currentUser;
+    return user != null;
   }
 }
