@@ -1,3 +1,3 @@
 class Assets {
-  static const String background = 'assets/animations/bg.riv';
+  static const String background = 'assets/animations/background.riv';
 }
