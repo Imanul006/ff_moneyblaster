@@ -4,20 +4,23 @@ import 'package:ff_moneyblaster/core/widgets/animated_background.dart';
 import 'package:ff_moneyblaster/routes/app_router.gr.dart';
 import 'package:ff_moneyblaster/widgets/glazed_button.dart';
 import 'package:ff_moneyblaster/widgets/login_text_field.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sizer/sizer.dart';
+import 'package:ff_moneyblaster/feautres/auth/shared/provider.dart';
 
 @RoutePage(name: 'SignupScreen')
-class SignupScreen extends StatefulWidget {
+class SignupScreen extends ConsumerStatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
 
   @override
-  State<SignupScreen> createState() => _SignupScreenState();
+  _SignupScreenState createState() => _SignupScreenState();
 }
 
-class _SignupScreenState extends State<SignupScreen> {
+class _SignupScreenState extends ConsumerState<SignupScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _gameIdController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
@@ -32,6 +35,8 @@ class _SignupScreenState extends State<SignupScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isLoading =
+        ref.watch(authProvider.select((state) => state.isLoading));
     return SafeArea(
       top: false,
       left: false,
@@ -168,17 +173,20 @@ class _SignupScreenState extends State<SignupScreen> {
                     flex: 1,
                     child: GlazedButtonFilled(
                       onTap: () {
-                        print('Button clicked!');
+                        if (!isLoading) {
+                          _handleSignup();
+                        }
                       },
-                      child: const Text(
-                        "Continue",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
-                        ),
-                      ),
-                      // text: 'Click Me',
+                      child: isLoading
+                          ? const CircularProgressIndicator(color: Colors.white)
+                          : const Text(
+                              "Continue",
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                              ),
+                            ),
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -218,4 +226,28 @@ class _SignupScreenState extends State<SignupScreen> {
   void dispose() {
     super.dispose();
   }
+
+  void _handleSignup() async {
+  try {
+    final notifier = ref.read(authProvider.notifier);
+    await notifier.signUp(
+      username: _usernameController.text,
+      gameId: _gameIdController.text,
+      phoneNumber: _phoneNumberController.text,
+      password: _passwordController.text,
+    );
+    
+  } catch (e) {
+    
+    if (e is FirebaseAuthException) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.message ?? 'An unknown error occurred')),
+      );
+        
+      }
+    }
+  }
+}
+
 }

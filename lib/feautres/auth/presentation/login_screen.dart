@@ -1,32 +1,43 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:ff_moneyblaster/core/widgets/animated_background.dart';
+import 'package:ff_moneyblaster/feautres/auth/shared/provider.dart';
 import 'package:ff_moneyblaster/routes/app_router.gr.dart';
 import 'package:ff_moneyblaster/widgets/glazed_button.dart';
 import 'package:ff_moneyblaster/widgets/login_text_field.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
+import 'package:flutter/gestures.dart';
 
 @RoutePage(name: 'LoginScreen')
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends ConsumerState<LoginScreen> {
   final VideoPlayerController _controller =
       VideoPlayerController.asset('assets/animations/background.mp4');
+  final TextEditingController _userIdController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
+    _controller.initialize().then((_) {
+      setState(
+          () {}); // Ensure the first frame is shown after the video is initialized.
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final isLoading =
+        ref.watch(authProvider.select((state) => state.isLoading));
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.black,
@@ -74,29 +85,15 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(2.0),
-                            child: LoginTextField(
-                              title: "User ID",
-                              hintText: "Create an user ID",
-                              controller: TextEditingController(),
-                            ),
-                          ),
+                        LoginTextField(
+                          title: "User ID",
+                          hintText: "Enter your user ID",
+                          controller: _userIdController,
                         ),
-                        // Expanded(
-                        //   child: LoginTextField(
-                        //     title: "Game ID",
-                        //     hintText: "Enter game ID",
-                        //     controller: TextEditingController(),
-                        //   ),
-                        // ),
-                        Expanded(
-                          child: LoginTextField(
-                            title: "Password",
-                            hintText: "Enter Password",
-                            controller: TextEditingController(),
-                          ),
+                        LoginTextField(
+                          title: "Password",
+                          hintText: "Enter Password",
+                          controller: _passwordController,
                         ),
                       ],
                     ),
@@ -106,17 +103,23 @@ class _LoginScreenState extends State<LoginScreen> {
                   flex: 1,
                   child: GlazedButton(
                     onTap: () {
-                      print('Button clicked!');
+                      if (!isLoading) {
+                        ref.read(authProvider.notifier).signIn(
+                              _userIdController.text,
+                              _passwordController.text,
+                            );
+                      }
                     },
-                    child: const Text(
-                      "Continue",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                      ),
-                    ),
-                    // text: 'Click Me',
+                    child: isLoading
+                        ? const CircularProgressIndicator(color: Colors.white)
+                        : const Text(
+                            "Continue",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          ),
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -132,9 +135,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           color: Color(0xFF4AE5E5),
                         ),
                         recognizer: TapGestureRecognizer()
-                          ..onTap = () async {
-                            print("Go to sign up");
-                            await context.router.push(const SignupScreen());
+                          ..onTap = () {
+                            context.router.push(const SignupScreen());
                           },
                       ),
                     ],
@@ -152,6 +154,8 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void dispose() {
     _controller.dispose();
+    _userIdController.dispose();
+    _passwordController.dispose();
     super.dispose();
   }
 }
