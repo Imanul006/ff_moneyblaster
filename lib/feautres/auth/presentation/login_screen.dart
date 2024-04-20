@@ -30,7 +30,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     super.initState();
     _controller.initialize().then((_) {
       setState(
-          () {}); // Ensure the first frame is shown after the video is initialized.
+          () {}); 
     });
   }
 
