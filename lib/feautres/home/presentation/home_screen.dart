@@ -1,4 +1,6 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:ff_moneyblaster/core/assets.dart';
+import 'package:ff_moneyblaster/core/constants.dart';
 import 'package:ff_moneyblaster/core/widgets/animated_background.dart';
 import 'package:ff_moneyblaster/feautres/auth/shared/provider.dart';
 import 'package:ff_moneyblaster/routes/app_router.gr.dart';
@@ -7,22 +9,21 @@ import 'package:ff_moneyblaster/widgets/login_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sizer/sizer.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter/gestures.dart';
 
+import 'widgets/gradient_border_container.dart';
 
-
-@RoutePage(name: 'LoginScreen')
-class LoginScreen extends ConsumerStatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+@RoutePage(name: 'HomeScreen')
+class HomeScreen extends ConsumerStatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _LoginScreenState extends ConsumerState<LoginScreen> {
-  final VideoPlayerController _controller =
-      VideoPlayerController.asset('assets/animations/background.mp4');
+class _HomeScreenState extends ConsumerState<HomeScreen> {
   final TextEditingController _userIdController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -35,138 +36,285 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Widget build(BuildContext context) {
     final isLoading =
         ref.watch(authProvider.select((state) => state.isLoading));
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.black,
-      body: Stack(
-        children: [
-          const AnimatedBackground(),
-          SafeArea(
-            child: Column(
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 30),
-                        child: SvgPicture.asset(
-                          "assets/images/Login.svg",
-                          color: Colors.white,
-                          width: 90,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Transform.translate(
-                        offset: const Offset(-120, 0),
-                        child: SvgPicture.asset(
-                          "assets/images/underline.svg",
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
+    return SafeArea(
+      child: Container(
+        width: double.infinity,
+        height: MediaQuery.sizeOf(context).height * 1,
+        decoration: BoxDecoration(
+          color: AppColors.blackBackground,
+          image: DecorationImage(
+            fit: BoxFit.cover,
+            image: Image.asset(
+              'assets/images/bg.png',
+            ).image,
+          ),
+        ),
+        child: Column(
+          children: [
+            Container(
+              width: double.infinity,
+              height: MediaQuery.sizeOf(context).height * 0.22,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  scale: 2.1,
+                  image: Image.asset(
+                    Assets.backgroundLeaderboard,
+                    fit: BoxFit.contain,
+                  ).image,
                 ),
-                const Expanded(
-                  flex: 4,
-                  child: SizedBox.expand(),
+                gradient: const LinearGradient(
+                  colors: [Color(0xFFCE3B3B), Color(0xFF5F1237)],
+                  stops: [0, 1],
+                  begin: AlignmentDirectional(-1, 0),
+                  end: AlignmentDirectional(1, 0),
                 ),
-                Expanded(
-                  flex: 3,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // silver
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 32, 0),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(2.0),
-                            child: LoginTextField(
-                              title: "User ID",
-                              hintText: "Create an user ID",
-                              controller: TextEditingController(),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Image.asset(
+                            'assets/icons/silver.png',
+                            width: 20,
+                            height: 24,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        Container(
+                          width: 58,
+                          height: 58,
+                          child: const Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(0, 6, 0, 0),
+                            child: SizedBox(
+                              width: double.infinity,
+                              height: double.infinity,
+                              child: GradientBorderContainer(
+                                width: double.infinity,
+                                height: double.infinity,
+                                radius: 8.0,
+                                colors: AppColors.silverGradientBorder,
+                                child:
+                                    'https://media.wired.com/photos/5b17381815b2c744cb650b5f/master/w_2560%2Cc_limit/GettyImages-134367495.jpg',
+                              ),
                             ),
                           ),
                         ),
-                        // Expanded(
-                        //   child: LoginTextField(
-                        //     title: "Game ID",
-                        //     hintText: "Enter game ID",
-                        //     controller: TextEditingController(),
-                        //   ),
-                        // ),
-                        Expanded(
-                          child: LoginTextField(
-                            title: "Password",
-                            hintText: "Enter Password",
-                            controller: TextEditingController(),
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 6, 0, 0),
+                          child: Text(
+                            'Techno Frank',
+                            style:
+                                Theme.of(context).textTheme.bodySmall?.copyWith(
+                                      fontFamily: 'Readex Pro',
+                                      color: Colors.white,
+                                      fontSize: 9,
+                                      letterSpacing: 0,
+                                      fontWeight: FontWeight.normal,
+                                    ),
                           ),
+                        ),
+                        Text(
+                          '₹800',
+                          style:
+                              Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    fontFamily: 'Readex Pro',
+                                    color: Colors.white,
+                                    fontSize: 8,
+                                    letterSpacing: 0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                         ),
                       ],
                     ),
                   ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: GlazedButton(
-                    onTap: () {
-                      if (!isLoading) {
-                        ref.read(authProvider.notifier).signIn(
-                              _userIdController.text,
-                              _passwordController.text,
-                            );
-                      }
-                    },
-                    child: isLoading
-                        ? const CircularProgressIndicator(color: Colors.white)
-                        : const Text(
-                            "Continue",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white,
+                  // gold
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.asset(
+                          'assets/icons/gold.png',
+                          width: 31,
+                          height: 36,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      Container(
+                        width: 74,
+                        height: 74,
+                        decoration: BoxDecoration(),
+                        child: const Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 6, 0, 0),
+                          child: SizedBox(
+                            width: double.infinity,
+                            height: double.infinity,
+                            child: GradientBorderContainer(
+                              width: double.infinity,
+                              height: double.infinity,
+                              radius: 8.0,
+                              colors: AppColors.goldGradientBorder,
+                              child:
+                                  'https://media.wired.com/photos/5b17381815b2c744cb650b5f/master/w_2560%2Cc_limit/GettyImages-134367495.jpg',
                             ),
                           ),
-              
-                  ),
-                ),
-                const SizedBox(height: 8),
-                RichText(
-                  text: TextSpan(
-                    text: 'Don\'t have an Account? ',
-                    style: const TextStyle(color: Colors.white),
-                    children: <TextSpan>[
-                      TextSpan(
-                        text: 'Sign Up',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF4AE5E5),
                         ),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () async {
-                            print("Go to sign up");
-                            await context.router.push(const SignupScreen());
-                          },
+                      ),
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(0, 6, 0, 0),
+                        child: Text(
+                          'MadMAx#',
+                          style:
+                              Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    fontFamily: 'Readex Pro',
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                    letterSpacing: 0,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                        ),
+                      ),
+                      Text(
+                        '₹3200',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              fontFamily: 'Readex Pro',
+                              color: Colors.white,
+                              fontSize: 12,
+                              letterSpacing: 0,
+                              fontWeight: FontWeight.bold,
+                            ),
                       ),
                     ],
                   ),
-                ),
-                const SizedBox(height: 30),
-              ],
+                  //silver
+                  // Generated code for this Column Widget...
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(32, 0, 0, 0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Image.asset(
+                            'assets/icons/bronze.png',
+                            width: 20,
+                            height: 24,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        Container(
+                          width: 58,
+                          height: 58,
+                          decoration: BoxDecoration(),
+                          child: const Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(0, 6, 0, 0),
+                            child: SizedBox(
+                              width: double.infinity,
+                              height: double.infinity,
+                              child: GradientBorderContainer(
+                                width: double.infinity,
+                                height: double.infinity,
+                                radius: 8.0,
+                                colors: AppColors.bronzeGradientBorder,
+                                child:
+                                    'https://media.wired.com/photos/5b17381815b2c744cb650b5f/master/w_2560%2Cc_limit/GettyImages-134367495.jpg',
+                              ),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 6, 0, 0),
+                          child: Text(
+                            'SahilKiller',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                  fontFamily: 'Readex Pro',
+                                  color: Colors.white,
+                                  fontSize: 9,
+                                  letterSpacing: 0,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                          ),
+                        ),
+                        Text(
+                          '₹300',
+                          style:
+                              Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                    fontFamily: 'Readex Pro',
+                                    color: Colors.white,
+                                    fontSize: 8,
+                                    letterSpacing: 0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
-          ),
-        ],
+            Container(
+              width: double.infinity,
+              height: MediaQuery.sizeOf(context).height * 0.73,
+              decoration: BoxDecoration(),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Generated code for this GradientBorderContainerText Widget...
+                      Expanded(
+                        child: InkWell(
+                          splashColor: Colors.transparent,
+                          focusColor: Colors.transparent,
+                          hoverColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
+                          onTap: () async {
+                            setState(() {
+                              _model.selectedTab = 0;
+                            });
+                          },
+                          child: Container(
+                            width: double.infinity,
+                            height: 48,
+                            child: custom_widgets.GradientBorderContainerText(
+                              width: double.infinity,
+                              height: 48,
+                              radius: 0.0,
+                              child: 'Upcoming',
+                              colors: FFAppConstants.tabBorder,
+                              isActive: _model.selectedTab == 0,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
 
   @override
   void dispose() {
-    _controller.dispose();
     super.dispose();
   }
 }

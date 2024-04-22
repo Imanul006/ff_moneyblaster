@@ -1,22 +1,34 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:ff_moneyblaster/core/constants.dart';
 import 'package:ff_moneyblaster/core/widgets/animated_background.dart';
+import 'package:ff_moneyblaster/feautres/auth/shared/provider.dart';
 import 'package:ff_moneyblaster/routes/app_router.gr.dart';
 import 'package:ff_moneyblaster/widgets/animated_stack_swithcher.dart';
 import 'package:ff_moneyblaster/widgets/glazed_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 @RoutePage(name: 'OnboardingScreen')
-class OnboardingScreen extends StatefulWidget {
+class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({Key? key}) : super(key: key);
 
   @override
-  State<OnboardingScreen> createState() => _OnboardingScreenState();
+  ConsumerState<OnboardingScreen> createState() => _OnboardingScreenState();
 }
 
-class _OnboardingScreenState extends State<OnboardingScreen> {
+class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   @override
   void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      final authNotifer = ref.read(authProvider.notifier);
+      final state = ref.read(authProvider);
+      await authNotifer.checkCurrentUser();
+
+      if (state.isUser) {
+        context.pushRoute(const HomeScreen());
+      }
+    });
     super.initState();
   }
 
