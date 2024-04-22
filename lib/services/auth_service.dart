@@ -56,7 +56,7 @@ class FirebaseAuthRepository implements IAuthRepository {
     );
   }
   
-  await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+  await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password).then((value) => null);
 }
 
 
