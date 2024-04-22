@@ -50,18 +50,23 @@ dependencies:
   fluttertoast: ^8.2.5
   cloud_firestore: ^4.17.0
   flutter_riverpod: ^2.5.1
+  gradient_borders: ^1.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
+  build_runner:
+  auto_route_generator: ^8.0.0
 
 flutter:
   uses-material-design: true
 
   assets:
+    - assets/
     - assets/animations/
     - assets/images/
+    - assets/icons/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
