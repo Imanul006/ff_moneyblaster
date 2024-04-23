@@ -13,20 +13,19 @@ import 'package:ff_moneyblaster/feautres/auth/presentation/login_screen.dart'
     as _i2;
 import 'package:ff_moneyblaster/feautres/auth/presentation/signup_screen.dart'
     as _i4;
-import 'package:ff_moneyblaster/feautres/home/presentation/home_screen.dart'
-    as _i1;
 import 'package:ff_moneyblaster/feautres/landing/presentation/onboarding_screen.dart'
     as _i3;
+import 'package:ff_moneyblaster/widgets/loading_screen.dart' as _i1;
 
 abstract class $AppRouter extends _i5.RootStackRouter {
   $AppRouter({super.navigatorKey});
 
   @override
   final Map<String, _i5.PageFactory> pagesMap = {
-    HomeScreen.name: (routeData) {
+    LoadingScreen.name: (routeData) {
       return _i5.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i1.HomeScreen(),
+        child: const _i1.LoadingScreen(),
       );
     },
     LoginScreen.name: (routeData) {
@@ -51,15 +50,15 @@ abstract class $AppRouter extends _i5.RootStackRouter {
 }
 
 /// generated route for
-/// [_i1.HomeScreen]
-class HomeScreen extends _i5.PageRouteInfo<void> {
-  const HomeScreen({List<_i5.PageRouteInfo>? children})
+/// [_i1.LoadingScreen]
+class LoadingScreen extends _i5.PageRouteInfo<void> {
+  const LoadingScreen({List<_i5.PageRouteInfo>? children})
       : super(
-          HomeScreen.name,
+          LoadingScreen.name,
           initialChildren: children,
         );
 
-  static const String name = 'HomeScreen';
+  static const String name = 'LoadingScreen';
 
   static const _i5.PageInfo<void> page = _i5.PageInfo<void>(name);
 }

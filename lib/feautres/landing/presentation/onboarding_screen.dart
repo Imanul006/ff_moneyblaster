@@ -26,7 +26,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
       await authNotifer.checkCurrentUser();
 
       if (state.isUser) {
-        context.pushRoute(const HomeScreen());
+        // context.pushRoute(const HomeScreen());
       }
     });
     super.initState();
