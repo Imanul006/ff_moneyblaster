@@ -20,6 +20,7 @@ class AppConstants {
 
 class AppColors {
   static const Color blackBackground = Color(0xff070707);
+  static const Color white = Color(0xffffffff);
 
   static const List<Color> silverGradientBorder = [
     Color(0xffa1a1a1),
@@ -46,4 +47,6 @@ class AppColors {
     Color(0xb229d1d1),
     Color(0x0029d1d1)
   ];
+
+  static const primaryColor = Color(0xff00DEDE);
 }

@@ -23,27 +23,6 @@ class _TabBarHomeState extends State<TabBarHome> {
             child: GestureDetector(
               onTap: () async {
                 setState(() {
-                  selectedTab = 0;
-                });
-              },
-              child: Container(
-                width: double.infinity,
-                height: 48,
-                child: GradientBorderContainerText(
-                  width: double.infinity,
-                  height: 48,
-                  radius: 0.0,
-                  child: 'Upcoming',
-                  colors: AppColors.tabBorder,
-                  isActive: selectedTab == 0,
-                ),
-              ),
-            ),
-          ),
-          Expanded(
-            child: GestureDetector(
-              onTap: () async {
-                setState(() {
                   selectedTab = 1;
                 });
               },
@@ -57,6 +36,27 @@ class _TabBarHomeState extends State<TabBarHome> {
                   child: 'Ongoing',
                   colors: AppColors.tabBorder,
                   isActive: selectedTab == 1,
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: GestureDetector(
+              onTap: () async {
+                setState(() {
+                  selectedTab = 0;
+                });
+              },
+              child: Container(
+                width: double.infinity,
+                height: 48,
+                child: GradientBorderContainerText(
+                  width: double.infinity,
+                  height: 48,
+                  radius: 0.0,
+                  child: 'Upcoming',
+                  colors: AppColors.tabBorder,
+                  isActive: selectedTab == 0,
                 ),
               ),
             ),

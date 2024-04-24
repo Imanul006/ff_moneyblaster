@@ -1,3 +1,4 @@
+import 'package:ff_moneyblaster/core/assets.dart';
 import 'package:flutter/material.dart';
 // Begin custom widget code
 // DO NOT REMOVE OR MODIFY THE CODE ABOVE!
@@ -84,18 +85,20 @@ class _GradientBorderContainerTextState
                       widget.child,
                     ),
                     Visibility(
-                      visible: widget.child.toLowerCase() == 'ongoing',
-                      child: Container(
-                          margin: const EdgeInsets.only(left: 6),
-                          height: 15,
-                          width: 15,
-                          child: riv.RiveAnimation.asset(
-                            'assets/rive_animations/smallfire.riv',
-                            artboard: 'idle',
-                            fit: BoxFit.contain,
-                            controllers: riveAnimationControllers,
-                          )),
-                    ),
+                        visible: widget.isActive &&
+                            widget.child.toLowerCase() == 'ongoing',
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(width: 4),
+                            Image.asset(
+                              Assets.fire,
+                              scale: 2,
+                            ),
+                          ],
+                        )),
                   ],
                 ),
               ),
