@@ -1,6 +1,4 @@
-// auth_repository.dart
-
-abstract class IAuthRepository {
+abstract class IHomeRepository {
   Future<void> signInWithUsernameAndPassword(String userName, String password);
 
   Future<void> signUpWithUsernameAndPassword({

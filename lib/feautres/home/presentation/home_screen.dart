@@ -2,42 +2,23 @@ import 'package:auto_route/auto_route.dart';
 import 'package:ff_moneyblaster/core/assets.dart';
 import 'package:ff_moneyblaster/core/constants.dart';
 
-import 'package:ff_moneyblaster/feautres/auth/shared/provider.dart';
 import 'package:ff_moneyblaster/feautres/home/presentation/widgets/tabbar.dart';
 import 'package:ff_moneyblaster/feautres/home/presentation/widgets/tournament_card.dart';
-import 'package:ff_moneyblaster/routes/app_router.gr.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:ff_moneyblaster/feautres/home/shared/provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sizer/sizer.dart';
 
 import 'widgets/gradient_border_container.dart';
-import 'widgets/gradient_border_container_text.dart';
 
 @RoutePage(name: 'HomeScreen')
-class HomeScreen extends ConsumerStatefulWidget {
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  _HomeScreenState createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends ConsumerState<HomeScreen> {
-  final TextEditingController _userIdController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  int selectedTab = 0;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // final isLoading =
-    //     ref.watch(authProvider.select((state) => state.isLoading));
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isLoading = ref.watch(homeProvider.select((state) => state.isLoading));
 
     return SafeArea(
       child: Container(
@@ -78,7 +59,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 children: [
                   // silver
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 32, 0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 32, 0),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -111,7 +92,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(0, 6, 0, 0),
+                          padding: const EdgeInsetsDirectional.fromSTEB(0, 6, 0, 0),
                           child: Text(
                             'Techno Frank',
                             style:
@@ -154,7 +135,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       Container(
                         width: 74,
                         height: 74,
-                        decoration: BoxDecoration(),
+                        decoration: const BoxDecoration(),
                         child: const Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(0, 6, 0, 0),
                           child: SizedBox(
@@ -172,7 +153,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 6, 0, 0),
+                        padding: const EdgeInsetsDirectional.fromSTEB(0, 6, 0, 0),
                         child: Text(
                           'MadMAx#',
                           style:
@@ -200,7 +181,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   //silver
                   // Generated code for this Column Widget...
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(32, 0, 0, 0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(32, 0, 0, 0),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -216,7 +197,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         Container(
                           width: 58,
                           height: 58,
-                          decoration: BoxDecoration(),
+                          decoration: const BoxDecoration(),
                           child: const Padding(
                             padding: EdgeInsetsDirectional.fromSTEB(0, 6, 0, 0),
                             child: SizedBox(
@@ -234,7 +215,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(0, 6, 0, 0),
+                          padding: const EdgeInsetsDirectional.fromSTEB(0, 6, 0, 0),
                           child: Text(
                             'SahilKiller',
                             style: Theme.of(context)
@@ -267,15 +248,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
             ),
             // tab bar
-            Container(
+            SizedBox(
               height: 63.3.h,
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  TabBarHome(),
-                  Filter(),
+                  const TabBarHome(),
+                  const Filter(),
                   SingleChildScrollView(
                     child: SizedBox(
                       height: 50.h,
@@ -285,7 +266,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           separatorBuilder: (BuildContext context, int index) =>
                               const SizedBox(height: 10),
                           itemBuilder: (context, index) {
-                            return const TournamentCard();
+                            return TournamentCard(gameState: ref.watch(homeProvider.select((state) => state.selectedHomeTab)),);
                           }),
                     ),
                   )
@@ -296,11 +277,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 }
 

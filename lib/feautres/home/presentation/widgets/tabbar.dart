@@ -1,19 +1,17 @@
+import 'package:ff_moneyblaster/feautres/home/presentation/widgets/tournament_card.dart';
+import 'package:ff_moneyblaster/feautres/home/shared/provider.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/constants.dart';
 import 'gradient_border_container_text.dart';
 
-class TabBarHome extends StatefulWidget {
+class TabBarHome extends ConsumerWidget {
   const TabBarHome({super.key});
 
   @override
-  State<TabBarHome> createState() => _TabBarHomeState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final homeState = ref.watch(homeProvider);
 
-class _TabBarHomeState extends State<TabBarHome> {
-  int selectedTab = 0;
-  @override
-  Widget build(BuildContext context) {
     return SizedBox(
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -21,12 +19,8 @@ class _TabBarHomeState extends State<TabBarHome> {
         children: [
           Expanded(
             child: GestureDetector(
-              onTap: () async {
-                setState(() {
-                  selectedTab = 1;
-                });
-              },
-              child: Container(
+              onTap: () => ref.read(homeProvider.notifier).selectTab(GameState.ongoing),
+              child: SizedBox(
                 width: double.infinity,
                 height: 48,
                 child: GradientBorderContainerText(
@@ -35,19 +29,15 @@ class _TabBarHomeState extends State<TabBarHome> {
                   radius: 0.0,
                   child: 'Ongoing',
                   colors: AppColors.tabBorder,
-                  isActive: selectedTab == 1,
+                  isActive: homeState.selectedHomeTab == GameState.ongoing,
                 ),
               ),
             ),
           ),
           Expanded(
             child: GestureDetector(
-              onTap: () async {
-                setState(() {
-                  selectedTab = 0;
-                });
-              },
-              child: Container(
+              onTap: () => ref.read(homeProvider.notifier).selectTab(GameState.upcoming),
+              child: SizedBox(
                 width: double.infinity,
                 height: 48,
                 child: GradientBorderContainerText(
@@ -56,19 +46,15 @@ class _TabBarHomeState extends State<TabBarHome> {
                   radius: 0.0,
                   child: 'Upcoming',
                   colors: AppColors.tabBorder,
-                  isActive: selectedTab == 0,
+                  isActive: homeState.selectedHomeTab == GameState.upcoming,
                 ),
               ),
             ),
           ),
           Expanded(
             child: GestureDetector(
-              onTap: () async {
-                setState(() {
-                  selectedTab = 2;
-                });
-              },
-              child: Container(
+              onTap: () => ref.read(homeProvider.notifier).selectTab(GameState.past),
+              child: SizedBox(
                 width: double.infinity,
                 height: 48,
                 child: GradientBorderContainerText(
@@ -77,7 +63,7 @@ class _TabBarHomeState extends State<TabBarHome> {
                   radius: 0.0,
                   child: 'Past',
                   colors: AppColors.tabBorder,
-                  isActive: selectedTab == 2,
+                  isActive: homeState.selectedHomeTab == GameState.past,
                 ),
               ),
             ),

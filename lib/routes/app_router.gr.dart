@@ -8,51 +8,95 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:auto_route/auto_route.dart' as _i5;
+import 'package:auto_route/auto_route.dart' as _i7;
 import 'package:ff_moneyblaster/feautres/auth/presentation/login_screen.dart'
-    as _i2;
-import 'package:ff_moneyblaster/feautres/auth/presentation/signup_screen.dart'
     as _i4;
+import 'package:ff_moneyblaster/feautres/auth/presentation/signup_screen.dart'
+    as _i6;
+import 'package:ff_moneyblaster/feautres/base/presentation/base_screen.dart'
+    as _i1;
+import 'package:ff_moneyblaster/feautres/home/presentation/home_screen.dart'
+    as _i2;
 import 'package:ff_moneyblaster/feautres/landing/presentation/onboarding_screen.dart'
-    as _i3;
-import 'package:ff_moneyblaster/widgets/loading_screen.dart' as _i1;
+    as _i5;
+import 'package:ff_moneyblaster/widgets/loading_screen.dart' as _i3;
 
-abstract class $AppRouter extends _i5.RootStackRouter {
+abstract class $AppRouter extends _i7.RootStackRouter {
   $AppRouter({super.navigatorKey});
 
   @override
-  final Map<String, _i5.PageFactory> pagesMap = {
-    LoadingScreen.name: (routeData) {
-      return _i5.AutoRoutePage<dynamic>(
+  final Map<String, _i7.PageFactory> pagesMap = {
+    BaseRoute.name: (routeData) {
+      return _i7.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i1.LoadingScreen(),
+        child: const _i1.BasePage(),
+      );
+    },
+    HomeScreen.name: (routeData) {
+      return _i7.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i2.HomeScreen(),
+      );
+    },
+    LoadingScreen.name: (routeData) {
+      return _i7.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i3.LoadingScreen(),
       );
     },
     LoginScreen.name: (routeData) {
-      return _i5.AutoRoutePage<dynamic>(
+      return _i7.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i2.LoginScreen(),
+        child: const _i4.LoginScreen(),
       );
     },
     OnboardingScreen.name: (routeData) {
-      return _i5.AutoRoutePage<dynamic>(
+      return _i7.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i3.OnboardingScreen(),
+        child: const _i5.OnboardingScreen(),
       );
     },
     SignupScreen.name: (routeData) {
-      return _i5.AutoRoutePage<dynamic>(
+      return _i7.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i4.SignupScreen(),
+        child: const _i6.SignupScreen(),
       );
     },
   };
 }
 
 /// generated route for
-/// [_i1.LoadingScreen]
-class LoadingScreen extends _i5.PageRouteInfo<void> {
-  const LoadingScreen({List<_i5.PageRouteInfo>? children})
+/// [_i1.BasePage]
+class BaseRoute extends _i7.PageRouteInfo<void> {
+  const BaseRoute({List<_i7.PageRouteInfo>? children})
+      : super(
+          BaseRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'BaseRoute';
+
+  static const _i7.PageInfo<void> page = _i7.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i2.HomeScreen]
+class HomeScreen extends _i7.PageRouteInfo<void> {
+  const HomeScreen({List<_i7.PageRouteInfo>? children})
+      : super(
+          HomeScreen.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'HomeScreen';
+
+  static const _i7.PageInfo<void> page = _i7.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i3.LoadingScreen]
+class LoadingScreen extends _i7.PageRouteInfo<void> {
+  const LoadingScreen({List<_i7.PageRouteInfo>? children})
       : super(
           LoadingScreen.name,
           initialChildren: children,
@@ -60,13 +104,13 @@ class LoadingScreen extends _i5.PageRouteInfo<void> {
 
   static const String name = 'LoadingScreen';
 
-  static const _i5.PageInfo<void> page = _i5.PageInfo<void>(name);
+  static const _i7.PageInfo<void> page = _i7.PageInfo<void>(name);
 }
 
 /// generated route for
-/// [_i2.LoginScreen]
-class LoginScreen extends _i5.PageRouteInfo<void> {
-  const LoginScreen({List<_i5.PageRouteInfo>? children})
+/// [_i4.LoginScreen]
+class LoginScreen extends _i7.PageRouteInfo<void> {
+  const LoginScreen({List<_i7.PageRouteInfo>? children})
       : super(
           LoginScreen.name,
           initialChildren: children,
@@ -74,13 +118,13 @@ class LoginScreen extends _i5.PageRouteInfo<void> {
 
   static const String name = 'LoginScreen';
 
-  static const _i5.PageInfo<void> page = _i5.PageInfo<void>(name);
+  static const _i7.PageInfo<void> page = _i7.PageInfo<void>(name);
 }
 
 /// generated route for
-/// [_i3.OnboardingScreen]
-class OnboardingScreen extends _i5.PageRouteInfo<void> {
-  const OnboardingScreen({List<_i5.PageRouteInfo>? children})
+/// [_i5.OnboardingScreen]
+class OnboardingScreen extends _i7.PageRouteInfo<void> {
+  const OnboardingScreen({List<_i7.PageRouteInfo>? children})
       : super(
           OnboardingScreen.name,
           initialChildren: children,
@@ -88,13 +132,13 @@ class OnboardingScreen extends _i5.PageRouteInfo<void> {
 
   static const String name = 'OnboardingScreen';
 
-  static const _i5.PageInfo<void> page = _i5.PageInfo<void>(name);
+  static const _i7.PageInfo<void> page = _i7.PageInfo<void>(name);
 }
 
 /// generated route for
-/// [_i4.SignupScreen]
-class SignupScreen extends _i5.PageRouteInfo<void> {
-  const SignupScreen({List<_i5.PageRouteInfo>? children})
+/// [_i6.SignupScreen]
+class SignupScreen extends _i7.PageRouteInfo<void> {
+  const SignupScreen({List<_i7.PageRouteInfo>? children})
       : super(
           SignupScreen.name,
           initialChildren: children,
@@ -102,5 +146,5 @@ class SignupScreen extends _i5.PageRouteInfo<void> {
 
   static const String name = 'SignupScreen';
 
-  static const _i5.PageInfo<void> page = _i5.PageInfo<void>(name);
+  static const _i7.PageInfo<void> page = _i7.PageInfo<void>(name);
 }

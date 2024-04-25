@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
 
+enum GameState {
+  ongoing,
+  upcoming,
+  past,
+}
+
 class TournamentCard extends StatefulWidget {
-  const TournamentCard({super.key});
+  const TournamentCard({super.key, required this.gameState});
+
+  final GameState gameState;
 
   @override
   State<TournamentCard> createState() => _TournamentCardState();
@@ -12,12 +20,12 @@ class _TournamentCardState extends State<TournamentCard> {
   Widget build(BuildContext context) {
     return // Generated code for this CardTournament Widget...
         Padding(
-      padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
+      padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
       child: Container(
         width: 100,
         height: 180,
         decoration: BoxDecoration(
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
               blurRadius: 10.6,
               color: Color(0x3F4AE5E5),
@@ -27,7 +35,7 @@ class _TournamentCardState extends State<TournamentCard> {
               ),
             )
           ],
-          gradient: LinearGradient(
+          gradient: const LinearGradient(
             colors: [
               Color(0x7FFFFFFF),
               Color(0x00FFFFFF),
@@ -41,7 +49,7 @@ class _TournamentCardState extends State<TournamentCard> {
           borderRadius: BorderRadius.circular(8),
         ),
         child: Padding(
-          padding: EdgeInsets.all(2),
+          padding: const EdgeInsets.all(2),
           child: Container(
             width: 100,
             decoration: BoxDecoration(
@@ -53,7 +61,7 @@ class _TournamentCardState extends State<TournamentCard> {
                   width: double.infinity,
                   height: 280,
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
+                    gradient: const LinearGradient(
                       colors: [Color(0x7F000000), Colors.black],
                       stops: [0, 1],
                       begin: AlignmentDirectional(0, -1),
@@ -75,9 +83,9 @@ class _TournamentCardState extends State<TournamentCard> {
                   ),
                 ),
                 Align(
-                  alignment: AlignmentDirectional(-1, -1),
+                  alignment: const AlignmentDirectional(-1, -1),
                   child: Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(8, 8, 0, 0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(8, 8, 0, 0),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -103,14 +111,14 @@ class _TournamentCardState extends State<TournamentCard> {
                                   .bodyMedium
                                   ?.copyWith(
                                     fontFamily: 'Readex Pro',
-                                    color: Color(0xFFB6B6B6),
+                                    color: const Color(0xFFB6B6B6),
                                     fontSize: 10,
                                     letterSpacing: 0,
                                   ),
                             ),
                             Padding(
                               padding:
-                                  EdgeInsetsDirectional.fromSTEB(4, 0, 0, 0),
+                                  const EdgeInsetsDirectional.fromSTEB(4, 0, 0, 0),
                               child: Text(
                                 'Rs. 3000',
                                 style: Theme.of(context)
@@ -128,7 +136,7 @@ class _TournamentCardState extends State<TournamentCard> {
                           ],
                         ),
                         Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                          padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                           child: Text(
                             'TPP . Sanhok . Squad',
                             style: Theme.of(context)
@@ -136,7 +144,7 @@ class _TournamentCardState extends State<TournamentCard> {
                                 .bodyMedium
                                 ?.copyWith(
                                   fontFamily: 'Readex Pro',
-                                  color: Color(0xFFB6B6B6),
+                                  color: const Color(0xFFB6B6B6),
                                   fontSize: 10,
                                   letterSpacing: 0,
                                 ),
@@ -147,55 +155,59 @@ class _TournamentCardState extends State<TournamentCard> {
                   ),
                 ),
                 Align(
-                  alignment: AlignmentDirectional(0, 1),
-                  child: Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 8),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: MediaQuery.sizeOf(context).width * 0.865,
-                          height: 34,
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [Color(0xFFCF3A3A), Color(0xFF9D0000)],
-                              stops: [0, 1],
-                              begin: AlignmentDirectional(-1, 0),
-                              end: AlignmentDirectional(1, 0),
-                            ),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Align(
-                            alignment: AlignmentDirectional(0, 0),
-                            child: Text(
-                              'Watch Live',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(
-                                    fontFamily: 'Readex Pro',
-                                    color: Colors.white,
-                                    letterSpacing: 0,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+  alignment: const AlignmentDirectional(0, 1),
+  child: Padding(
+    padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 8),
+    child: widget.gameState == GameState.ongoing ? 
+      Row(
+        children: [
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              child: buildButton(context, 'Watch Live', const Color(0xFFCF3A3A), const Color(0xFF9D0000)),
+            ),
+          ),
+        ],
+      ) : widget.gameState == GameState.past ? Row(
+        children: [
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              child: buildButton(context, 'Result', const Color(0xFF0051EF), const Color(0xFF0051EF)),
+            ),
+          ),
+        ],
+      ) :
+      Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              child: buildButton(context, 'Watch Live', const Color(0xFFCF3A3A), const Color(0xFF9D0000)),
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              child: buildButton(context, 'Join', const Color(0xFF11BDBD), const Color(0xFF006262)),
+            ),
+          ),
+        ],
+      ),
+  ),
+),
                 Align(
-                  alignment: AlignmentDirectional(-1, 0.2),
+                  alignment: const AlignmentDirectional(-1, 0.2),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        decoration: BoxDecoration(),
+                        decoration: const BoxDecoration(),
                         child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(8, 4, 4, 4),
+                          padding: const EdgeInsetsDirectional.fromSTEB(8, 4, 4, 4),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -230,7 +242,7 @@ class _TournamentCardState extends State<TournamentCard> {
                         ),
                       ),
                       Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: Color(0x67B70000),
                           borderRadius: BorderRadius.only(
                             bottomLeft: Radius.circular(0),
@@ -240,7 +252,7 @@ class _TournamentCardState extends State<TournamentCard> {
                           ),
                         ),
                         child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(8, 4, 4, 4),
+                          padding: const EdgeInsetsDirectional.fromSTEB(8, 4, 4, 4),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -278,9 +290,9 @@ class _TournamentCardState extends State<TournamentCard> {
                   ),
                 ),
                 Align(
-                  alignment: AlignmentDirectional(1, -1),
+                  alignment: const AlignmentDirectional(1, -1),
                   child: Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 8, 8, 0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(0, 8, 8, 0),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -309,9 +321,9 @@ class _TournamentCardState extends State<TournamentCard> {
                   ),
                 ),
                 Align(
-                  alignment: AlignmentDirectional(1, 0),
+                  alignment: const AlignmentDirectional(1, 0),
                   child: Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 8, 0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 8, 0),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -326,7 +338,7 @@ class _TournamentCardState extends State<TournamentCard> {
                                   ),
                         ),
                         Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                          padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                           child: Text(
                             '00.13.25',
                             style: Theme.of(context)
@@ -344,7 +356,7 @@ class _TournamentCardState extends State<TournamentCard> {
                         Container(
                           width: 80,
                           height: 12,
-                          decoration: BoxDecoration(),
+                          decoration: const BoxDecoration(),
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -399,4 +411,32 @@ class _TournamentCardState extends State<TournamentCard> {
       ),
     );
   }
+
+  Widget buildButton(BuildContext context, String text, Color startColor, Color endColor) {
+  return Container(
+    height: 34,
+    decoration: BoxDecoration(
+      gradient: LinearGradient(
+        colors: [startColor, endColor],
+        stops: [0, 1],
+        begin: const AlignmentDirectional(-1, 0),
+        end: const AlignmentDirectional(1, 0),
+      ),
+      borderRadius: BorderRadius.circular(8),
+    ),
+    child: Align(
+      alignment: const AlignmentDirectional(0, 0),
+      child: Text(
+        text,
+        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              fontFamily: 'Readex Pro',
+              color: Colors.white,
+              letterSpacing: 0,
+              fontWeight: FontWeight.w500,
+            ),
+      ),
+    ),
+  );
+}
+
 }

@@ -1,12 +1,14 @@
-// import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:ff_moneyblaster/feautres/home/presentation/widgets/tournament_card.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-// part 'auth_state.freezed.dart';
+part 'home_state.freezed.dart';
 
-// @freezed
-// class AuthState with _$AuthState {
-//   const factory AuthState({
-//     @Default(false) bool isLoading,
-//   }) = _AuthState;
+@freezed
+class HomeState with _$HomeState {
+  const factory HomeState({
+    @Default(false) bool isLoading,
+    @Default(GameState.ongoing) GameState selectedHomeTab,
+  }) = _HomeState;
 
-//   const AuthState._();
-// }
+  const HomeState._();
+}
