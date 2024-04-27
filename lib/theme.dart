@@ -53,6 +53,11 @@ final ThemeData gameThemeDark = ThemeData(
         fontFamily: 'Montserrat',
         fontSize: 12,
         fontWeight: FontWeight.w300),
+    labelLarge: TextStyle(
+        color: AppColors.greyText,
+        fontFamily: 'Montserrat',
+        fontSize: 20,
+        fontWeight: FontWeight.w700),
     // You may want to define other text styles as well
   ),
   colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue)

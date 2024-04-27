@@ -57,6 +57,8 @@ class AppColors {
 
   static const glassColor = Color.fromRGBO(255, 255, 255, 0.1);
 
+  static const Color popUpColor = Color.fromRGBO(0, 0, 0, 0.2);
+
   static const gradientBorderGlare = [
     Color.fromRGBO(255, 255, 255, 0.5),
     Color.fromRGBO(255, 255, 255, 0),

@@ -4,6 +4,7 @@ class Assets {
   static const String backgroundLeaderboard =
       'assets/images/leaderboard-text.png';
   static const String walletBannerBG = 'assets/images/wallet_banner_bg.png';
+  static const String tournamentJoining = 'assets/images/character.png';
 
   static const String headerOverlayGeneral =
       'assets/images/header-overlay-general.png';
@@ -32,6 +33,7 @@ class Assets {
 
   // icons
   static const String edit = 'assets/icons/edit.png';
+  static const String close = 'assets/icons/close.png';
 
   // images temp
   static const String playerLeaderboardSmall = 'assets/images/player_small.png';
