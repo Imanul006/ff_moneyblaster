@@ -6,3 +6,16 @@ import 'package:riverpod/riverpod.dart';
 
 final authProvider = StateNotifierProvider.autoDispose<AuthNotifier, AuthState>(
   (ref) => AuthNotifier(FirebaseAuthRepository()));
+
+// final userStreamProvider = StreamProvider.autoDispose<Map<String, dynamic>>((ref) {
+//   final currentUser = FirebaseAuth.instance.currentUser;
+//   if (currentUser != null) {
+//     return FirebaseFirestore.instance
+//         .collection('users')
+//         .doc(currentUser.uid)
+//         .snapshots()
+//         .map((snapshot) => snapshot.data()!);
+//   } else {
+//     return Stream.value({});
+//   }
+// });

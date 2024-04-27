@@ -41,19 +41,28 @@ class FirebaseAuthRepository implements IAuthRepository {
         wallet: WalletModel(),
       );
 
-      await _firestore.collection('users').doc(userCredential.user!.uid).set({
+      Map<String, dynamic> data = {
         'username': user.username,
         'gameId': user.gameId,
         'phoneNumber': user.phoneNumber,
         'email': userCredential.user!.email,
         'isVerified': user.isVerified,
-        'gameStats': user.gameStats,
-        'wallet': user.wallet,
-      });
+        'gameStats': user.gameStats.toJson(),
+        'wallet': user.wallet.toJson(),
+      };
+      print(data);
+
+      await _firestore
+          .collection('appusers')
+          .doc(userCredential.user!.uid)
+          .set(data);
 
       await _firestore.collection('usernames').doc(username).set({
         'userId': userCredential.user!.uid,
       });
+
+      // await _firestore.collection('test').doc('testDoc').set({'testField': 'testValue'});
+
       return true;
     } on FirebaseAuthException catch (e) {
       print(e);

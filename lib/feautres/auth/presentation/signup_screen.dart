@@ -174,6 +174,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                     child: GlazedButtonFilled(
                       onTap: () {
                         if (!isLoading) {
+                    
                           _handleSignup();
                         }
                       },
@@ -230,6 +231,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
   void _handleSignup() async {
     try {
       final notifier = ref.read(authProvider.notifier);
+
       await notifier.signUp(
         username: _usernameController.text,
         gameId: _gameIdController.text,

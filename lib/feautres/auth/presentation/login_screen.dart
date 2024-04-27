@@ -10,8 +10,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter/gestures.dart';
 
-
-
 @RoutePage(name: 'LoginScreen')
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -116,8 +114,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     onTap: () {
                       if (!isLoading) {
                         ref.read(authProvider.notifier).signIn(
-                              _userIdController.text,
-                              _passwordController.text,
+                              username: _userIdController.text,
+                              password: _passwordController.text,
+                              voidCallback: () async {
+                                await context.router
+                                    .replaceAll([const LoadingScreen()]);
+                              },
                             );
                       }
                     },
@@ -131,7 +133,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               color: Colors.white,
                             ),
                           ),
-              
                   ),
                 ),
                 const SizedBox(height: 8),

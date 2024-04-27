@@ -1,17 +1,53 @@
 // auth_notifier.dart
+import 'dart:async';
+
+import 'package:auto_route/auto_route.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ff_moneyblaster/feautres/auth/application/auth_state.dart';
 import 'package:ff_moneyblaster/feautres/auth/domain/i_auth_repository.dart';
+import 'package:ff_moneyblaster/feautres/auth/domain/user_model.dart';
+import 'package:ff_moneyblaster/feautres/auth/shared/provider.dart';
+import 'package:ff_moneyblaster/routes/app_router.gr.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:riverpod/riverpod.dart';
 
 class AuthNotifier extends StateNotifier<AuthState> {
   final IAuthRepository _authRepository;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   AuthNotifier(this._authRepository) : super(const AuthState());
 
   void selectGame(String gameSelected) {
     state = state.copyWith(gameOptionSelected: gameSelected, isLoading: false);
+  }
+
+  Future<bool> isCurrentUserVerified(BuildContext context,
+      {required Timer timer}) async {
+    try {
+      User? currentUser = _auth.currentUser;
+      if (currentUser != null) {
+        DocumentSnapshot userDoc =
+            await _firestore.collection('appusers').doc(currentUser.uid).get();
+        if (userDoc.exists) {
+          UserModel user =
+              UserModel.fromJson(userDoc.data() as Map<String, dynamic>);
+          bool res = user.isVerified;
+          if (res) {
+            timer.cancel();
+            if (context.mounted) {
+              context.router.replaceAll([const BaseRoute()]);
+            }
+          }
+        }
+      }
+      return false;
+    } catch (e) {
+      print('Error checking if user is verified: $e');
+      return false;
+    }
   }
 
   Future<void> checkIsUserVerified() async {
@@ -32,7 +68,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     );
   }
 
-  Future<void> signIn(String username, String password) async {
+  Future<void> signIn({required String username, required String password, required VoidCallback? voidCallback,}) async {
     state = state.copyWith(isLoading: true);
     try {
       await _authRepository.signInWithUsernameAndPassword(username, password);
@@ -61,6 +97,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
       if (result) {
         // Sign-up was successful
+        print("Result = $result");
         voidCallback?.call();
       } else {
         // Sign-up failed

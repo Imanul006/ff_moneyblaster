@@ -28,7 +28,7 @@ import 'package:ff_moneyblaster/feautres/profile/presentation/profile_screen.dar
 import 'package:ff_moneyblaster/feautres/splash/splash.dart' as _i10;
 import 'package:ff_moneyblaster/feautres/wallet/presentation/wallet_screen.dart'
     as _i11;
-import 'package:ff_moneyblaster/widgets/loading_screen.dart' as _i4;
+import 'package:ff_moneyblaster/feautres/auth/presentation/loading_screen.dart' as _i4;
 
 abstract class $AppRouter extends _i12.RootStackRouter {
   $AppRouter({super.navigatorKey});

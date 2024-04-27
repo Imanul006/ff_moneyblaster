@@ -14,6 +14,10 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
+UserModel _$UserModelFromJson(Map<String, dynamic> json) {
+  return _UserModel.fromJson(json);
+}
+
 /// @nodoc
 mixin _$UserModel {
   String get username => throw _privateConstructorUsedError;
@@ -24,6 +28,7 @@ mixin _$UserModel {
   GameStats get gameStats => throw _privateConstructorUsedError;
   WalletModel get wallet => throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $UserModelCopyWith<UserModel> get copyWith =>
       throw _privateConstructorUsedError;
@@ -194,7 +199,8 @@ class __$$UserModelImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$UserModelImpl implements _UserModel {
+@JsonSerializable(explicitToJson: true)
+class _$UserModelImpl with DiagnosticableTreeMixin implements _UserModel {
   const _$UserModelImpl(
       {required this.username,
       required this.gameId,
@@ -204,6 +210,9 @@ class _$UserModelImpl implements _UserModel {
       required this.gameStats,
       required this.wallet})
       : _tournamentIds = tournamentIds;
+
+  factory _$UserModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$UserModelImplFromJson(json);
 
   @override
   final String username;
@@ -229,8 +238,22 @@ class _$UserModelImpl implements _UserModel {
   final WalletModel wallet;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'UserModel(username: $username, gameId: $gameId, phoneNumber: $phoneNumber, isVerified: $isVerified, tournamentIds: $tournamentIds, gameStats: $gameStats, wallet: $wallet)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'UserModel'))
+      ..add(DiagnosticsProperty('username', username))
+      ..add(DiagnosticsProperty('gameId', gameId))
+      ..add(DiagnosticsProperty('phoneNumber', phoneNumber))
+      ..add(DiagnosticsProperty('isVerified', isVerified))
+      ..add(DiagnosticsProperty('tournamentIds', tournamentIds))
+      ..add(DiagnosticsProperty('gameStats', gameStats))
+      ..add(DiagnosticsProperty('wallet', wallet));
   }
 
   @override
@@ -252,6 +275,7 @@ class _$UserModelImpl implements _UserModel {
             (identical(other.wallet, wallet) || other.wallet == wallet));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -268,6 +292,13 @@ class _$UserModelImpl implements _UserModel {
   @pragma('vm:prefer-inline')
   _$$UserModelImplCopyWith<_$UserModelImpl> get copyWith =>
       __$$UserModelImplCopyWithImpl<_$UserModelImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$UserModelImplToJson(
+      this,
+    );
+  }
 }
 
 abstract class _UserModel implements UserModel {
@@ -279,6 +310,9 @@ abstract class _UserModel implements UserModel {
       final List<String> tournamentIds,
       required final GameStats gameStats,
       required final WalletModel wallet}) = _$UserModelImpl;
+
+  factory _UserModel.fromJson(Map<String, dynamic> json) =
+      _$UserModelImpl.fromJson;
 
   @override
   String get username;
@@ -300,6 +334,10 @@ abstract class _UserModel implements UserModel {
       throw _privateConstructorUsedError;
 }
 
+GameStats _$GameStatsFromJson(Map<String, dynamic> json) {
+  return _GameStats.fromJson(json);
+}
+
 /// @nodoc
 mixin _$GameStats {
   String get game => throw _privateConstructorUsedError;
@@ -307,6 +345,7 @@ mixin _$GameStats {
   int get totalKills => throw _privateConstructorUsedError;
   int get totalWins => throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $GameStatsCopyWith<GameStats> get copyWith =>
       throw _privateConstructorUsedError;
@@ -409,12 +448,16 @@ class __$$GameStatsImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$GameStatsImpl implements _GameStats {
+@JsonSerializable()
+class _$GameStatsImpl with DiagnosticableTreeMixin implements _GameStats {
   const _$GameStatsImpl(
       {required this.game,
       this.totalGames = 0,
       this.totalKills = 0,
       this.totalWins = 0});
+
+  factory _$GameStatsImpl.fromJson(Map<String, dynamic> json) =>
+      _$$GameStatsImplFromJson(json);
 
   @override
   final String game;
@@ -429,8 +472,19 @@ class _$GameStatsImpl implements _GameStats {
   final int totalWins;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'GameStats(game: $game, totalGames: $totalGames, totalKills: $totalKills, totalWins: $totalWins)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'GameStats'))
+      ..add(DiagnosticsProperty('game', game))
+      ..add(DiagnosticsProperty('totalGames', totalGames))
+      ..add(DiagnosticsProperty('totalKills', totalKills))
+      ..add(DiagnosticsProperty('totalWins', totalWins));
   }
 
   @override
@@ -447,6 +501,7 @@ class _$GameStatsImpl implements _GameStats {
                 other.totalWins == totalWins));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode =>
       Object.hash(runtimeType, game, totalGames, totalKills, totalWins);
@@ -456,6 +511,13 @@ class _$GameStatsImpl implements _GameStats {
   @pragma('vm:prefer-inline')
   _$$GameStatsImplCopyWith<_$GameStatsImpl> get copyWith =>
       __$$GameStatsImplCopyWithImpl<_$GameStatsImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$GameStatsImplToJson(
+      this,
+    );
+  }
 }
 
 abstract class _GameStats implements GameStats {
@@ -464,6 +526,9 @@ abstract class _GameStats implements GameStats {
       final int totalGames,
       final int totalKills,
       final int totalWins}) = _$GameStatsImpl;
+
+  factory _GameStats.fromJson(Map<String, dynamic> json) =
+      _$GameStatsImpl.fromJson;
 
   @override
   String get game;
@@ -479,11 +544,16 @@ abstract class _GameStats implements GameStats {
       throw _privateConstructorUsedError;
 }
 
+WalletModel _$WalletModelFromJson(Map<String, dynamic> json) {
+  return _WalletModel.fromJson(json);
+}
+
 /// @nodoc
 mixin _$WalletModel {
   int get balance => throw _privateConstructorUsedError;
   List<String> get history => throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $WalletModelCopyWith<WalletModel> get copyWith =>
       throw _privateConstructorUsedError;
@@ -567,10 +637,14 @@ class __$$WalletModelImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$WalletModelImpl implements _WalletModel {
+@JsonSerializable()
+class _$WalletModelImpl with DiagnosticableTreeMixin implements _WalletModel {
   const _$WalletModelImpl(
       {this.balance = 0, final List<String> history = const []})
       : _history = history;
+
+  factory _$WalletModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$WalletModelImplFromJson(json);
 
   @override
   @JsonKey()
@@ -585,8 +659,17 @@ class _$WalletModelImpl implements _WalletModel {
   }
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'WalletModel(balance: $balance, history: $history)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'WalletModel'))
+      ..add(DiagnosticsProperty('balance', balance))
+      ..add(DiagnosticsProperty('history', history));
   }
 
   @override
@@ -598,6 +681,7 @@ class _$WalletModelImpl implements _WalletModel {
             const DeepCollectionEquality().equals(other._history, _history));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType, balance, const DeepCollectionEquality().hash(_history));
@@ -607,11 +691,21 @@ class _$WalletModelImpl implements _WalletModel {
   @pragma('vm:prefer-inline')
   _$$WalletModelImplCopyWith<_$WalletModelImpl> get copyWith =>
       __$$WalletModelImplCopyWithImpl<_$WalletModelImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$WalletModelImplToJson(
+      this,
+    );
+  }
 }
 
 abstract class _WalletModel implements WalletModel {
   const factory _WalletModel({final int balance, final List<String> history}) =
       _$WalletModelImpl;
+
+  factory _WalletModel.fromJson(Map<String, dynamic> json) =
+      _$WalletModelImpl.fromJson;
 
   @override
   int get balance;
