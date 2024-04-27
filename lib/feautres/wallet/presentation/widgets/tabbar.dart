@@ -19,7 +19,8 @@ class TabBarWallet extends ConsumerWidget {
         children: [
           Expanded(
             child: GestureDetector(
-              onTap: () => ref.read(homeProvider.notifier).selectTab(GameState.ongoing),
+              onTap: () =>
+                  ref.read(homeProvider.notifier).selectTab(GameState.ongoing),
               child: SizedBox(
                 width: double.infinity,
                 height: 48,
@@ -36,7 +37,8 @@ class TabBarWallet extends ConsumerWidget {
           ),
           Expanded(
             child: GestureDetector(
-              onTap: () => ref.read(homeProvider.notifier).selectTab(GameState.upcoming),
+              onTap: () =>
+                  ref.read(homeProvider.notifier).selectTab(GameState.upcoming),
               child: SizedBox(
                 width: double.infinity,
                 height: 48,
@@ -45,6 +47,60 @@ class TabBarWallet extends ConsumerWidget {
                   height: 48,
                   radius: 0.0,
                   child: 'Withdrawal',
+                  colors: AppColors.tabBorder,
+                  isActive: homeState.selectedHomeTab == GameState.upcoming,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ProfileTaB extends ConsumerWidget {
+  const ProfileTaB({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final homeState = ref.watch(homeProvider);
+
+    return SizedBox(
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: GestureDetector(
+              onTap: () =>
+                  ref.read(homeProvider.notifier).selectTab(GameState.ongoing),
+              child: SizedBox(
+                width: double.infinity,
+                height: 48,
+                child: GradientBorderContainerText(
+                  width: double.infinity,
+                  height: 48,
+                  radius: 0.0,
+                  child: 'Profile',
+                  colors: AppColors.tabBorder,
+                  isActive: homeState.selectedHomeTab == GameState.ongoing,
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: GestureDetector(
+              onTap: () =>
+                  ref.read(homeProvider.notifier).selectTab(GameState.upcoming),
+              child: SizedBox(
+                width: double.infinity,
+                height: 48,
+                child: GradientBorderContainerText(
+                  width: double.infinity,
+                  height: 48,
+                  radius: 0.0,
+                  child: 'Pro Mode',
                   colors: AppColors.tabBorder,
                   isActive: homeState.selectedHomeTab == GameState.upcoming,
                 ),

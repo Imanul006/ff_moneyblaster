@@ -30,6 +30,10 @@ class Assets {
   // fire
   static const String fire = 'assets/icons/fire.png';
 
+  // icons
+  static const String edit = 'assets/icons/edit.png';
+
   // images temp
   static const String playerLeaderboardSmall = 'assets/images/player_small.png';
+  static const String profileImg = 'assets/images/profile_img.png';
 }

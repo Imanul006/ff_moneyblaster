@@ -24,6 +24,8 @@ class AppColors {
   static const Color white = Color(0xffffffff);
   static const Color red = Color.fromRGBO(165, 10, 10, 1);
   static const Color greyText = Color.fromRGBO(255, 255, 255, 1);
+  static const Color blue = Color.fromRGBO(0, 222, 222, 1);
+  static const Color greyLight = Color.fromRGBO(171, 171, 171, 1);
 
   static const List<Color> silverGradientBorder = [
     Color(0xffa1a1a1),
