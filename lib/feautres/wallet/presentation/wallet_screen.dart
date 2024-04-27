@@ -1,10 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:ff_moneyblaster/core/assets.dart';
 import 'package:ff_moneyblaster/core/constants.dart';
+import 'package:ff_moneyblaster/feautres/wallet/presentation/widgets/custom_listtile.dart';
 import 'package:ff_moneyblaster/feautres/wallet/presentation/widgets/tabbar.dart';
 
 import 'package:ff_moneyblaster/feautres/wallet/shared/provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sizer/sizer.dart';
@@ -37,7 +39,7 @@ class WalletScreen extends ConsumerWidget {
           Container(
             width: double.infinity,
             height: MediaQuery.sizeOf(context).height * 0.3,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               // image: DecorationImage(
 
               //   image: Image.asset(
@@ -45,7 +47,7 @@ class WalletScreen extends ConsumerWidget {
               //     fit: BoxFit.fitWidth,
               //   ).image,
               // ),
-              gradient: const LinearGradient(
+              gradient: LinearGradient(
                 colors: [Color(0xFFCE3B3B), Color(0xFF5F1237)],
                 stops: [0, 1],
                 begin: AlignmentDirectional(-1, 0),
@@ -68,7 +70,7 @@ class WalletScreen extends ConsumerWidget {
                         fontSize: 32,
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 18,
                     ),
                     Text(
@@ -100,12 +102,23 @@ class WalletScreen extends ConsumerWidget {
           // tab bar
           SizedBox(
             height: 63.3.h,
-            child: const Column(
+            child: Column(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                TabBarWallet(),
+                const TabBarWallet(),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: 10, // for example, the number of items
+                    itemBuilder: (BuildContext context, int index) {
+                      return const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 6.0, horizontal: 15),
+                        child: CustomListTile(title: 'fbsfbsb', subtitle: 'bsbssb', trailingText: 'dbbdd',),
+                      );
+                    },
+                  ),
+                ),
               ],
             ),
           ),
