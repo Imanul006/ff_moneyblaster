@@ -1,4 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:gradient_borders/box_borders/gradient_box_border.dart';
+
+import 'core/constants.dart';
+
+const BoxDecoration customDecoration = BoxDecoration(
+    color: AppColors.glassColor,
+    border: GradientBoxBorder(
+      gradient: LinearGradient(
+        colors: AppColors.gradientBorderGlare,
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      ),
+    ));
 
 final ThemeData gameThemeDark = ThemeData(
   // Define your primary and accent colors here
@@ -12,7 +25,7 @@ final ThemeData gameThemeDark = ThemeData(
     bodyMedium: TextStyle(
       color: Colors.white,
       fontFamily: 'Montserrat',
-      fontSize: 16,
+      fontSize: 14,
     ),
     bodySmall: TextStyle(
       color: Colors.white,
@@ -35,6 +48,11 @@ final ThemeData gameThemeDark = ThemeData(
       fontFamily: 'Apex',
       fontSize: 16,
     ),
+    labelSmall: TextStyle(
+        color: AppColors.greyText,
+        fontFamily: 'Montserrat',
+        fontSize: 12,
+        fontWeight: FontWeight.w300),
     // You may want to define other text styles as well
   ),
   colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue)

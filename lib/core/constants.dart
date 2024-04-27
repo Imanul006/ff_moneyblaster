@@ -22,6 +22,7 @@ class AppConstants {
 class AppColors {
   static const Color blackBackground = Color(0xff070707);
   static const Color white = Color(0xffffffff);
+  static const Color greyText = Color.fromRGBO(255, 255, 255, 1);
 
   static const List<Color> silverGradientBorder = [
     Color(0xffa1a1a1),
@@ -50,4 +51,13 @@ class AppColors {
   ];
 
   static const primaryColor = Color(0xff00DEDE);
+
+  static const glassColor = Color.fromRGBO(255, 255, 255, 0.1);
+
+  static const gradientBorderGlare = [
+    Color.fromRGBO(255, 255, 255, 0.5),
+    Color.fromRGBO(255, 255, 255, 0),
+    Color.fromRGBO(255, 255, 255, 0),
+    Color.fromRGBO(255, 255, 255, 0.5),
+  ];
 }

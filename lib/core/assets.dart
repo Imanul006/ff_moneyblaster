@@ -27,4 +27,7 @@ class Assets {
 
   // fire
   static const String fire = 'assets/icons/fire.png';
+
+  // images temp
+  static const String playerLeaderboardSmall = 'assets/images/player_small.png';
 }

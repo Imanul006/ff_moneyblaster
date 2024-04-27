@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:ff_moneyblaster/feautres/home/presentation/home_screen.dart';
 import 'package:ff_moneyblaster/feautres/wallet/presentation/wallet_screen.dart';
+import 'package:ff_moneyblaster/feautres/leaderboard/presentation/leaderboard_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sizer/sizer.dart';
@@ -67,11 +68,7 @@ class BasePageState extends ConsumerState<BasePage> {
       case 1:
         return const WalletScreen();
       case 2:
-        return Container(
-          height: 100.h,
-          width: 100.w,
-          color: Colors.pink,
-        );
+        return const LeaderbaordScreen();
       case 3:
         return Container(
           height: 100.h,

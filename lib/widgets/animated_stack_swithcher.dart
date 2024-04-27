@@ -21,39 +21,40 @@ class _CardSwapAnimationState extends ConsumerState<CardSwapAnimation>
 
   @override
   void initState() {
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    );
+    _frontCardScaleAnimation = Tween<double>(begin: 1.0, end: 0.0).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Curves.easeInOut,
+      ),
+    );
+    _frontCardFadeAnimation = Tween<double>(begin: 1.0, end: 0.0).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Curves.easeInOut,
+      ),
+    );
+    _backCardScaleAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Curves.easeInOut,
+      ),
+    );
+    _backCardFadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Curves.easeInOut,
+      ),
+    );
+
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       final notifier = ref.read(authProvider.notifier);
       notifier.selectGame(AppConstants.gamesList.last);
-      _controller = AnimationController(
-        vsync: this,
-        duration: const Duration(milliseconds: 500),
-      );
-      _frontCardScaleAnimation = Tween<double>(begin: 1.0, end: 0.0).animate(
-        CurvedAnimation(
-          parent: _controller,
-          curve: Curves.easeInOut,
-        ),
-      );
-      _frontCardFadeAnimation = Tween<double>(begin: 1.0, end: 0.0).animate(
-        CurvedAnimation(
-          parent: _controller,
-          curve: Curves.easeInOut,
-        ),
-      );
-      _backCardScaleAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-        CurvedAnimation(
-          parent: _controller,
-          curve: Curves.easeInOut,
-        ),
-      );
-      _backCardFadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-        CurvedAnimation(
-          parent: _controller,
-          curve: Curves.easeInOut,
-        ),
-      );
     });
   }
 

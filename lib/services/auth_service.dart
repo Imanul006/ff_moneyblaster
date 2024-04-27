@@ -56,6 +56,7 @@ class FirebaseAuthRepository implements IAuthRepository {
       });
       return true;
     } on FirebaseAuthException catch (e) {
+      print(e);
       rethrow;
     }
   }
