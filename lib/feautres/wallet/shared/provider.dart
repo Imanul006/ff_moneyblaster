@@ -3,5 +3,6 @@ import 'package:ff_moneyblaster/feautres/wallet/application/wallet_notifier.dart
 import 'package:ff_moneyblaster/services/wallet_service.dart';
 import 'package:riverpod/riverpod.dart';
 
-final walletProvider = StateNotifierProvider.autoDispose<WalletNotifier, UserWalletState>(
-  (ref) => WalletNotifier(WalletRepository()));
+final walletProvider =
+    StateNotifierProvider.autoDispose<WalletNotifier, UserWalletState>(
+        (ref) => WalletNotifier());

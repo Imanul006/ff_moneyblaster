@@ -22,6 +22,7 @@ class AppConstants {
 class AppColors {
   static const Color blackBackground = Color(0xff070707);
   static const Color white = Color(0xffffffff);
+  static const Color red = Color.fromRGBO(165, 10, 10, 1);
   static const Color greyText = Color.fromRGBO(255, 255, 255, 1);
 
   static const List<Color> silverGradientBorder = [
