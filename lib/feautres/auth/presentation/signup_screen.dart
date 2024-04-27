@@ -228,26 +228,25 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
   }
 
   void _handleSignup() async {
-  try {
-    final notifier = ref.read(authProvider.notifier);
-    await notifier.signUp(
-      username: _usernameController.text,
-      gameId: _gameIdController.text,
-      phoneNumber: _phoneNumberController.text,
-      password: _passwordController.text,
-    );
-    
-  } catch (e) {
-    
-    if (e is FirebaseAuthException) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.message ?? 'An unknown error occurred')),
+    try {
+      final notifier = ref.read(authProvider.notifier);
+      await notifier.signUp(
+        username: _usernameController.text,
+        gameId: _gameIdController.text,
+        phoneNumber: _phoneNumberController.text,
+        password: _passwordController.text,
+        voidCallback: () async {
+          await context.router.replaceAll([const LoadingScreen()]);
+        },
       );
-        
+    } catch (e) {
+      if (e is FirebaseAuthException) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(e.message ?? 'An unknown error occurred')),
+          );
+        }
       }
     }
   }
-}
-
 }

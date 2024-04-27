@@ -32,7 +32,7 @@ class LoadingScreen extends StatelessWidget {
               const SizedBox(
                 height: 100,
               ),
-              const SizedBox(height: 50, child: CarouselTextWidget()),
+              const SizedBox(height: 45, child: CarouselTextWidget()),
               const SizedBox(
                 height: 30,
               ),
@@ -152,7 +152,7 @@ class _CarouselTextWidgetState extends State<CarouselTextWidget> {
           _controller.animateToPage(
             0,
             duration: const Duration(milliseconds: 200),
-            curve: Curves.easeInOut, 
+            curve: Curves.easeInOut,
           );
         } else {
           _controller.nextPage(
@@ -202,7 +202,7 @@ class _CarouselTextWidgetState extends State<CarouselTextWidget> {
               "PREPARING TEAM",
               style: TextStyle(
                 fontFamily: 'Apex',
-                 fontWeight: FontWeight.w700,
+                fontWeight: FontWeight.w700,
                 color: Colors.white,
                 fontSize: 32,
               ),
@@ -214,7 +214,7 @@ class _CarouselTextWidgetState extends State<CarouselTextWidget> {
               "FUELING UP CAR",
               style: TextStyle(
                 fontFamily: 'Apex',
-                 fontWeight: FontWeight.w700,
+                fontWeight: FontWeight.w700,
                 color: Colors.white,
                 fontSize: 32,
               ),

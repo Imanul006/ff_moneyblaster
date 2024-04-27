@@ -1,14 +1,16 @@
 import 'package:ff_moneyblaster/core/constants.dart';
+import 'package:ff_moneyblaster/feautres/auth/shared/provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CardSwapAnimation extends StatefulWidget {
+class CardSwapAnimation extends ConsumerStatefulWidget {
   const CardSwapAnimation({Key? key}) : super(key: key);
 
   @override
   _CardSwapAnimationState createState() => _CardSwapAnimationState();
 }
 
-class _CardSwapAnimationState extends State<CardSwapAnimation>
+class _CardSwapAnimationState extends ConsumerState<CardSwapAnimation>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _frontCardScaleAnimation;
@@ -20,38 +22,48 @@ class _CardSwapAnimationState extends State<CardSwapAnimation>
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 500),
-    );
-    _frontCardScaleAnimation = Tween<double>(begin: 1.0, end: 0.0).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: Curves.easeInOut,
-      ),
-    );
-    _frontCardFadeAnimation = Tween<double>(begin: 1.0, end: 0.0).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: Curves.easeInOut,
-      ),
-    );
-    _backCardScaleAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: Curves.easeInOut,
-      ),
-    );
-    _backCardFadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: Curves.easeInOut,
-      ),
-    );
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      final notifier = ref.read(authProvider.notifier);
+      notifier.selectGame(AppConstants.gamesList.last);
+      _controller = AnimationController(
+        vsync: this,
+        duration: const Duration(milliseconds: 500),
+      );
+      _frontCardScaleAnimation = Tween<double>(begin: 1.0, end: 0.0).animate(
+        CurvedAnimation(
+          parent: _controller,
+          curve: Curves.easeInOut,
+        ),
+      );
+      _frontCardFadeAnimation = Tween<double>(begin: 1.0, end: 0.0).animate(
+        CurvedAnimation(
+          parent: _controller,
+          curve: Curves.easeInOut,
+        ),
+      );
+      _backCardScaleAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+        CurvedAnimation(
+          parent: _controller,
+          curve: Curves.easeInOut,
+        ),
+      );
+      _backCardFadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+        CurvedAnimation(
+          parent: _controller,
+          curve: Curves.easeInOut,
+        ),
+      );
+    });
   }
 
+  String gameName = AppConstants.gameOption.last;
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(
+    BuildContext context,
+  ) {
+    final state = ref.watch(authProvider);
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -117,12 +129,13 @@ class _CardSwapAnimationState extends State<CardSwapAnimation>
                 ),
               ),
               onPressed: () {
-                _toggle ? _controller.reverse() : _controller.forward();
+                _toggle ? _controller.forward() : _controller.reverse();
                 _toggle = !_toggle;
+                toggleGame(_toggle);
               },
             ),
             Text(
-              AppConstants.gamesList.first,
+              state.gameOptionSelected ?? '',
               style: Theme.of(context)
                   .textTheme
                   .headlineMedium!
@@ -137,14 +150,27 @@ class _CardSwapAnimationState extends State<CardSwapAnimation>
                 ),
               ),
               onPressed: () {
-                _toggle ? _controller.reverse() : _controller.forward();
+                _toggle ? _controller.forward() : _controller.reverse();
                 _toggle = !_toggle;
+                toggleGame(_toggle);
               },
             ),
           ],
         ),
       ],
     );
+  }
+
+  void toggleGame(bool toggle) {
+    setState(() {
+      final authNotfier = ref.read(authProvider.notifier);
+
+      toggle
+          ? gameName = AppConstants.gamesList.last
+          : gameName = AppConstants.gamesList.first;
+
+      authNotfier.selectGame(gameName);
+    });
   }
 
   @override
