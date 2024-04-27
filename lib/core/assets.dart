@@ -36,4 +36,5 @@ class Assets {
   // images temp
   static const String playerLeaderboardSmall = 'assets/images/player_small.png';
   static const String profileImg = 'assets/images/profile_img.png';
+  static const String notificationImg = 'assets/images/notification_img.png';
 }

@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:ff_moneyblaster/feautres/home/presentation/home_screen.dart';
+import 'package:ff_moneyblaster/feautres/notification/presentation/notification_screen.dart';
 import 'package:ff_moneyblaster/feautres/profile/presentation/profile_screen.dart';
 import 'package:ff_moneyblaster/feautres/wallet/presentation/wallet_screen.dart';
 import 'package:ff_moneyblaster/feautres/leaderboard/presentation/leaderboard_screen.dart';
@@ -71,11 +72,7 @@ class BasePageState extends ConsumerState<BasePage> {
       case 2:
         return const LeaderbaordScreen();
       case 3:
-        return Container(
-          height: 100.h,
-          width: 100.w,
-          color: Colors.green,
-        );
+        return const NotificationScreen();
       case 4:
         return const ProfileScreen();
       default:

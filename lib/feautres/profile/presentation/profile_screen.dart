@@ -73,6 +73,9 @@ class ProfileScreen extends ConsumerWidget {
                 ),
               )),
           const ProfileTaB(),
+          const SizedBox(
+            height: 20,
+          ),
           // tab bar
           Container(
             height: 70.h,

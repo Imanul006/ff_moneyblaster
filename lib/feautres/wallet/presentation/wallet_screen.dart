@@ -162,7 +162,8 @@ class WalletScreen extends ConsumerWidget {
                       return Container(
                         height: 45,
                         width: double.infinity,
-                        decoration: customDecoration,
+                        decoration: customDecoration.copyWith(
+                            borderRadius: BorderRadius.circular(8)),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                               vertical: 0, horizontal: 12),

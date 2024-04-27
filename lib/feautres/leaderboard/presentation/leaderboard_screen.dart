@@ -41,7 +41,7 @@ class LeaderbaordScreen extends ConsumerWidget {
           Container(
             width: double.infinity,
             height: MediaQuery.sizeOf(context).height * 0.35,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               // image: DecorationImage(
               //   scale: 2.1,
               //   image: Image.asset(
@@ -49,7 +49,7 @@ class LeaderbaordScreen extends ConsumerWidget {
               //     fit: BoxFit.contain,
               //   ).image,
               // ),
-              gradient: const LinearGradient(
+              gradient: LinearGradient(
                 colors: [Color(0xFFCE3B3B), Color(0xFF5F1237)],
                 stops: [0, 1],
                 begin: AlignmentDirectional(-1, 0),
@@ -114,7 +114,7 @@ class LeaderbaordScreen extends ConsumerWidget {
                                             .textTheme
                                             .bodySmall,
                                       ),
-                                      Icon(
+                                      const Icon(
                                         Icons.keyboard_arrow_down,
                                         color: Colors.white,
                                         size: 14,
@@ -123,7 +123,7 @@ class LeaderbaordScreen extends ConsumerWidget {
                                   ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
                                       12, 0, 0, 0),
                                   child: Container(
                                     width: 66,
@@ -404,7 +404,8 @@ class LeaderbaordScreen extends ConsumerWidget {
                             height: 70,
                             width: double.infinity,
                             // margin: const EdgeInsets.all(4),
-                            decoration: customDecoration,
+                            decoration: customDecoration.copyWith(
+                                borderRadius: BorderRadius.circular(8)),
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
                                   vertical: 16, horizontal: 12),
