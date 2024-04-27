@@ -11,6 +11,7 @@ class AppRouter extends $AppRouter {
         AutoRoute(page: SignupScreen.page, path: '/signup'),
         AutoRoute(page: LoadingScreen.page, path: '/loading'),
         AutoRoute(page: HomeScreen.page, path: '/home'),
-        AutoRoute(page: BaseRoute.page, path: '/base'),
+        AutoRoute(page: BaseRoute.page, path: '/base', initial: true),
+        AutoRoute(page: WalletScreen.page, path: '/wallet'),
       ];
 }

@@ -3,6 +3,8 @@ class Assets {
   static const String backgroundHome = 'assets/images/bg.png';
   static const String backgroundLeaderboard =
       'assets/images/leaderboard-text.png';
+  static const String headerOverlayGeneral =
+      'assets/images/header-overlay-general.png';
   static const String filter = 'assets/images/filter.png';
 
   /// bottom nav icons

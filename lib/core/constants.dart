@@ -5,6 +5,7 @@ class AppConstants {
   static const String fullAppName = 'Money Blaster Tournament';
   static const String selectGame = 'Select Game';
   static const String login = 'Login';
+  static const String wallet = 'Wallet';
   static const String createAccount = 'Create Account';
   static const String userName = 'User Name';
   static const String tournament = 'Tournament';

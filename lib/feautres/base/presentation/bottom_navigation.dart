@@ -17,7 +17,7 @@ class BottomNavigation extends ConsumerWidget {
     final Size size = MediaQuery.of(context).size;
     const List<Map> bottomItems = [
       {'icon': Assets.home, 'active': Assets.homeSelected, 'name': 'Home'},
-      {'icon': Assets.wallet, 'active': Assets.walletSelected, 'name': 'Cart'},
+      {'icon': Assets.wallet, 'active': Assets.walletSelected, 'name': 'Wallet'},
       {
         'icon': Assets.leaderboard,
         'active': Assets.leaderboardSelected,

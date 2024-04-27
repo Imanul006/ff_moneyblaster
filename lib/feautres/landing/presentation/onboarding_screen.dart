@@ -55,10 +55,11 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                       Text(
                         AppConstants.appName.toUpperCase(),
                         style: const TextStyle(
-                            fontFamily: 'Apex',
-                            // fontWeight: FontWeight.w700,
-                            color: Colors.white,
-                            fontSize: 32),
+                          fontFamily: 'Apex',
+                          // fontWeight: FontWeight.w700,
+                          color: Colors.white,
+                          fontSize: 32,
+                        ),
                       ),
                       const SizedBox(
                         height: 10,
