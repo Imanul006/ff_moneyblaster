@@ -86,7 +86,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             child: LoginTextField(
                               title: "User ID",
                               hintText: "Create an user ID",
-                              controller: TextEditingController(),
+                              controller: _userIdController,
                             ),
                           ),
                         ),
@@ -101,7 +101,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           child: LoginTextField(
                             title: "Password",
                             hintText: "Enter Password",
-                            controller: TextEditingController(),
+                            controller: _passwordController,
                           ),
                         ),
                       ],
@@ -113,13 +113,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   child: GlazedButton(
                     onTap: () {
                       if (!isLoading) {
-                        ref.read(authProvider.notifier).signIn(
+                        ref.read(authProvider.notifier).signIn(context,
                               username: _userIdController.text,
                               password: _passwordController.text,
-                              voidCallback: () async {
-                                await context.router
-                                    .replaceAll([const LoadingScreen()]);
-                              },
+                              
                             );
                       }
                     },

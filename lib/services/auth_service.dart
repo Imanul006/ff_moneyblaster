@@ -71,7 +71,7 @@ class FirebaseAuthRepository implements IAuthRepository {
   }
 
   @override
-  Future<void> signInWithUsernameAndPassword(
+  Future<bool> signInWithUsernameAndPassword(
       String username, String password) async {
     var email = await _getEmailForUsername(username);
     if (email == null) {
@@ -81,15 +81,24 @@ class FirebaseAuthRepository implements IAuthRepository {
       );
     }
 
-    await _firebaseAuth
-        .signInWithEmailAndPassword(email: email, password: password)
-        .then((value) => null);
+    try {
+      await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+    print('Sign-in successful.');
+    return true;
+    } catch (e) {
+       print('Sign-in failed: $e');
+    return false;
+    }
+
+    
   }
 
   Future<String?> _getEmailForUsername(String username) async {
-    var docSnapshot =
-        await _firestore.collection('usernames').doc(username).get();
-    return docSnapshot.data()?['email'] as String?;
+    if (username.isEmpty) {
+      return null;
+    }
+
+    return "$username@moneyblaster.com";
   }
 
   @override

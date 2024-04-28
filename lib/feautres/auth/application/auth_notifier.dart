@@ -68,10 +68,15 @@ class AuthNotifier extends StateNotifier<AuthState> {
     );
   }
 
-  Future<void> signIn({required String username, required String password, required VoidCallback? voidCallback,}) async {
+  Future<void> signIn(BuildContext context,
+      {required String username, required String password}) async {
     state = state.copyWith(isLoading: true);
     try {
-      await _authRepository.signInWithUsernameAndPassword(username, password);
+      bool res = await _authRepository.signInWithUsernameAndPassword(
+          username, password);
+      if (res && context.mounted) {
+        await context.router.replaceAll([const LoadingScreen()]);
+      }
       state = state.copyWith(isLoading: false);
     } catch (e) {
       state = state.copyWith(isLoading: false);

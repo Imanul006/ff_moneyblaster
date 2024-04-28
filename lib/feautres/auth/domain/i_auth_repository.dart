@@ -3,7 +3,7 @@
 import 'package:ff_moneyblaster/feautres/auth/domain/user_model.dart';
 
 abstract class IAuthRepository {
-  Future<void> signInWithUsernameAndPassword(String userName, String password);
+  Future<bool> signInWithUsernameAndPassword(String userName, String password);
 
   Future<bool> signUpWithUsernameAndPassword({
     required String username,
