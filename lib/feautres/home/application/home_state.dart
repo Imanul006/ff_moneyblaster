@@ -1,3 +1,4 @@
+import 'package:ff_moneyblaster/feautres/home/domain/tournament.dart';
 import 'package:ff_moneyblaster/feautres/home/presentation/widgets/tournament_card.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -8,6 +9,8 @@ class HomeState with _$HomeState {
   const factory HomeState({
     @Default(false) bool isLoading,
     @Default(GameState.ongoing) GameState selectedHomeTab,
+    @Default([]) List<Tournament> tournaments,
+    @Default('') String errorMessage,
   }) = _HomeState;
 
   const HomeState._();

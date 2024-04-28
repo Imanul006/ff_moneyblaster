@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:ff_moneyblaster/core/assets.dart';
 import 'package:ff_moneyblaster/core/constants.dart';
+import 'package:ff_moneyblaster/feautres/home/domain/tournament.dart';
 
 import 'package:ff_moneyblaster/feautres/home/presentation/widgets/tabbar.dart';
 import 'package:ff_moneyblaster/feautres/home/presentation/widgets/tournament_card.dart';
@@ -18,7 +19,13 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isLoading = ref.watch(homeProvider.select((state) => state.isLoading));
+    final isLoading =
+        ref.watch(homeProvider.select((state) => state.isLoading));
+    final homeState = ref.watch(homeProvider);
+    final provider = ref.read(homeProvider.notifier);
+
+    List<Tournament> ongoingTournaments = homeState.tournaments.where((tournament) => provider.getDifferenceInMilliseconds(tournament.dateTime!) > 0).toList();
+    List<Tournament> upcomingTournaments = homeState.tournaments.where((tournament) => provider.getDifferenceInMilliseconds(tournament.dateTime!) <=  0).toList();
 
     return SafeArea(
       child: Container(
@@ -92,7 +99,8 @@ class HomeScreen extends ConsumerWidget {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(0, 6, 0, 0),
+                          padding:
+                              const EdgeInsetsDirectional.fromSTEB(0, 6, 0, 0),
                           child: Text(
                             'Techno Frank',
                             style:
@@ -148,12 +156,14 @@ class HomeScreen extends ConsumerWidget {
                               colors: AppColors.goldGradientBorder,
                               child:
                                   'https://media.wired.com/photos/5b17381815b2c744cb650b5f/master/w_2560%2Cc_limit/GettyImages-134367495.jpg',
+                                
                             ),
                           ),
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(0, 6, 0, 0),
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(0, 6, 0, 0),
                         child: Text(
                           'MadMAx#',
                           style:
@@ -215,7 +225,8 @@ class HomeScreen extends ConsumerWidget {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(0, 6, 0, 0),
+                          padding:
+                              const EdgeInsetsDirectional.fromSTEB(0, 6, 0, 0),
                           child: Text(
                             'SahilKiller',
                             style: Theme.of(context)
@@ -260,14 +271,34 @@ class HomeScreen extends ConsumerWidget {
                   SingleChildScrollView(
                     child: SizedBox(
                       height: 50.h,
-                      child: ListView.separated(
-                          shrinkWrap: true,
-                          itemCount: 4,
-                          separatorBuilder: (BuildContext context, int index) =>
-                              const SizedBox(height: 10),
-                          itemBuilder: (context, index) {
-                            return TournamentCard(gameState: ref.watch(homeProvider.select((state) => state.selectedHomeTab)),);
-                          }),
+                      child: homeState.isLoading
+                          ? const Center(child: CircularProgressIndicator())
+                          : homeState.errorMessage.isNotEmpty
+                              ? Text("Error: ${homeState.errorMessage}")
+                              : ListView.separated(
+                                  shrinkWrap: true,
+                                  itemCount: homeState.selectedHomeTab == GameState.upcoming ? upcomingTournaments.length : homeState.selectedHomeTab == GameState.ongoing ? ongoingTournaments.length : ongoingTournaments.length,
+                                  separatorBuilder:
+                                      (BuildContext context, int index) =>
+                                          const SizedBox(height: 10),
+                                  itemBuilder: (context, index) {
+
+                                    
+                                   
+                                    return homeState.selectedHomeTab == GameState.upcoming ? TournamentCard(
+                                      isLessThan24Hours: provider.isLessThan24Hours(upcomingTournaments[index].dateTime!),
+                                      gameState: homeState.selectedHomeTab,
+                                      tournament: upcomingTournaments[index],
+                                    ) : homeState.selectedHomeTab == GameState.ongoing ? TournamentCard(
+                                      isLessThan24Hours: provider.isLessThan24Hours(ongoingTournaments[index].dateTime!),
+                                      gameState: homeState.selectedHomeTab,
+                                      tournament: ongoingTournaments[index],
+                                    ) : TournamentCard(
+                                      isLessThan24Hours: provider.isLessThan24Hours(ongoingTournaments[index].dateTime!),
+                                      gameState: homeState.selectedHomeTab,
+                                      tournament: ongoingTournaments[index],
+                                    );
+                                  }),
                     ),
                   )
                 ],

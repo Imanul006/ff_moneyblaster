@@ -12,6 +12,7 @@ class GradientBorderContainer extends StatefulWidget {
     required this.colors,
     this.radius = 8.0,
     required this.child,
+    this.assetChild,
   });
 
   final double? width;
@@ -19,6 +20,7 @@ class GradientBorderContainer extends StatefulWidget {
   final List<Color> colors;
   final double radius;
   final String child;
+  final String? assetChild;
   @override
   State<GradientBorderContainer> createState() =>
       _GradientBorderContainerState();
@@ -41,8 +43,11 @@ class _GradientBorderContainerState extends State<GradientBorderContainer> {
             borderRadius: BorderRadius.circular(widget.radius)),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(widget.radius),
-          child: Image.network(
+          child: widget.assetChild == null ? Image.network(
             widget.child,
+            fit: BoxFit.cover,
+          ) : Image.asset(
+            widget.assetChild!,
             fit: BoxFit.cover,
           ),
         ));

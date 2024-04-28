@@ -1,12 +1,15 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:ff_moneyblaster/core/assets.dart';
 import 'package:ff_moneyblaster/core/constants.dart';
+import 'package:ff_moneyblaster/feautres/home/domain/tournament.dart';
 import 'package:ff_moneyblaster/theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
 
 enum GameState {
   ongoing,
@@ -15,19 +18,49 @@ enum GameState {
 }
 
 class TournamentCard extends StatefulWidget {
-  const TournamentCard({super.key, required this.gameState});
+  const TournamentCard(
+      {super.key,
+      required this.gameState,
+      required this.tournament,
+      required this.isLessThan24Hours});
 
   final GameState gameState;
+  final Tournament tournament;
+  final bool isLessThan24Hours;
 
   @override
   State<TournamentCard> createState() => _TournamentCardState();
 }
 
 class _TournamentCardState extends State<TournamentCard> {
+  Duration _duration = Duration.zero;
+  @override
+  void initState() {
+    if (widget.isLessThan24Hours) {
+      _updateDuration();
+      Timer.periodic(const Duration(seconds: 1), (_) => _updateDuration());
+    }
+    super.initState();
+  }
+
+  void _updateDuration() {
+    final now = DateTime.now();
+    final remaining = widget.tournament.dateTime!.difference(now);
+    _duration = remaining.isNegative ? Duration.zero : remaining;
+    setState(() {});
+  }
+
+  String formatDuration(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, "0");
+    final hours = twoDigits(duration.inHours);
+    final minutes = twoDigits(duration.inMinutes % 60);
+    final seconds = twoDigits(duration.inSeconds % 60);
+    return "$hours.$minutes.$seconds";
+  }
+
   @override
   Widget build(BuildContext context) {
-    return // Generated code for this CardTournament Widget...
-        Padding(
+    return Padding(
       padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
       child: Container(
         width: 100,
@@ -81,8 +114,10 @@ class _TournamentCardState extends State<TournamentCard> {
                     opacity: 0.6,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8),
-                      child: Image.network(
-                        'https://s3-alpha-sig.figma.com/img/44dc/b1c3/adda462080a0ccdabe0649db20c8ccf2?Expires=1713744000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=CVkJbpQklBNaXT1Qg3ZezJ-3xmfpADps6fYaODJ1vt3Z5jLDMZ~Iv8o4eZhop0s8Fn~w8almkyT~H3K7USkZ7ceqFELRdfr7LPA~u88pi2PuxpgZ8n9ZRNCLcTvN-VmXwKOKKLCKRPz6xL3GImhW-lvt4jYUc5Pz4eW35mX8giTpXMj-Ec0WQI6qmTPlvphSZJJuXTvQ2dEy4t2xQnRbqvD-ylwpbnreUJ~3SgVLz2TKmO2udT8zPLxXcdrGXsr0-x9lRJ-bvsnKZwrxuHvx7q5aikaFBsGOZzVLCy2HXmcC2sj88pDoJxVTkpd6IC4EtovAyRgMovUyFedj50mX~g__',
+                      child: Image.asset(
+                        widget.tournament.gameOption == "BGMI"
+                            ? 'assets/images/home_card_bg_pubg.png'
+                            : 'assets/images/home_card_bg_ff.png',
                         width: 300,
                         height: 200,
                         fit: BoxFit.cover,
@@ -99,7 +134,7 @@ class _TournamentCardState extends State<TournamentCard> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'BGMI Cash Cup',
+                          widget.tournament.tournamentName!,
                           style:
                               Theme.of(context).textTheme.bodyMedium?.copyWith(
                                     fontFamily: 'Readex Pro',
@@ -128,7 +163,7 @@ class _TournamentCardState extends State<TournamentCard> {
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   4, 0, 0, 0),
                               child: Text(
-                                'Rs. 3000',
+                                'Rs. ${widget.tournament.prizePool?[0] ?? ""}',
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyMedium
@@ -147,7 +182,7 @@ class _TournamentCardState extends State<TournamentCard> {
                           padding:
                               const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                           child: Text(
-                            'TPP . Sanhok . Squad',
+                            '${widget.tournament.gameType?.gameCamera} . ${widget.tournament.gameType?.gameMap} . ${widget.tournament.gameType?.teamOption}',
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyMedium
@@ -174,11 +209,14 @@ class _TournamentCardState extends State<TournamentCard> {
                                 child: Padding(
                                   padding:
                                       const EdgeInsets.symmetric(horizontal: 4),
-                                  child: buildButton(
-                                      context,
-                                      'Watch Live',
-                                      const Color(0xFFCF3A3A),
-                                      const Color(0xFF9D0000)),
+                                  child: InkWell(
+                                    onTap: () {},
+                                    child: buildButton(
+                                        context,
+                                        'Watch Live',
+                                        const Color(0xFFCF3A3A),
+                                        const Color(0xFF9D0000)),
+                                  ),
                                 ),
                               ),
                             ],
@@ -223,7 +261,9 @@ class _TournamentCardState extends State<TournamentCard> {
                                               7, 7, 7, 0.7),
                                           context: context,
                                           builder: (BuildContext context) {
-                                            return JoinTournamamentWidget();
+                                            return JoinTournamamentWidget(
+                                              tournament: widget.tournament,
+                                            );
                                           },
                                         );
                                       },
@@ -270,7 +310,7 @@ class _TournamentCardState extends State<TournamentCard> {
                                     ),
                               ),
                               Text(
-                                '₹10',
+                                '₹${widget.tournament.perKill}',
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyMedium
@@ -316,7 +356,7 @@ class _TournamentCardState extends State<TournamentCard> {
                                     ),
                               ),
                               Text(
-                                '₹1000',
+                                '₹${widget.tournament.entryFee}',
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyMedium
@@ -353,7 +393,8 @@ class _TournamentCardState extends State<TournamentCard> {
                                   ),
                         ),
                         Text(
-                          '26/05/24',
+                          DateFormat('dd/MM/yy')
+                              .format(widget.tournament.dateTime!),
                           style:
                               Theme.of(context).textTheme.bodyMedium?.copyWith(
                                     fontFamily: 'Readex Pro',
@@ -368,88 +409,94 @@ class _TournamentCardState extends State<TournamentCard> {
                 ),
                 Align(
                   alignment: const AlignmentDirectional(1, 0),
-                  child: Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 8, 0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          'MATCH STARTED',
-                          style:
-                              Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                    fontFamily: 'Oswald',
-                                    color: Colors.white,
-                                    letterSpacing: 0,
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                        ),
-                        Padding(
+                  child: widget.isLessThan24Hours
+                      ? Padding(
                           padding:
-                              const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
-                          child: Text(
-                            '00.13.25',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
-                                ?.copyWith(
-                                  fontFamily: 'Readex Pro',
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  letterSpacing: 1.6,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                          ),
-                        ),
-                        Container(
-                          width: 80,
-                          height: 12,
-                          decoration: const BoxDecoration(),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              const EdgeInsetsDirectional.fromSTEB(0, 0, 8, 0),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                'HR',
+                                'MATCH STARTED',
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyMedium
                                     ?.copyWith(
-                                      fontFamily: 'Readex Pro',
+                                      fontFamily: 'Oswald',
                                       color: Colors.white,
-                                      fontSize: 8,
                                       letterSpacing: 0,
+                                      fontWeight: FontWeight.normal,
                                     ),
                               ),
-                              Text(
-                                'MIN',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium
-                                    ?.copyWith(
-                                      fontFamily: 'Readex Pro',
-                                      color: Colors.white,
-                                      fontSize: 8,
-                                      letterSpacing: 0,
-                                    ),
+                              Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    0, 4, 0, 0),
+                                child: Text(
+                                  formatDuration(_duration),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.copyWith(
+                                        fontFamily: 'Readex Pro',
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        letterSpacing: 1.6,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                ),
                               ),
-                              Text(
-                                'SEC',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium
-                                    ?.copyWith(
-                                      fontFamily: 'Readex Pro',
-                                      color: Colors.white,
-                                      fontSize: 8,
-                                      letterSpacing: 0,
+                              Container(
+                                width: 80,
+                                height: 12,
+                                decoration: const BoxDecoration(),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Text(
+                                      'HR',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium
+                                          ?.copyWith(
+                                            fontFamily: 'Readex Pro',
+                                            color: Colors.white,
+                                            fontSize: 8,
+                                            letterSpacing: 0,
+                                          ),
                                     ),
+                                    Text(
+                                      'MIN',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium
+                                          ?.copyWith(
+                                            fontFamily: 'Readex Pro',
+                                            color: Colors.white,
+                                            fontSize: 8,
+                                            letterSpacing: 0,
+                                          ),
+                                    ),
+                                    Text(
+                                      'SEC',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium
+                                          ?.copyWith(
+                                            fontFamily: 'Readex Pro',
+                                            color: Colors.white,
+                                            fontSize: 8,
+                                            letterSpacing: 0,
+                                          ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
+                        )
+                      : const SizedBox.shrink(),
                 ),
               ],
             ),
@@ -488,11 +535,43 @@ class _TournamentCardState extends State<TournamentCard> {
   }
 }
 
-class JoinTournamamentWidget extends StatelessWidget {
+class JoinTournamamentWidget extends StatefulWidget {
+  final Tournament tournament;
   const JoinTournamamentWidget({
+    required this.tournament,
     super.key,
   });
 
+  @override
+  State<JoinTournamamentWidget> createState() => _JoinTournamamentWidgetState();
+}
+
+class _JoinTournamamentWidgetState extends State<JoinTournamamentWidget> {
+
+  Duration _duration = Duration.zero;
+
+  @override
+  void initState() {
+    super.initState();
+    _updateDuration();
+      Timer.periodic(const Duration(seconds: 1), (_) => _updateDuration());
+    
+  }
+
+  void _updateDuration() {
+    final now = DateTime.now();
+    final remaining = widget.tournament.dateTime!.difference(now);
+    _duration = remaining.isNegative ? Duration.zero : remaining;
+    setState(() {});
+  }
+
+  String formatDuration(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, "0");
+    final hours = twoDigits(duration.inHours);
+    final minutes = twoDigits(duration.inMinutes % 60);
+    final seconds = twoDigits(duration.inSeconds % 60);
+    return "match starts in : $hours hr $minutes min $seconds sec";
+  }
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -522,7 +601,7 @@ class JoinTournamamentWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'FF Cash Cup',
+                      widget.tournament.tournamentName ?? "" ,
                       style: Theme.of(context).textTheme.labelLarge,
                     ),
                     GestureDetector(
@@ -536,7 +615,7 @@ class JoinTournamamentWidget extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 12,
                 ),
                 // prize pool | per kill | entry fee
@@ -553,7 +632,7 @@ class JoinTournamamentWidget extends StatelessWidget {
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                         Text(
-                          '₹3000',
+                          '₹${widget.tournament.prizePool?[0] ?? ""}',
                           style: Theme.of(context)
                               .textTheme
                               .bodyLarge
@@ -575,7 +654,7 @@ class JoinTournamamentWidget extends StatelessWidget {
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                         Text(
-                          '₹10',
+                          '₹${widget.tournament.perKill}',
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
                       ],
@@ -594,14 +673,14 @@ class JoinTournamamentWidget extends StatelessWidget {
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                         Text(
-                          '₹100',
+                          '₹${widget.tournament.entryFee}',
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
                       ],
                     ),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 // map details
@@ -617,16 +696,16 @@ class JoinTournamamentWidget extends StatelessWidget {
                         right: 8,
                       ),
                       decoration: BoxDecoration(
-                        color: Color(0x68FFFFFF),
+                        color: const Color(0x68FFFFFF),
                         borderRadius: BorderRadius.circular(35),
                         shape: BoxShape.rectangle,
                       ),
-                      alignment: AlignmentDirectional(0, 0),
+                      alignment: const AlignmentDirectional(0, 0),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            'Erangle',
+                            widget.tournament.gameType?.gameMap ?? "",
                             style: Theme.of(context)
                                 .textTheme
                                 .bodySmall
@@ -645,16 +724,16 @@ class JoinTournamamentWidget extends StatelessWidget {
                         right: 8,
                       ),
                       decoration: BoxDecoration(
-                        color: Color(0x68FFFFFF),
+                        color: const Color(0x68FFFFFF),
                         borderRadius: BorderRadius.circular(35),
                         shape: BoxShape.rectangle,
                       ),
-                      alignment: AlignmentDirectional(0, 0),
+                      alignment: const AlignmentDirectional(0, 0),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            'FPP',
+                            widget.tournament.gameType?.gameCamera ?? "",
                             style: Theme.of(context)
                                 .textTheme
                                 .bodySmall
@@ -673,16 +752,16 @@ class JoinTournamamentWidget extends StatelessWidget {
                         right: 8,
                       ),
                       decoration: BoxDecoration(
-                        color: Color(0x68FFFFFF),
+                        color: const Color(0x68FFFFFF),
                         borderRadius: BorderRadius.circular(35),
                         shape: BoxShape.rectangle,
                       ),
-                      alignment: AlignmentDirectional(0, 0),
+                      alignment: const AlignmentDirectional(0, 0),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            'Squad',
+                            widget.tournament.gameType?.teamOption ?? "",
                             style: Theme.of(context)
                                 .textTheme
                                 .bodySmall
@@ -702,7 +781,8 @@ class JoinTournamamentWidget extends StatelessWidget {
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     Text(
-                      'match starts in : 01 hr 45 min 32 sec',
+                      formatDuration(_duration),
+                      
                       style: Theme.of(context).textTheme.headlineSmall,
                     )
                   ],
@@ -737,7 +817,7 @@ class JoinTournamamentWidget extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 12,
                     ),
                     Container(
@@ -745,7 +825,7 @@ class JoinTournamamentWidget extends StatelessWidget {
                       height: 45,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
-                        gradient: LinearGradient(
+                        gradient: const LinearGradient(
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                             colors: [
