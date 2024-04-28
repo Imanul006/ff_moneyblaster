@@ -50,22 +50,24 @@ class AuthNotifier extends StateNotifier<AuthState> {
     }
   }
 
-  Future<void> checkIsUserVerified() async {
+  Future<bool> checkIsUserVerified() async {
     state = state.copyWith(isLoading: true);
     final status = await _authRepository.isUserVerified();
-    state.copyWith(
-      isLoading: false,
-      isUserVerified: status,
-    );
+    // state = state.copyWith(
+    //   isLoading: false,
+    //   isUserVerified: status,
+    // );
+    return status;
   }
 
-  Future<void> checkCurrentUser() async {
+  Future<bool> checkCurrentUser() async {
     state = state.copyWith(isLoading: true);
     final isUser = await _authRepository.isUserLoggedIn();
-    state.copyWith(
+    state = state.copyWith(
       isLoading: false,
       isUser: isUser,
     );
+    return isUser;
   }
 
   Future<void> signIn(BuildContext context,

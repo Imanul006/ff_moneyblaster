@@ -116,7 +116,7 @@ class FirebaseAuthRepository implements IAuthRepository {
   Future<bool> isUserVerified() async {
     try {
       var userDoc = await _firestore
-          .collection('users')
+          .collection('appusers')
           .doc(_firebaseAuth.currentUser!.uid)
           .get();
       if (!userDoc.exists) {

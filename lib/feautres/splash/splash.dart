@@ -19,20 +19,23 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await Future.delayed(const Duration(seconds: 2));
-      final authNotifer = ref.read(authProvider.notifier);
-      final state = ref.read(authProvider);
-      await authNotifer.checkCurrentUser();
+      final authNotifer = ref.watch(authProvider.notifier);
+      final state = ref.watch(authProvider);
+      bool hasUser = await authNotifer.checkCurrentUser();
 
-      if (state.isUser) {
+      if (hasUser ) {
         await authNotifer.checkIsUserVerified().then((value) {
-          if (state.isUserVerified) {
+          if (value) {
             context.router.replaceAll([const BaseRoute()]);
           } else {
             context.router.replaceAll([const LoadingScreen()]);
           }
         });
       } else {
-        context.router.replaceAll([const OnboardingScreen()]);
+        if (context.mounted) {
+          context.router.replaceAll([const OnboardingScreen()]);
+        }
+        
       }
     });
     super.initState();
