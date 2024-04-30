@@ -24,6 +24,7 @@ _$TournamentImpl _$$TournamentImplFromJson(Map<String, dynamic> json) =>
     _$TournamentImpl(
       createdAt: json['created_at'] as String?,
       dateTime: _dateTimeFromTimestamp(json['dateTime'] as Timestamp?),
+      uid: json['uid'] as String?,
       entryFee: (json['entryFee'] as num?)?.toInt(),
       gameType: json['gameType'] == null
           ? null
@@ -38,12 +39,19 @@ _$TournamentImpl _$$TournamentImplFromJson(Map<String, dynamic> json) =>
           (json['status'] as List<dynamic>?)?.map((e) => e as String).toList(),
       totalPlayersAllowed: (json['totalPlayersAllowed'] as num?)?.toInt(),
       tournamentName: json['tournamentName'] as String?,
+      registeredPlayersId: (json['registeredPlayersId'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
+      lobby: json['lobby'] as String?,
+      liveLink: json['liveLink'] as String?,
     );
 
 Map<String, dynamic> _$$TournamentImplToJson(_$TournamentImpl instance) =>
     <String, dynamic>{
       'created_at': instance.createdAt,
       'dateTime': _dateTimeToTimestamp(instance.dateTime),
+      'uid': instance.uid,
       'entryFee': instance.entryFee,
       'gameType': instance.gameType,
       'gameOption': instance.gameOption,
@@ -53,4 +61,7 @@ Map<String, dynamic> _$$TournamentImplToJson(_$TournamentImpl instance) =>
       'status': instance.status,
       'totalPlayersAllowed': instance.totalPlayersAllowed,
       'tournamentName': instance.tournamentName,
+      'registeredPlayersId': instance.registeredPlayersId,
+      'lobby': instance.lobby,
+      'liveLink': instance.liveLink,
     };

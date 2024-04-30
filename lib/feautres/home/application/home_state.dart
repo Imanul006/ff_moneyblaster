@@ -11,6 +11,7 @@ class HomeState with _$HomeState {
     @Default(GameState.ongoing) GameState selectedHomeTab,
     @Default([]) List<Tournament> tournaments,
     @Default('') String errorMessage,
+    Tournament? selectedTournament,
   }) = _HomeState;
 
   const HomeState._();

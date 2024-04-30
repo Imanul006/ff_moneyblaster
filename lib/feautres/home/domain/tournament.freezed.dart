@@ -217,6 +217,7 @@ mixin _$Tournament {
       fromJson: _dateTimeFromTimestamp,
       toJson: _dateTimeToTimestamp)
   DateTime? get dateTime => throw _privateConstructorUsedError;
+  String? get uid => throw _privateConstructorUsedError;
   @JsonKey(name: 'entryFee')
   int? get entryFee => throw _privateConstructorUsedError;
   @JsonKey(name: 'gameType')
@@ -235,6 +236,12 @@ mixin _$Tournament {
   int? get totalPlayersAllowed => throw _privateConstructorUsedError;
   @JsonKey(name: 'tournamentName')
   String? get tournamentName => throw _privateConstructorUsedError;
+  @JsonKey(name: 'registeredPlayersId')
+  List<String> get registeredPlayersId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'lobby')
+  String? get lobby => throw _privateConstructorUsedError;
+  @JsonKey(name: 'liveLink')
+  String? get liveLink => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -255,6 +262,7 @@ abstract class $TournamentCopyWith<$Res> {
           fromJson: _dateTimeFromTimestamp,
           toJson: _dateTimeToTimestamp)
       DateTime? dateTime,
+      String? uid,
       @JsonKey(name: 'entryFee') int? entryFee,
       @JsonKey(name: 'gameType') GameType? gameType,
       @JsonKey(name: 'gameOption') String? gameOption,
@@ -263,7 +271,10 @@ abstract class $TournamentCopyWith<$Res> {
       @JsonKey(name: 'prizePool') List<int>? prizePool,
       @JsonKey(name: 'status') List<String>? status,
       @JsonKey(name: 'totalPlayersAllowed') int? totalPlayersAllowed,
-      @JsonKey(name: 'tournamentName') String? tournamentName});
+      @JsonKey(name: 'tournamentName') String? tournamentName,
+      @JsonKey(name: 'registeredPlayersId') List<String> registeredPlayersId,
+      @JsonKey(name: 'lobby') String? lobby,
+      @JsonKey(name: 'liveLink') String? liveLink});
 
   $GameTypeCopyWith<$Res>? get gameType;
 }
@@ -283,6 +294,7 @@ class _$TournamentCopyWithImpl<$Res, $Val extends Tournament>
   $Res call({
     Object? createdAt = freezed,
     Object? dateTime = freezed,
+    Object? uid = freezed,
     Object? entryFee = freezed,
     Object? gameType = freezed,
     Object? gameOption = freezed,
@@ -292,6 +304,9 @@ class _$TournamentCopyWithImpl<$Res, $Val extends Tournament>
     Object? status = freezed,
     Object? totalPlayersAllowed = freezed,
     Object? tournamentName = freezed,
+    Object? registeredPlayersId = null,
+    Object? lobby = freezed,
+    Object? liveLink = freezed,
   }) {
     return _then(_value.copyWith(
       createdAt: freezed == createdAt
@@ -302,6 +317,10 @@ class _$TournamentCopyWithImpl<$Res, $Val extends Tournament>
           ? _value.dateTime
           : dateTime // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      uid: freezed == uid
+          ? _value.uid
+          : uid // ignore: cast_nullable_to_non_nullable
+              as String?,
       entryFee: freezed == entryFee
           ? _value.entryFee
           : entryFee // ignore: cast_nullable_to_non_nullable
@@ -338,6 +357,18 @@ class _$TournamentCopyWithImpl<$Res, $Val extends Tournament>
           ? _value.tournamentName
           : tournamentName // ignore: cast_nullable_to_non_nullable
               as String?,
+      registeredPlayersId: null == registeredPlayersId
+          ? _value.registeredPlayersId
+          : registeredPlayersId // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      lobby: freezed == lobby
+          ? _value.lobby
+          : lobby // ignore: cast_nullable_to_non_nullable
+              as String?,
+      liveLink: freezed == liveLink
+          ? _value.liveLink
+          : liveLink // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 
@@ -369,6 +400,7 @@ abstract class _$$TournamentImplCopyWith<$Res>
           fromJson: _dateTimeFromTimestamp,
           toJson: _dateTimeToTimestamp)
       DateTime? dateTime,
+      String? uid,
       @JsonKey(name: 'entryFee') int? entryFee,
       @JsonKey(name: 'gameType') GameType? gameType,
       @JsonKey(name: 'gameOption') String? gameOption,
@@ -377,7 +409,10 @@ abstract class _$$TournamentImplCopyWith<$Res>
       @JsonKey(name: 'prizePool') List<int>? prizePool,
       @JsonKey(name: 'status') List<String>? status,
       @JsonKey(name: 'totalPlayersAllowed') int? totalPlayersAllowed,
-      @JsonKey(name: 'tournamentName') String? tournamentName});
+      @JsonKey(name: 'tournamentName') String? tournamentName,
+      @JsonKey(name: 'registeredPlayersId') List<String> registeredPlayersId,
+      @JsonKey(name: 'lobby') String? lobby,
+      @JsonKey(name: 'liveLink') String? liveLink});
 
   @override
   $GameTypeCopyWith<$Res>? get gameType;
@@ -396,6 +431,7 @@ class __$$TournamentImplCopyWithImpl<$Res>
   $Res call({
     Object? createdAt = freezed,
     Object? dateTime = freezed,
+    Object? uid = freezed,
     Object? entryFee = freezed,
     Object? gameType = freezed,
     Object? gameOption = freezed,
@@ -405,6 +441,9 @@ class __$$TournamentImplCopyWithImpl<$Res>
     Object? status = freezed,
     Object? totalPlayersAllowed = freezed,
     Object? tournamentName = freezed,
+    Object? registeredPlayersId = null,
+    Object? lobby = freezed,
+    Object? liveLink = freezed,
   }) {
     return _then(_$TournamentImpl(
       createdAt: freezed == createdAt
@@ -415,6 +454,10 @@ class __$$TournamentImplCopyWithImpl<$Res>
           ? _value.dateTime
           : dateTime // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      uid: freezed == uid
+          ? _value.uid
+          : uid // ignore: cast_nullable_to_non_nullable
+              as String?,
       entryFee: freezed == entryFee
           ? _value.entryFee
           : entryFee // ignore: cast_nullable_to_non_nullable
@@ -451,6 +494,18 @@ class __$$TournamentImplCopyWithImpl<$Res>
           ? _value.tournamentName
           : tournamentName // ignore: cast_nullable_to_non_nullable
               as String?,
+      registeredPlayersId: null == registeredPlayersId
+          ? _value._registeredPlayersId
+          : registeredPlayersId // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      lobby: freezed == lobby
+          ? _value.lobby
+          : lobby // ignore: cast_nullable_to_non_nullable
+              as String?,
+      liveLink: freezed == liveLink
+          ? _value.liveLink
+          : liveLink // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -465,6 +520,7 @@ class _$TournamentImpl implements _Tournament {
           fromJson: _dateTimeFromTimestamp,
           toJson: _dateTimeToTimestamp)
       this.dateTime,
+      required this.uid,
       @JsonKey(name: 'entryFee') this.entryFee,
       @JsonKey(name: 'gameType') this.gameType,
       @JsonKey(name: 'gameOption') this.gameOption,
@@ -473,9 +529,14 @@ class _$TournamentImpl implements _Tournament {
       @JsonKey(name: 'prizePool') final List<int>? prizePool,
       @JsonKey(name: 'status') final List<String>? status,
       @JsonKey(name: 'totalPlayersAllowed') this.totalPlayersAllowed,
-      @JsonKey(name: 'tournamentName') this.tournamentName})
+      @JsonKey(name: 'tournamentName') this.tournamentName,
+      @JsonKey(name: 'registeredPlayersId')
+      final List<String> registeredPlayersId = const [],
+      @JsonKey(name: 'lobby') this.lobby,
+      @JsonKey(name: 'liveLink') this.liveLink})
       : _prizePool = prizePool,
-        _status = status;
+        _status = status,
+        _registeredPlayersId = registeredPlayersId;
 
   factory _$TournamentImpl.fromJson(Map<String, dynamic> json) =>
       _$$TournamentImplFromJson(json);
@@ -489,6 +550,8 @@ class _$TournamentImpl implements _Tournament {
       fromJson: _dateTimeFromTimestamp,
       toJson: _dateTimeToTimestamp)
   final DateTime? dateTime;
+  @override
+  final String? uid;
   @override
   @JsonKey(name: 'entryFee')
   final int? entryFee;
@@ -532,10 +595,26 @@ class _$TournamentImpl implements _Tournament {
   @override
   @JsonKey(name: 'tournamentName')
   final String? tournamentName;
+  final List<String> _registeredPlayersId;
+  @override
+  @JsonKey(name: 'registeredPlayersId')
+  List<String> get registeredPlayersId {
+    if (_registeredPlayersId is EqualUnmodifiableListView)
+      return _registeredPlayersId;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_registeredPlayersId);
+  }
+
+  @override
+  @JsonKey(name: 'lobby')
+  final String? lobby;
+  @override
+  @JsonKey(name: 'liveLink')
+  final String? liveLink;
 
   @override
   String toString() {
-    return 'Tournament(createdAt: $createdAt, dateTime: $dateTime, entryFee: $entryFee, gameType: $gameType, gameOption: $gameOption, lastUpdatedAt: $lastUpdatedAt, perKill: $perKill, prizePool: $prizePool, status: $status, totalPlayersAllowed: $totalPlayersAllowed, tournamentName: $tournamentName)';
+    return 'Tournament(createdAt: $createdAt, dateTime: $dateTime, uid: $uid, entryFee: $entryFee, gameType: $gameType, gameOption: $gameOption, lastUpdatedAt: $lastUpdatedAt, perKill: $perKill, prizePool: $prizePool, status: $status, totalPlayersAllowed: $totalPlayersAllowed, tournamentName: $tournamentName, registeredPlayersId: $registeredPlayersId, lobby: $lobby, liveLink: $liveLink)';
   }
 
   @override
@@ -547,6 +626,7 @@ class _$TournamentImpl implements _Tournament {
                 other.createdAt == createdAt) &&
             (identical(other.dateTime, dateTime) ||
                 other.dateTime == dateTime) &&
+            (identical(other.uid, uid) || other.uid == uid) &&
             (identical(other.entryFee, entryFee) ||
                 other.entryFee == entryFee) &&
             (identical(other.gameType, gameType) ||
@@ -562,7 +642,12 @@ class _$TournamentImpl implements _Tournament {
             (identical(other.totalPlayersAllowed, totalPlayersAllowed) ||
                 other.totalPlayersAllowed == totalPlayersAllowed) &&
             (identical(other.tournamentName, tournamentName) ||
-                other.tournamentName == tournamentName));
+                other.tournamentName == tournamentName) &&
+            const DeepCollectionEquality()
+                .equals(other._registeredPlayersId, _registeredPlayersId) &&
+            (identical(other.lobby, lobby) || other.lobby == lobby) &&
+            (identical(other.liveLink, liveLink) ||
+                other.liveLink == liveLink));
   }
 
   @JsonKey(ignore: true)
@@ -571,6 +656,7 @@ class _$TournamentImpl implements _Tournament {
       runtimeType,
       createdAt,
       dateTime,
+      uid,
       entryFee,
       gameType,
       gameOption,
@@ -579,7 +665,10 @@ class _$TournamentImpl implements _Tournament {
       const DeepCollectionEquality().hash(_prizePool),
       const DeepCollectionEquality().hash(_status),
       totalPlayersAllowed,
-      tournamentName);
+      tournamentName,
+      const DeepCollectionEquality().hash(_registeredPlayersId),
+      lobby,
+      liveLink);
 
   @JsonKey(ignore: true)
   @override
@@ -597,22 +686,26 @@ class _$TournamentImpl implements _Tournament {
 
 abstract class _Tournament implements Tournament {
   factory _Tournament(
-          {@JsonKey(name: 'created_at') final String? createdAt,
-          @JsonKey(
-              name: 'dateTime',
-              fromJson: _dateTimeFromTimestamp,
-              toJson: _dateTimeToTimestamp)
-          final DateTime? dateTime,
-          @JsonKey(name: 'entryFee') final int? entryFee,
-          @JsonKey(name: 'gameType') final GameType? gameType,
-          @JsonKey(name: 'gameOption') final String? gameOption,
-          @JsonKey(name: 'last_updated_at') final String? lastUpdatedAt,
-          @JsonKey(name: 'perKill') final int? perKill,
-          @JsonKey(name: 'prizePool') final List<int>? prizePool,
-          @JsonKey(name: 'status') final List<String>? status,
-          @JsonKey(name: 'totalPlayersAllowed') final int? totalPlayersAllowed,
-          @JsonKey(name: 'tournamentName') final String? tournamentName}) =
-      _$TournamentImpl;
+      {@JsonKey(name: 'created_at') final String? createdAt,
+      @JsonKey(
+          name: 'dateTime',
+          fromJson: _dateTimeFromTimestamp,
+          toJson: _dateTimeToTimestamp)
+      final DateTime? dateTime,
+      required final String? uid,
+      @JsonKey(name: 'entryFee') final int? entryFee,
+      @JsonKey(name: 'gameType') final GameType? gameType,
+      @JsonKey(name: 'gameOption') final String? gameOption,
+      @JsonKey(name: 'last_updated_at') final String? lastUpdatedAt,
+      @JsonKey(name: 'perKill') final int? perKill,
+      @JsonKey(name: 'prizePool') final List<int>? prizePool,
+      @JsonKey(name: 'status') final List<String>? status,
+      @JsonKey(name: 'totalPlayersAllowed') final int? totalPlayersAllowed,
+      @JsonKey(name: 'tournamentName') final String? tournamentName,
+      @JsonKey(name: 'registeredPlayersId')
+      final List<String> registeredPlayersId,
+      @JsonKey(name: 'lobby') final String? lobby,
+      @JsonKey(name: 'liveLink') final String? liveLink}) = _$TournamentImpl;
 
   factory _Tournament.fromJson(Map<String, dynamic> json) =
       _$TournamentImpl.fromJson;
@@ -626,6 +719,8 @@ abstract class _Tournament implements Tournament {
       fromJson: _dateTimeFromTimestamp,
       toJson: _dateTimeToTimestamp)
   DateTime? get dateTime;
+  @override
+  String? get uid;
   @override
   @JsonKey(name: 'entryFee')
   int? get entryFee;
@@ -653,6 +748,15 @@ abstract class _Tournament implements Tournament {
   @override
   @JsonKey(name: 'tournamentName')
   String? get tournamentName;
+  @override
+  @JsonKey(name: 'registeredPlayersId')
+  List<String> get registeredPlayersId;
+  @override
+  @JsonKey(name: 'lobby')
+  String? get lobby;
+  @override
+  @JsonKey(name: 'liveLink')
+  String? get liveLink;
   @override
   @JsonKey(ignore: true)
   _$$TournamentImplCopyWith<_$TournamentImpl> get copyWith =>

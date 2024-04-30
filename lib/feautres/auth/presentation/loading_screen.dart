@@ -1,13 +1,11 @@
 import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
-import 'package:ff_moneyblaster/feautres/auth/application/auth_notifier.dart';
 import 'package:ff_moneyblaster/feautres/auth/shared/provider.dart';
-import 'package:ff_moneyblaster/routes/app_router.gr.dart';
 import 'package:ff_moneyblaster/widgets/glazed_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
-import 'package:provider/provider.dart';
 
 @RoutePage(name: 'LoadingScreen')
 class LoadingScreen extends ConsumerWidget {
@@ -21,59 +19,61 @@ class LoadingScreen extends ConsumerWidget {
       ref
           .read(authProvider.notifier)
           .isCurrentUserVerified(context, timer: timer);
-         
     });
 
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Container(
-        height: double.infinity,
-        width: double.infinity,
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/loading_bg.png'),
-            fit: BoxFit.contain,
+      body: SafeArea(
+        bottom: false,
+        child: Container(
+          height: double.infinity,
+          width: double.infinity,
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/loading_bg.png'),
+              fit: BoxFit.contain,
+            ),
           ),
-        ),
-        child: Center(
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 30,
-              ),
-              Image.asset('assets/images/loading_header.png'),
-              const CarouselWidget(),
-              const SizedBox(
-                height: 100,
-              ),
-              const SizedBox(height: 45, child: CarouselTextWidget()),
-              const SizedBox(
-                height: 30,
-              ),
-              GlazedButtonFilled(
-                onTap: () {},
-                child: SizedBox(
-                  height: 40,
-                  child: Center(
-                    child: OverflowBox(
-                      minHeight: 0,
-                      maxHeight: double.infinity,
-                      alignment: Alignment.center,
-                      child: ClipRect(
-                        child: Align(
-                          alignment: Alignment.center,
-                          heightFactor: 1,
-                          widthFactor: 0.5,
-                          child: LottieBuilder.asset(
-                            "assets/animations/3dot.json",
+          child: Center(
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 30,
+                ),
+                Image.asset('assets/images/loading_header.png'),
+                const CarouselWidget(),
+                const SizedBox(
+                  height: 100,
+                ),
+                const SizedBox(height: 45, child: CarouselTextWidget()),
+                const SizedBox(
+                  height: 30,
+                ),
+                GlazedButtonFilled(
+                  onTap: () {},
+                  child: SizedBox(
+                    height: 40,
+                    child: Center(
+                      child: OverflowBox(
+                        minHeight: 0,
+                        maxHeight: double.infinity,
+                        alignment: Alignment.center,
+                        child: ClipRect(
+                          child: Align(
+                            alignment: Alignment.center,
+                            heightFactor: 1,
+                            widthFactor: 0.5,
+                            child: LottieBuilder.asset(
+                              "assets/animations/3dot.json",
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              )
-            ],
+                )
+              ],
+            ),
           ),
         ),
       ),

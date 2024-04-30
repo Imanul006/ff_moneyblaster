@@ -38,7 +38,7 @@ class FirebaseAuthRepository implements IAuthRepository {
         gameId: gameId,
         phoneNumber: phoneNumber,
         gameStats: GameStats(game: gameOptionSelected),
-        wallet: WalletModel(),
+        wallet: const WalletModel(),
         id: userCredential.user!.uid,
       );
 
@@ -51,6 +51,7 @@ class FirebaseAuthRepository implements IAuthRepository {
         'gameStats': user.gameStats.toJson(),
         'wallet': user.wallet.toJson(),
         'id': user.id,
+        'createdAt': DateTime.timestamp()
       };
       print(data);
 
@@ -157,7 +158,6 @@ class FirebaseAuthRepository implements IAuthRepository {
         );
       }
 
-      
       return UserModel.fromJson(userData);
     } catch (e) {
       throw FirebaseAuthException(

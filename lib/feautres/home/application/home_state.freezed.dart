@@ -20,6 +20,7 @@ mixin _$HomeState {
   GameState get selectedHomeTab => throw _privateConstructorUsedError;
   List<Tournament> get tournaments => throw _privateConstructorUsedError;
   String get errorMessage => throw _privateConstructorUsedError;
+  Tournament? get selectedTournament => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $HomeStateCopyWith<HomeState> get copyWith =>
@@ -35,7 +36,10 @@ abstract class $HomeStateCopyWith<$Res> {
       {bool isLoading,
       GameState selectedHomeTab,
       List<Tournament> tournaments,
-      String errorMessage});
+      String errorMessage,
+      Tournament? selectedTournament});
+
+  $TournamentCopyWith<$Res>? get selectedTournament;
 }
 
 /// @nodoc
@@ -55,6 +59,7 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
     Object? selectedHomeTab = null,
     Object? tournaments = null,
     Object? errorMessage = null,
+    Object? selectedTournament = freezed,
   }) {
     return _then(_value.copyWith(
       isLoading: null == isLoading
@@ -73,7 +78,23 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
               as String,
+      selectedTournament: freezed == selectedTournament
+          ? _value.selectedTournament
+          : selectedTournament // ignore: cast_nullable_to_non_nullable
+              as Tournament?,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $TournamentCopyWith<$Res>? get selectedTournament {
+    if (_value.selectedTournament == null) {
+      return null;
+    }
+
+    return $TournamentCopyWith<$Res>(_value.selectedTournament!, (value) {
+      return _then(_value.copyWith(selectedTournament: value) as $Val);
+    });
   }
 }
 
@@ -89,7 +110,11 @@ abstract class _$$HomeStateImplCopyWith<$Res>
       {bool isLoading,
       GameState selectedHomeTab,
       List<Tournament> tournaments,
-      String errorMessage});
+      String errorMessage,
+      Tournament? selectedTournament});
+
+  @override
+  $TournamentCopyWith<$Res>? get selectedTournament;
 }
 
 /// @nodoc
@@ -107,6 +132,7 @@ class __$$HomeStateImplCopyWithImpl<$Res>
     Object? selectedHomeTab = null,
     Object? tournaments = null,
     Object? errorMessage = null,
+    Object? selectedTournament = freezed,
   }) {
     return _then(_$HomeStateImpl(
       isLoading: null == isLoading
@@ -125,6 +151,10 @@ class __$$HomeStateImplCopyWithImpl<$Res>
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
               as String,
+      selectedTournament: freezed == selectedTournament
+          ? _value.selectedTournament
+          : selectedTournament // ignore: cast_nullable_to_non_nullable
+              as Tournament?,
     ));
   }
 }
@@ -136,7 +166,8 @@ class _$HomeStateImpl extends _HomeState {
       {this.isLoading = false,
       this.selectedHomeTab = GameState.ongoing,
       final List<Tournament> tournaments = const [],
-      this.errorMessage = ''})
+      this.errorMessage = '',
+      this.selectedTournament})
       : _tournaments = tournaments,
         super._();
 
@@ -158,10 +189,12 @@ class _$HomeStateImpl extends _HomeState {
   @override
   @JsonKey()
   final String errorMessage;
+  @override
+  final Tournament? selectedTournament;
 
   @override
   String toString() {
-    return 'HomeState(isLoading: $isLoading, selectedHomeTab: $selectedHomeTab, tournaments: $tournaments, errorMessage: $errorMessage)';
+    return 'HomeState(isLoading: $isLoading, selectedHomeTab: $selectedHomeTab, tournaments: $tournaments, errorMessage: $errorMessage, selectedTournament: $selectedTournament)';
   }
 
   @override
@@ -176,12 +209,19 @@ class _$HomeStateImpl extends _HomeState {
             const DeepCollectionEquality()
                 .equals(other._tournaments, _tournaments) &&
             (identical(other.errorMessage, errorMessage) ||
-                other.errorMessage == errorMessage));
+                other.errorMessage == errorMessage) &&
+            (identical(other.selectedTournament, selectedTournament) ||
+                other.selectedTournament == selectedTournament));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isLoading, selectedHomeTab,
-      const DeepCollectionEquality().hash(_tournaments), errorMessage);
+  int get hashCode => Object.hash(
+      runtimeType,
+      isLoading,
+      selectedHomeTab,
+      const DeepCollectionEquality().hash(_tournaments),
+      errorMessage,
+      selectedTournament);
 
   @JsonKey(ignore: true)
   @override
@@ -195,7 +235,8 @@ abstract class _HomeState extends HomeState {
       {final bool isLoading,
       final GameState selectedHomeTab,
       final List<Tournament> tournaments,
-      final String errorMessage}) = _$HomeStateImpl;
+      final String errorMessage,
+      final Tournament? selectedTournament}) = _$HomeStateImpl;
   const _HomeState._() : super._();
 
   @override
@@ -206,6 +247,8 @@ abstract class _HomeState extends HomeState {
   List<Tournament> get tournaments;
   @override
   String get errorMessage;
+  @override
+  Tournament? get selectedTournament;
   @override
   @JsonKey(ignore: true)
   _$$HomeStateImplCopyWith<_$HomeStateImpl> get copyWith =>

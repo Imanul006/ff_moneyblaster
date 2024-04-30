@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:ff_moneyblaster/core/constants.dart';
 import 'package:ff_moneyblaster/core/widgets/animated_background.dart';
+import 'package:ff_moneyblaster/feautres/auth/shared/provider.dart';
 import 'package:ff_moneyblaster/routes/app_router.gr.dart';
 import 'package:ff_moneyblaster/widgets/glazed_button.dart';
 import 'package:ff_moneyblaster/widgets/login_text_field.dart';
@@ -10,7 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sizer/sizer.dart';
-import 'package:ff_moneyblaster/feautres/auth/shared/provider.dart';
 
 @RoutePage(name: 'SignupScreen')
 class SignupScreen extends ConsumerStatefulWidget {
@@ -42,7 +42,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
       left: false,
       right: false,
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: true,
         backgroundColor: Colors.black,
         body: Stack(
           children: [
@@ -79,45 +79,37 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                   ),
                   Expanded(
                     flex: 8,
-                    child: Padding(
+                    child: Container(
+                      height: 30.h,
                       padding: const EdgeInsets.symmetric(horizontal: 15),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
+                      child: ListView(
+                        shrinkWrap: true,
+                        // mainAxisSize: MainAxisSize.min,
                         children: [
-                          Expanded(
-                            child: LoginTextField(
-                              title: "Username",
-                              hintText: "Enter your username",
-                              controller: _usernameController,
-                            ),
+                          LoginTextField(
+                            title: "Username",
+                            hintText: "Enter your username",
+                            controller: _usernameController,
                           ),
-                          Expanded(
-                            child: LoginTextField(
-                              title: "Game ID",
-                              hintText: "Enter game ID",
-                              controller: _gameIdController,
-                            ),
+                          LoginTextField(
+                            title: "Game ID",
+                            hintText: "Enter game ID",
+                            controller: _gameIdController,
                           ),
-                          Expanded(
-                            child: LoginTextField(
-                              title: "Phone Number",
-                              hintText: "Enter your phone number",
-                              controller: _phoneNumberController,
-                            ),
+                          LoginTextField(
+                            title: "Phone Number",
+                            hintText: "Enter your phone number",
+                            controller: _phoneNumberController,
                           ),
-                          Expanded(
-                            child: LoginTextField(
-                              title: "Create Password",
-                              hintText: "Enter password",
-                              controller: _passwordController,
-                            ),
+                          LoginTextField(
+                            title: "Create Password",
+                            hintText: "Enter password",
+                            controller: _passwordController,
                           ),
-                          Expanded(
-                            child: LoginTextField(
-                              title: "Confirm Password",
-                              hintText: "Confirm your password",
-                              controller: _confirmPasswordController,
-                            ),
+                          LoginTextField(
+                            title: "Confirm Password",
+                            hintText: "Confirm your password",
+                            controller: _confirmPasswordController,
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
@@ -126,17 +118,14 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                               mainAxisSize: MainAxisSize.max,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(right: 8.0),
-                                    child: Text(
-                                      AppConstants.uploadGameIdDesc,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium
-                                          ?.copyWith(
-                                              fontWeight: FontWeight.w600),
-                                    ),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 8.0),
+                                  child: Text(
+                                    AppConstants.uploadGameIdDesc,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.copyWith(fontWeight: FontWeight.w600),
                                   ),
                                 ),
                                 Stack(
@@ -169,12 +158,11 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                       ),
                     ),
                   ),
-                  Expanded(
-                    flex: 1,
+                  SizedBox(
+                    height: 70,
                     child: GlazedButtonFilled(
                       onTap: () {
                         if (!isLoading) {
-                    
                           _handleSignup();
                         }
                       },
