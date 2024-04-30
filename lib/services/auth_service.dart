@@ -39,6 +39,7 @@ class FirebaseAuthRepository implements IAuthRepository {
         phoneNumber: phoneNumber,
         gameStats: GameStats(game: gameOptionSelected),
         wallet: WalletModel(),
+        id: userCredential.user!.uid,
       );
 
       Map<String, dynamic> data = {
@@ -49,6 +50,7 @@ class FirebaseAuthRepository implements IAuthRepository {
         'isVerified': user.isVerified,
         'gameStats': user.gameStats.toJson(),
         'wallet': user.wallet.toJson(),
+        'id': user.id,
       };
       print(data);
 
@@ -82,15 +84,14 @@ class FirebaseAuthRepository implements IAuthRepository {
     }
 
     try {
-      await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
-    print('Sign-in successful.');
-    return true;
+      await _firebaseAuth.signInWithEmailAndPassword(
+          email: email, password: password);
+      print('Sign-in successful.');
+      return true;
     } catch (e) {
-       print('Sign-in failed: $e');
-    return false;
+      print('Sign-in failed: $e');
+      return false;
     }
-
-    
   }
 
   Future<String?> _getEmailForUsername(String username) async {
@@ -149,26 +150,19 @@ class FirebaseAuthRepository implements IAuthRepository {
         );
       }
       var userData = userDoc.data();
-      return UserModel(
-        username: userData?['username'],
-        gameId: userData?['gameId'],
-        phoneNumber: userData?['phoneNumber'],
-        isVerified: userData?['isVerified'] ?? false,
-        gameStats: GameStats(
-          game: userData?['gameStats']['game'],
-          totalGames: userData?['gameStats']['totalGames'] ?? 0,
-          totalKills: userData?['gameStats']['totalKills'] ?? 0,
-          totalWins: userData?['gameStats']['totalWins'] ?? 0,
-        ),
-        wallet: WalletModel(
-          balance: userData?['wallet']['balance'] ?? 0.0,
-          history: List<String>.from(userData?['wallet']['history'] ?? []),
-        ),
-      );
+      if (userData == null) {
+        throw FirebaseAuthException(
+          code: 'data-not-found',
+          message: 'User data is null.',
+        );
+      }
+
+      
+      return UserModel.fromJson(userData);
     } catch (e) {
       throw FirebaseAuthException(
         code: 'user-fetch-error',
-        message: 'Error occurred while fetching user data.',
+        message: 'Error occurred while fetching user data: $e',
       );
     }
   }

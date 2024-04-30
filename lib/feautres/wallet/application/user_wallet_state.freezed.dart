@@ -17,6 +17,8 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$UserWalletState {
   bool get isLoading => throw _privateConstructorUsedError;
+  UserModel? get user => throw _privateConstructorUsedError;
+  String get errorMessage => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $UserWalletStateCopyWith<UserWalletState> get copyWith =>
@@ -29,7 +31,9 @@ abstract class $UserWalletStateCopyWith<$Res> {
           UserWalletState value, $Res Function(UserWalletState) then) =
       _$UserWalletStateCopyWithImpl<$Res, UserWalletState>;
   @useResult
-  $Res call({bool isLoading});
+  $Res call({bool isLoading, UserModel? user, String errorMessage});
+
+  $UserModelCopyWith<$Res>? get user;
 }
 
 /// @nodoc
@@ -46,13 +50,35 @@ class _$UserWalletStateCopyWithImpl<$Res, $Val extends UserWalletState>
   @override
   $Res call({
     Object? isLoading = null,
+    Object? user = freezed,
+    Object? errorMessage = null,
   }) {
     return _then(_value.copyWith(
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
               as bool,
+      user: freezed == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as UserModel?,
+      errorMessage: null == errorMessage
+          ? _value.errorMessage
+          : errorMessage // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $UserModelCopyWith<$Res>? get user {
+    if (_value.user == null) {
+      return null;
+    }
+
+    return $UserModelCopyWith<$Res>(_value.user!, (value) {
+      return _then(_value.copyWith(user: value) as $Val);
+    });
   }
 }
 
@@ -64,7 +90,10 @@ abstract class _$$UserWalletStateImplCopyWith<$Res>
       __$$UserWalletStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool isLoading});
+  $Res call({bool isLoading, UserModel? user, String errorMessage});
+
+  @override
+  $UserModelCopyWith<$Res>? get user;
 }
 
 /// @nodoc
@@ -79,12 +108,22 @@ class __$$UserWalletStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? isLoading = null,
+    Object? user = freezed,
+    Object? errorMessage = null,
   }) {
     return _then(_$UserWalletStateImpl(
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
               as bool,
+      user: freezed == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as UserModel?,
+      errorMessage: null == errorMessage
+          ? _value.errorMessage
+          : errorMessage // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -92,15 +131,22 @@ class __$$UserWalletStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$UserWalletStateImpl extends _UserWalletState {
-  const _$UserWalletStateImpl({this.isLoading = false}) : super._();
+  const _$UserWalletStateImpl(
+      {this.isLoading = false, this.user, this.errorMessage = ''})
+      : super._();
 
   @override
   @JsonKey()
   final bool isLoading;
+  @override
+  final UserModel? user;
+  @override
+  @JsonKey()
+  final String errorMessage;
 
   @override
   String toString() {
-    return 'UserWalletState(isLoading: $isLoading)';
+    return 'UserWalletState(isLoading: $isLoading, user: $user, errorMessage: $errorMessage)';
   }
 
   @override
@@ -109,11 +155,14 @@ class _$UserWalletStateImpl extends _UserWalletState {
         (other.runtimeType == runtimeType &&
             other is _$UserWalletStateImpl &&
             (identical(other.isLoading, isLoading) ||
-                other.isLoading == isLoading));
+                other.isLoading == isLoading) &&
+            (identical(other.user, user) || other.user == user) &&
+            (identical(other.errorMessage, errorMessage) ||
+                other.errorMessage == errorMessage));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isLoading);
+  int get hashCode => Object.hash(runtimeType, isLoading, user, errorMessage);
 
   @JsonKey(ignore: true)
   @override
@@ -124,12 +173,18 @@ class _$UserWalletStateImpl extends _UserWalletState {
 }
 
 abstract class _UserWalletState extends UserWalletState {
-  const factory _UserWalletState({final bool isLoading}) =
-      _$UserWalletStateImpl;
+  const factory _UserWalletState(
+      {final bool isLoading,
+      final UserModel? user,
+      final String errorMessage}) = _$UserWalletStateImpl;
   const _UserWalletState._() : super._();
 
   @override
   bool get isLoading;
+  @override
+  UserModel? get user;
+  @override
+  String get errorMessage;
   @override
   @JsonKey(ignore: true)
   _$$UserWalletStateImplCopyWith<_$UserWalletStateImpl> get copyWith =>

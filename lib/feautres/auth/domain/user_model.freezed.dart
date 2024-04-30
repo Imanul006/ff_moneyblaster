@@ -20,6 +20,7 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$UserModel {
+  String get id => throw _privateConstructorUsedError;
   String get username => throw _privateConstructorUsedError;
   String get gameId => throw _privateConstructorUsedError;
   String get phoneNumber => throw _privateConstructorUsedError;
@@ -40,7 +41,8 @@ abstract class $UserModelCopyWith<$Res> {
       _$UserModelCopyWithImpl<$Res, UserModel>;
   @useResult
   $Res call(
-      {String username,
+      {String id,
+      String username,
       String gameId,
       String phoneNumber,
       bool isVerified,
@@ -65,6 +67,7 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? username = null,
     Object? gameId = null,
     Object? phoneNumber = null,
@@ -74,6 +77,10 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
     Object? wallet = null,
   }) {
     return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
       username: null == username
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
@@ -131,7 +138,8 @@ abstract class _$$UserModelImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String username,
+      {String id,
+      String username,
       String gameId,
       String phoneNumber,
       bool isVerified,
@@ -156,6 +164,7 @@ class __$$UserModelImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? username = null,
     Object? gameId = null,
     Object? phoneNumber = null,
@@ -165,6 +174,10 @@ class __$$UserModelImplCopyWithImpl<$Res>
     Object? wallet = null,
   }) {
     return _then(_$UserModelImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
       username: null == username
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
@@ -202,7 +215,8 @@ class __$$UserModelImplCopyWithImpl<$Res>
 @JsonSerializable(explicitToJson: true)
 class _$UserModelImpl with DiagnosticableTreeMixin implements _UserModel {
   const _$UserModelImpl(
-      {required this.username,
+      {required this.id,
+      required this.username,
       required this.gameId,
       required this.phoneNumber,
       this.isVerified = false,
@@ -214,6 +228,8 @@ class _$UserModelImpl with DiagnosticableTreeMixin implements _UserModel {
   factory _$UserModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserModelImplFromJson(json);
 
+  @override
+  final String id;
   @override
   final String username;
   @override
@@ -239,7 +255,7 @@ class _$UserModelImpl with DiagnosticableTreeMixin implements _UserModel {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserModel(username: $username, gameId: $gameId, phoneNumber: $phoneNumber, isVerified: $isVerified, tournamentIds: $tournamentIds, gameStats: $gameStats, wallet: $wallet)';
+    return 'UserModel(id: $id, username: $username, gameId: $gameId, phoneNumber: $phoneNumber, isVerified: $isVerified, tournamentIds: $tournamentIds, gameStats: $gameStats, wallet: $wallet)';
   }
 
   @override
@@ -247,6 +263,7 @@ class _$UserModelImpl with DiagnosticableTreeMixin implements _UserModel {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'UserModel'))
+      ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('username', username))
       ..add(DiagnosticsProperty('gameId', gameId))
       ..add(DiagnosticsProperty('phoneNumber', phoneNumber))
@@ -261,6 +278,7 @@ class _$UserModelImpl with DiagnosticableTreeMixin implements _UserModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$UserModelImpl &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.username, username) ||
                 other.username == username) &&
             (identical(other.gameId, gameId) || other.gameId == gameId) &&
@@ -279,6 +297,7 @@ class _$UserModelImpl with DiagnosticableTreeMixin implements _UserModel {
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      id,
       username,
       gameId,
       phoneNumber,
@@ -303,7 +322,8 @@ class _$UserModelImpl with DiagnosticableTreeMixin implements _UserModel {
 
 abstract class _UserModel implements UserModel {
   const factory _UserModel(
-      {required final String username,
+      {required final String id,
+      required final String username,
       required final String gameId,
       required final String phoneNumber,
       final bool isVerified,
@@ -314,6 +334,8 @@ abstract class _UserModel implements UserModel {
   factory _UserModel.fromJson(Map<String, dynamic> json) =
       _$UserModelImpl.fromJson;
 
+  @override
+  String get id;
   @override
   String get username;
   @override
@@ -551,7 +573,7 @@ WalletModel _$WalletModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$WalletModel {
   int get balance => throw _privateConstructorUsedError;
-  List<String> get history => throw _privateConstructorUsedError;
+  List<TransactionHistory> get history => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -565,7 +587,7 @@ abstract class $WalletModelCopyWith<$Res> {
           WalletModel value, $Res Function(WalletModel) then) =
       _$WalletModelCopyWithImpl<$Res, WalletModel>;
   @useResult
-  $Res call({int balance, List<String> history});
+  $Res call({int balance, List<TransactionHistory> history});
 }
 
 /// @nodoc
@@ -592,7 +614,7 @@ class _$WalletModelCopyWithImpl<$Res, $Val extends WalletModel>
       history: null == history
           ? _value.history
           : history // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+              as List<TransactionHistory>,
     ) as $Val);
   }
 }
@@ -605,7 +627,7 @@ abstract class _$$WalletModelImplCopyWith<$Res>
       __$$WalletModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int balance, List<String> history});
+  $Res call({int balance, List<TransactionHistory> history});
 }
 
 /// @nodoc
@@ -630,7 +652,7 @@ class __$$WalletModelImplCopyWithImpl<$Res>
       history: null == history
           ? _value._history
           : history // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+              as List<TransactionHistory>,
     ));
   }
 }
@@ -640,7 +662,7 @@ class __$$WalletModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$WalletModelImpl with DiagnosticableTreeMixin implements _WalletModel {
   const _$WalletModelImpl(
-      {this.balance = 0, final List<String> history = const []})
+      {this.balance = 0, final List<TransactionHistory> history = const []})
       : _history = history;
 
   factory _$WalletModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -649,10 +671,10 @@ class _$WalletModelImpl with DiagnosticableTreeMixin implements _WalletModel {
   @override
   @JsonKey()
   final int balance;
-  final List<String> _history;
+  final List<TransactionHistory> _history;
   @override
   @JsonKey()
-  List<String> get history {
+  List<TransactionHistory> get history {
     if (_history is EqualUnmodifiableListView) return _history;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_history);
@@ -701,8 +723,9 @@ class _$WalletModelImpl with DiagnosticableTreeMixin implements _WalletModel {
 }
 
 abstract class _WalletModel implements WalletModel {
-  const factory _WalletModel({final int balance, final List<String> history}) =
-      _$WalletModelImpl;
+  const factory _WalletModel(
+      {final int balance,
+      final List<TransactionHistory> history}) = _$WalletModelImpl;
 
   factory _WalletModel.fromJson(Map<String, dynamic> json) =
       _$WalletModelImpl.fromJson;
@@ -710,9 +733,239 @@ abstract class _WalletModel implements WalletModel {
   @override
   int get balance;
   @override
-  List<String> get history;
+  List<TransactionHistory> get history;
   @override
   @JsonKey(ignore: true)
   _$$WalletModelImplCopyWith<_$WalletModelImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+TransactionHistory _$TransactionHistoryFromJson(Map<String, dynamic> json) {
+  return _TransactionHistory.fromJson(json);
+}
+
+/// @nodoc
+mixin _$TransactionHistory {
+  @JsonKey(fromJson: _dateTimeFromTimestamp, toJson: _dateTimeToTimestamp)
+  DateTime? get datetime => throw _privateConstructorUsedError;
+  int get transaction => throw _privateConstructorUsedError;
+  String get transactionStatus => throw _privateConstructorUsedError;
+  String get transactionType => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $TransactionHistoryCopyWith<TransactionHistory> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $TransactionHistoryCopyWith<$Res> {
+  factory $TransactionHistoryCopyWith(
+          TransactionHistory value, $Res Function(TransactionHistory) then) =
+      _$TransactionHistoryCopyWithImpl<$Res, TransactionHistory>;
+  @useResult
+  $Res call(
+      {@JsonKey(fromJson: _dateTimeFromTimestamp, toJson: _dateTimeToTimestamp)
+      DateTime? datetime,
+      int transaction,
+      String transactionStatus,
+      String transactionType});
+}
+
+/// @nodoc
+class _$TransactionHistoryCopyWithImpl<$Res, $Val extends TransactionHistory>
+    implements $TransactionHistoryCopyWith<$Res> {
+  _$TransactionHistoryCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? datetime = freezed,
+    Object? transaction = null,
+    Object? transactionStatus = null,
+    Object? transactionType = null,
+  }) {
+    return _then(_value.copyWith(
+      datetime: freezed == datetime
+          ? _value.datetime
+          : datetime // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      transaction: null == transaction
+          ? _value.transaction
+          : transaction // ignore: cast_nullable_to_non_nullable
+              as int,
+      transactionStatus: null == transactionStatus
+          ? _value.transactionStatus
+          : transactionStatus // ignore: cast_nullable_to_non_nullable
+              as String,
+      transactionType: null == transactionType
+          ? _value.transactionType
+          : transactionType // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$TransactionHistoryImplCopyWith<$Res>
+    implements $TransactionHistoryCopyWith<$Res> {
+  factory _$$TransactionHistoryImplCopyWith(_$TransactionHistoryImpl value,
+          $Res Function(_$TransactionHistoryImpl) then) =
+      __$$TransactionHistoryImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {@JsonKey(fromJson: _dateTimeFromTimestamp, toJson: _dateTimeToTimestamp)
+      DateTime? datetime,
+      int transaction,
+      String transactionStatus,
+      String transactionType});
+}
+
+/// @nodoc
+class __$$TransactionHistoryImplCopyWithImpl<$Res>
+    extends _$TransactionHistoryCopyWithImpl<$Res, _$TransactionHistoryImpl>
+    implements _$$TransactionHistoryImplCopyWith<$Res> {
+  __$$TransactionHistoryImplCopyWithImpl(_$TransactionHistoryImpl _value,
+      $Res Function(_$TransactionHistoryImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? datetime = freezed,
+    Object? transaction = null,
+    Object? transactionStatus = null,
+    Object? transactionType = null,
+  }) {
+    return _then(_$TransactionHistoryImpl(
+      datetime: freezed == datetime
+          ? _value.datetime
+          : datetime // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      transaction: null == transaction
+          ? _value.transaction
+          : transaction // ignore: cast_nullable_to_non_nullable
+              as int,
+      transactionStatus: null == transactionStatus
+          ? _value.transactionStatus
+          : transactionStatus // ignore: cast_nullable_to_non_nullable
+              as String,
+      transactionType: null == transactionType
+          ? _value.transactionType
+          : transactionType // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+@JsonSerializable()
+class _$TransactionHistoryImpl
+    with DiagnosticableTreeMixin
+    implements _TransactionHistory {
+  const _$TransactionHistoryImpl(
+      {@JsonKey(fromJson: _dateTimeFromTimestamp, toJson: _dateTimeToTimestamp)
+      this.datetime,
+      this.transaction = 0,
+      this.transactionStatus = '',
+      this.transactionType = ''});
+
+  factory _$TransactionHistoryImpl.fromJson(Map<String, dynamic> json) =>
+      _$$TransactionHistoryImplFromJson(json);
+
+  @override
+  @JsonKey(fromJson: _dateTimeFromTimestamp, toJson: _dateTimeToTimestamp)
+  final DateTime? datetime;
+  @override
+  @JsonKey()
+  final int transaction;
+  @override
+  @JsonKey()
+  final String transactionStatus;
+  @override
+  @JsonKey()
+  final String transactionType;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'TransactionHistory(datetime: $datetime, transaction: $transaction, transactionStatus: $transactionStatus, transactionType: $transactionType)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'TransactionHistory'))
+      ..add(DiagnosticsProperty('datetime', datetime))
+      ..add(DiagnosticsProperty('transaction', transaction))
+      ..add(DiagnosticsProperty('transactionStatus', transactionStatus))
+      ..add(DiagnosticsProperty('transactionType', transactionType));
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$TransactionHistoryImpl &&
+            (identical(other.datetime, datetime) ||
+                other.datetime == datetime) &&
+            (identical(other.transaction, transaction) ||
+                other.transaction == transaction) &&
+            (identical(other.transactionStatus, transactionStatus) ||
+                other.transactionStatus == transactionStatus) &&
+            (identical(other.transactionType, transactionType) ||
+                other.transactionType == transactionType));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType, datetime, transaction, transactionStatus, transactionType);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$TransactionHistoryImplCopyWith<_$TransactionHistoryImpl> get copyWith =>
+      __$$TransactionHistoryImplCopyWithImpl<_$TransactionHistoryImpl>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$TransactionHistoryImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _TransactionHistory implements TransactionHistory {
+  const factory _TransactionHistory(
+      {@JsonKey(fromJson: _dateTimeFromTimestamp, toJson: _dateTimeToTimestamp)
+      final DateTime? datetime,
+      final int transaction,
+      final String transactionStatus,
+      final String transactionType}) = _$TransactionHistoryImpl;
+
+  factory _TransactionHistory.fromJson(Map<String, dynamic> json) =
+      _$TransactionHistoryImpl.fromJson;
+
+  @override
+  @JsonKey(fromJson: _dateTimeFromTimestamp, toJson: _dateTimeToTimestamp)
+  DateTime? get datetime;
+  @override
+  int get transaction;
+  @override
+  String get transactionStatus;
+  @override
+  String get transactionType;
+  @override
+  @JsonKey(ignore: true)
+  _$$TransactionHistoryImplCopyWith<_$TransactionHistoryImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

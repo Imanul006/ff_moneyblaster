@@ -1,13 +1,16 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:ff_moneyblaster/core/assets.dart';
 import 'package:ff_moneyblaster/core/constants.dart';
+import 'package:ff_moneyblaster/feautres/auth/domain/user_model.dart';
 import 'package:ff_moneyblaster/feautres/wallet/presentation/widgets/tabbar.dart';
 
 import 'package:ff_moneyblaster/feautres/wallet/shared/provider.dart';
 import 'package:ff_moneyblaster/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 
 @RoutePage(name: 'WalletScreen')
@@ -18,6 +21,8 @@ class WalletScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isLoading =
         ref.watch(walletProvider.select((state) => state.isLoading));
+    final state = ref.watch(walletProvider);
+    final provider = ref.read(walletProvider.notifier);
 
     return Container(
       width: double.infinity,
@@ -33,7 +38,7 @@ class WalletScreen extends ConsumerWidget {
       ),
       child: Column(
         children: [
-          Container(
+          SizedBox(
               width: MediaQuery.sizeOf(context).width,
               height: MediaQuery.sizeOf(context).height * 0.35,
               child: Stack(
@@ -54,92 +59,90 @@ class WalletScreen extends ConsumerWidget {
                       fit: BoxFit.cover,
                     ),
                   ),
-                  Container(
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          left: 16.0, right: 16, top: 50, bottom: 24),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          // wallet title
-                          Row(
-                            children: [
-                              Text(
-                                'WALLET',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headlineMedium
-                                    ?.copyWith(fontWeight: FontWeight.w500),
-                              )
-                            ],
-                          ),
-                          // 2 current wallet balance row
-                          const SizedBox(
-                            height: 8,
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                'Current Wallet Balance',
-                                style: Theme.of(context).textTheme.bodySmall,
-                              )
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 8,
-                          ),
-                          // 3 ballance
-                          Row(
-                            children: [
-                              Text(
-                                '₹ ',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyLarge
-                                    ?.copyWith(
-                                        fontSize: 32,
-                                        fontWeight: FontWeight.w700),
-                              ),
-                              Text(
-                                '2340',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyLarge
-                                    ?.copyWith(
-                                        fontSize: 32,
-                                        fontWeight: FontWeight.w700),
-                              ),
-                            ],
-                          ),
-                          // 4 past 24 hour money
-                          Row(
-                            children: [
-                              Text(
-                                '+ 540 PAST 24 HOURS',
-                                style: Theme.of(context).textTheme.labelSmall,
-                              )
-                            ],
-                          ),
-                          // buttons deposit and withdrawl
-                          const Spacer(),
-                          const Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              CustomButton(
-                                text: 'Deposit',
-                                icon: Icons.upload,
-                              ),
-                              CustomButton(
-                                filled: true,
-                                text: 'Withdraw',
-                                icon: Icons.download,
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 16.0, right: 16, top: 50, bottom: 24),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        // wallet title
+                        Row(
+                          children: [
+                            Text(
+                              'WALLET',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headlineMedium
+                                  ?.copyWith(fontWeight: FontWeight.w500),
+                            )
+                          ],
+                        ),
+                        // 2 current wallet balance row
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              'Current Wallet Balance',
+                              style: Theme.of(context).textTheme.bodySmall,
+                            )
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        // 3 ballance
+                        Row(
+                          children: [
+                            Text(
+                              '₹ ',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge
+                                  ?.copyWith(
+                                      fontSize: 32,
+                                      fontWeight: FontWeight.w700),
+                            ),
+                            Text(
+                              state.user?.wallet.balance.toString() ?? "",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge
+                                  ?.copyWith(
+                                      fontSize: 32,
+                                      fontWeight: FontWeight.w700),
+                            ),
+                          ],
+                        ),
+                        // 4 past 24 hour money
+                        Row(
+                          children: [
+                            Text(
+                              '${provider.calculateTotalTransactionsInLast24Hours(state.user!.wallet)} IN PAST 24 HOURS',
+                              style: Theme.of(context).textTheme.labelSmall,
+                            )
+                          ],
+                        ),
+                        // buttons deposit and withdrawl
+                        const Spacer(),
+                        const Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            CustomButton(
+                              text: 'Deposit',
+                              icon: Icons.upload,
+                            ),
+                            CustomButton(
+                              filled: true,
+                              text: 'Withdraw',
+                              icon: Icons.download,
+                            ),
+                          ],
+                        )
+                      ],
                     ),
                   )
                 ],
@@ -157,8 +160,26 @@ class WalletScreen extends ConsumerWidget {
                   height: MediaQuery.of(context).size.height * 0.5,
                   padding: const EdgeInsets.all(16),
                   child: ListView.separated(
-                    itemCount: 5,
+                    itemCount: state.user!.wallet.history.length,
                     itemBuilder: (context, index) {
+                      TransactionHistory _transaction =
+                          state.user!.wallet.history[index];
+
+                      bool isToday =
+                          DateTime.now().year == _transaction.datetime?.year &&
+                              DateTime.now().month ==
+                                  _transaction.datetime?.month &&
+                              DateTime.now().day == _transaction.datetime?.day;
+
+                      String formattedTime;
+
+                      if (isToday) {
+                        formattedTime =
+                            DateFormat('h:mm a').format(_transaction.datetime!);
+                      } else {
+                        formattedTime = DateFormat('dd/MM/yy h:mm a')
+                            .format(_transaction.datetime!);
+                      }
                       return Container(
                         height: 45,
                         width: double.infinity,
@@ -171,37 +192,55 @@ class WalletScreen extends ConsumerWidget {
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    'Withdrawal Request of',
-                                    style:
-                                        Theme.of(context).textTheme.bodyMedium,
+                              Expanded(
+                                child: RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text:
+                                            '${provider.getTransactionTypeText(_transaction.transactionType)} of ',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium
+                                            
+                                      ),
+                                      TextSpan(
+                                        text: ' ₹ ',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium
+                                            ?.copyWith(
+                                                color: provider.getTransactionTextColor(_transaction.transactionType),
+                                                fontWeight: FontWeight.w700),
+                                      ),
+                                      TextSpan(
+                                        text: _transaction.transaction.abs().toString(),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium
+                                            ?.copyWith(
+                                                color: provider.getTransactionTextColor(_transaction.transactionType),
+                                                fontWeight: FontWeight.w700),
+                                      ),
+                                
+                                      TextSpan(
+                                        text:
+                                            ' ${provider.getTransactionStatusText(_transaction.transactionStatus)}',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium
+                                            
+                                      ),
+                                    ],
                                   ),
-                                  Text(
-                                    ' ₹ ',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium
-                                        ?.copyWith(
-                                            color: AppColors.red,
-                                            fontWeight: FontWeight.w700),
-                                  ),
-                                  Text(
-                                    '530',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium
-                                        ?.copyWith(
-                                            color: AppColors.red,
-                                            fontWeight: FontWeight.w700),
-                                  ),
-                                ],
+                                ),
                               ),
                               Text(
-                                '4:45 PM',
-                                style: Theme.of(context).textTheme.bodyMedium,
+                                formattedTime,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.copyWith(fontSize: 10),
                               )
                             ],
                           ),
@@ -252,7 +291,7 @@ class CustomButton extends StatelessWidget {
               icon,
               color: filled ? AppColors.red : AppColors.greyText,
             ),
-            SizedBox(
+            const SizedBox(
               width: 6,
             ),
             Text(

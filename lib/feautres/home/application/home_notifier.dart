@@ -1,7 +1,7 @@
 // auth_notifier.dart
 
 import 'package:ff_moneyblaster/feautres/home/application/home_state.dart';
-import 'package:ff_moneyblaster/feautres/home/domain/i_auth_repository.dart';
+import 'package:ff_moneyblaster/feautres/home/domain/i_home_repository.dart';
 import 'package:ff_moneyblaster/feautres/home/domain/tournament.dart';
 import 'package:ff_moneyblaster/feautres/home/presentation/widgets/tournament_card.dart';
 import 'package:intl/intl.dart';

@@ -1,3 +1,5 @@
+import 'package:ff_moneyblaster/feautres/auth/domain/user_model.dart';
+
 abstract class IWalletRepository {
   Future<void> signInWithUsernameAndPassword(String userName, String password);
 
@@ -11,4 +13,5 @@ abstract class IWalletRepository {
   Future<void> logout();
 
   Future<bool> isUserLoggedIn();
+  Future<UserModel> getUserModel();
 }

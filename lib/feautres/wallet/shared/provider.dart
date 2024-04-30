@@ -5,4 +5,4 @@ import 'package:riverpod/riverpod.dart';
 
 final walletProvider =
     StateNotifierProvider.autoDispose<WalletNotifier, UserWalletState>(
-        (ref) => WalletNotifier());
+        (ref) => WalletNotifier(WalletRepository()));

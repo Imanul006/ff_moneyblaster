@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ff_moneyblaster/feautres/home/domain/i_auth_repository.dart';
+import 'package:ff_moneyblaster/feautres/home/domain/i_home_repository.dart';
 import 'package:ff_moneyblaster/feautres/home/domain/tournament.dart';
 
 class HomeRepository implements IHomeRepository {
