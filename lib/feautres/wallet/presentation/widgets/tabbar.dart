@@ -1,5 +1,7 @@
 import 'package:ff_moneyblaster/feautres/home/presentation/widgets/tournament_card.dart';
 import 'package:ff_moneyblaster/feautres/home/shared/provider.dart';
+import 'package:ff_moneyblaster/feautres/wallet/application/wallet_notifier.dart';
+import 'package:ff_moneyblaster/feautres/wallet/shared/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/constants.dart';
@@ -10,7 +12,8 @@ class TabBarWallet extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final homeState = ref.watch(homeProvider);
+    final state = ref.watch(walletProvider);
+    final provider = ref.read(walletProvider.notifier);
 
     return SizedBox(
       child: Row(
@@ -20,7 +23,7 @@ class TabBarWallet extends ConsumerWidget {
           Expanded(
             child: GestureDetector(
               onTap: () =>
-                  ref.read(homeProvider.notifier).selectTab(GameState.ongoing),
+                  provider.selectTab(WalletTab.deposit),
               child: SizedBox(
                 width: double.infinity,
                 height: 48,
@@ -30,7 +33,7 @@ class TabBarWallet extends ConsumerWidget {
                   radius: 0.0,
                   child: 'Deposit',
                   colors: AppColors.tabBorder,
-                  isActive: homeState.selectedHomeTab == GameState.ongoing,
+                  isActive: state.selectedWalletTab == WalletTab.deposit,
                 ),
               ),
             ),
@@ -38,7 +41,7 @@ class TabBarWallet extends ConsumerWidget {
           Expanded(
             child: GestureDetector(
               onTap: () =>
-                  ref.read(homeProvider.notifier).selectTab(GameState.upcoming),
+                  provider.selectTab(WalletTab.withdraw),
               child: SizedBox(
                 width: double.infinity,
                 height: 48,
@@ -48,7 +51,7 @@ class TabBarWallet extends ConsumerWidget {
                   radius: 0.0,
                   child: 'Withdrawal',
                   colors: AppColors.tabBorder,
-                  isActive: homeState.selectedHomeTab == GameState.upcoming,
+                  isActive: state.selectedWalletTab == WalletTab.withdraw,
                 ),
               ),
             ),

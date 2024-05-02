@@ -5,14 +5,22 @@ import 'package:ff_moneyblaster/feautres/wallet/domain/i_wallet_repository.dart'
 import 'package:flutter/material.dart';
 import 'package:riverpod/riverpod.dart';
 
+enum WalletTab {
+  withdraw,
+  deposit,
+}
+
 class WalletNotifier extends StateNotifier<UserWalletState> {
-  IWalletRepository _walletRepository;
+  final IWalletRepository _walletRepository;
   WalletNotifier(this._walletRepository) : super(const UserWalletState()) {
     fetchUserDetails();
   }
 
-  void selectTab(UserWalletState tab) {
-    // state = state.copyWith(selectedWalletTab: tab);
+  List<TransactionHistory> withdrawalTransactions = [];
+  List<TransactionHistory> depositTransactions = [];
+
+  void selectTab(WalletTab tab) {
+    state = state.copyWith(selectedWalletTab: tab);
   }
 
   Future<void> fetchUserDetails() async {
@@ -20,8 +28,12 @@ class WalletNotifier extends StateNotifier<UserWalletState> {
     try {
       UserModel user = await _walletRepository.getUserModel();
       state = state.copyWith(user: user, isLoading: false);
-      print("Wallet Balance: ${user.wallet.balance}/-");
-      print("Wallet Transactions: ${user.wallet.history}/-");
+      withdrawalTransactions = state.user!.wallet.history
+          .where((history) => history.transaction < 0)
+          .toList();
+      depositTransactions = state.user!.wallet.history
+          .where((history) => history.transaction > 0)
+          .toList();
     } catch (e) {
       state = state.copyWith(errorMessage: e.toString(), isLoading: false);
     }
@@ -47,7 +59,7 @@ class WalletNotifier extends StateNotifier<UserWalletState> {
       case 'entryfee':
         return AppColors.red;
       case 'winning':
-        return AppColors.blue;    
+        return AppColors.blue;
       default:
         return AppColors.blue;
     }
@@ -60,22 +72,28 @@ class WalletNotifier extends StateNotifier<UserWalletState> {
       case 'withdraw':
         return 'Withdrawal';
       case 'winning':
-        return 'Winning';     
+        return 'Winning';
+      case 'referral':
+        return 'Referral commission';
       default:
         return 'Entry fee deduction';
     }
   }
 
-  int calculateTotalTransactionsInLast24Hours(WalletModel wallet) {
+  int calculateTotalTransactionsInLast24Hours() {
+    WalletModel wallet = state.user!.wallet;
     DateTime now = DateTime.now();
 
     var recentTransactions = wallet.history.where((transaction) {
       return transaction.datetime!
-          .isAfter(now.subtract(const Duration(hours: 24)));
+              .isAfter(now.subtract(const Duration(hours: 24))) &&
+          transaction.transactionStatus == "success";
     });
 
-    int totalAmount =
-        recentTransactions.fold(0, (sum, current) => sum + current.transaction);
+    int totalAmount = recentTransactions.fold(
+      0,
+      (sum, current) => sum + current.transaction,
+    );
 
     return totalAmount;
   }

@@ -2,12 +2,14 @@ import 'package:auto_route/auto_route.dart';
 import 'package:ff_moneyblaster/core/assets.dart';
 import 'package:ff_moneyblaster/core/constants.dart';
 import 'package:ff_moneyblaster/feautres/auth/domain/user_model.dart';
+import 'package:ff_moneyblaster/feautres/wallet/application/wallet_notifier.dart';
+import 'package:ff_moneyblaster/feautres/wallet/presentation/widgets/deposit_bottom_sheets.dart';
 import 'package:ff_moneyblaster/feautres/wallet/presentation/widgets/tabbar.dart';
+import 'package:ff_moneyblaster/feautres/wallet/presentation/widgets/withdraw_bottom_sheet.dart';
 
 import 'package:ff_moneyblaster/feautres/wallet/shared/provider.dart';
 import 'package:ff_moneyblaster/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -24,241 +26,282 @@ class WalletScreen extends ConsumerWidget {
     final state = ref.watch(walletProvider);
     final provider = ref.read(walletProvider.notifier);
 
-    return Container(
-      width: double.infinity,
-      height: MediaQuery.sizeOf(context).height * 1,
-      decoration: BoxDecoration(
-        color: AppColors.blackBackground,
-        image: DecorationImage(
-          fit: BoxFit.cover,
-          image: Image.asset(
-            'assets/images/bg.png',
-          ).image,
-        ),
-      ),
-      child: Column(
-        children: [
-          SizedBox(
-              width: MediaQuery.sizeOf(context).width,
-              height: MediaQuery.sizeOf(context).height * 0.35,
-              child: Stack(
-                children: [
-                  Container(
-                    width: MediaQuery.sizeOf(context).width,
-                    decoration: const BoxDecoration(
-                        gradient: LinearGradient(
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                            colors: [
-                          Color.fromRGBO(206, 59, 59, 1),
-                          Color.fromRGBO(95, 18, 55, 1),
-                        ])),
-                    child: Image.asset(
-                      Assets.walletBannerBG,
-                      scale: 2,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        left: 16.0, right: 16, top: 50, bottom: 24),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        // wallet title
-                        Row(
-                          children: [
-                            Text(
-                              'WALLET',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineMedium
-                                  ?.copyWith(fontWeight: FontWeight.w500),
-                            )
-                          ],
-                        ),
-                        // 2 current wallet balance row
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              'Current Wallet Balance',
-                              style: Theme.of(context).textTheme.bodySmall,
-                            )
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        // 3 ballance
-                        Row(
-                          children: [
-                            Text(
-                              '₹ ',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge
-                                  ?.copyWith(
-                                      fontSize: 32,
-                                      fontWeight: FontWeight.w700),
-                            ),
-                            Text(
-                              state.user?.wallet.balance.toString() ?? "",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge
-                                  ?.copyWith(
-                                      fontSize: 32,
-                                      fontWeight: FontWeight.w700),
-                            ),
-                          ],
-                        ),
-                        // 4 past 24 hour money
-                        Row(
-                          children: [
-                            Text(
-                              '${provider.calculateTotalTransactionsInLast24Hours(state.user!.wallet)} IN PAST 24 HOURS',
-                              style: Theme.of(context).textTheme.labelSmall,
-                            )
-                          ],
-                        ),
-                        // buttons deposit and withdrawl
-                        const Spacer(),
-                        const Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            CustomButton(
-                              text: 'Deposit',
-                              icon: Icons.upload,
-                            ),
-                            CustomButton(
-                              filled: true,
-                              text: 'Withdraw',
-                              icon: Icons.download,
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              )),
-          // tab bar
-          SizedBox(
-            height: 63.3.h,
+    return isLoading
+        ? const Center(
+            child: CircularProgressIndicator(
+            color: Colors.white,
+          ))
+        : Container(
+            width: double.infinity,
+            height: MediaQuery.sizeOf(context).height * 1,
+            decoration: BoxDecoration(
+              color: AppColors.blackBackground,
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: Image.asset(
+                  'assets/images/bg.png',
+                ).image,
+              ),
+            ),
             child: Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const TabBarWallet(),
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.5,
-                  padding: const EdgeInsets.all(16),
-                  child: ListView.separated(
-                    itemCount: state.user!.wallet.history.length,
-                    itemBuilder: (context, index) {
-                      TransactionHistory _transaction =
-                          state.user!.wallet.history[index];
-
-                      bool isToday =
-                          DateTime.now().year == _transaction.datetime?.year &&
-                              DateTime.now().month ==
-                                  _transaction.datetime?.month &&
-                              DateTime.now().day == _transaction.datetime?.day;
-
-                      String formattedTime;
-
-                      if (isToday) {
-                        formattedTime =
-                            DateFormat('h:mm a').format(_transaction.datetime!);
-                      } else {
-                        formattedTime = DateFormat('dd/MM/yy h:mm a')
-                            .format(_transaction.datetime!);
-                      }
-                      return Container(
-                        height: 45,
-                        width: double.infinity,
-                        decoration: customDecoration.copyWith(
-                            borderRadius: BorderRadius.circular(8)),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 0, horizontal: 12),
-                          child: Row(
+                SizedBox(
+                    width: MediaQuery.sizeOf(context).width,
+                    height: MediaQuery.sizeOf(context).height * 0.35,
+                    child: Stack(
+                      children: [
+                        Container(
+                          width: MediaQuery.sizeOf(context).width,
+                          decoration: const BoxDecoration(
+                              gradient: LinearGradient(
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                  colors: [
+                                Color.fromRGBO(206, 59, 59, 1),
+                                Color.fromRGBO(95, 18, 55, 1),
+                              ])),
+                          child: Image.asset(
+                            Assets.walletBannerBG,
+                            scale: 2,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: 16.0, right: 16, top: 50, bottom: 24),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Expanded(
-                                child: RichText(
-                                  text: TextSpan(
-                                    children: [
-                                      TextSpan(
-                                        text:
-                                            '${provider.getTransactionTypeText(_transaction.transactionType)} of ',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyMedium
-                                            
-                                      ),
-                                      TextSpan(
-                                        text: ' ₹ ',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyMedium
-                                            ?.copyWith(
-                                                color: provider.getTransactionTextColor(_transaction.transactionType),
-                                                fontWeight: FontWeight.w700),
-                                      ),
-                                      TextSpan(
-                                        text: _transaction.transaction.abs().toString(),
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyMedium
-                                            ?.copyWith(
-                                                color: provider.getTransactionTextColor(_transaction.transactionType),
-                                                fontWeight: FontWeight.w700),
-                                      ),
-                                
-                                      TextSpan(
-                                        text:
-                                            ' ${provider.getTransactionStatusText(_transaction.transactionStatus)}',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyMedium
-                                            
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                              // wallet title
+                              Row(
+                                children: [
+                                  Text(
+                                    'WALLET',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineMedium
+                                        ?.copyWith(fontWeight: FontWeight.w500),
+                                  )
+                                ],
                               ),
-                              Text(
-                                formattedTime,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall
-                                    ?.copyWith(fontSize: 10),
+                              // 2 current wallet balance row
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    'Current Wallet Balance',
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall,
+                                  )
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              // 3 ballance
+                              Row(
+                                children: [
+                                  Text(
+                                    '₹ ',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge
+                                        ?.copyWith(
+                                            fontSize: 32,
+                                            fontWeight: FontWeight.w700),
+                                  ),
+                                  Text(
+                                    state.user?.wallet.balance.toString() ?? "",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge
+                                        ?.copyWith(
+                                            fontSize: 32,
+                                            fontWeight: FontWeight.w700),
+                                  ),
+                                ],
+                              ),
+                              // 4 past 24 hour money
+                              Row(
+                                children: [
+                                  Text(
+                                    '${provider.calculateTotalTransactionsInLast24Hours()} IN PAST 24 HOURS',
+                                    style:
+                                        Theme.of(context).textTheme.labelSmall,
+                                  )
+                                ],
+                              ),
+                              // buttons deposit and withdrawl
+                              const Spacer(),
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  InkWell(
+                                    onTap: () async {
+                                      // await notifier.selectTournament(
+                                      //     widget.tournament);
+                                      showModalBottomSheet<void>(
+                                        backgroundColor: AppColors.glassColor,
+                                        barrierColor:
+                                            const Color.fromRGBO(7, 7, 7, 0.7),
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return const FractionallySizedBox(
+                                            heightFactor: 1.55,
+                                            child: DepositBottomSheet(),
+                                          );
+                                        },
+                                      );
+                                    },
+                                    child: const CustomButton(
+                                      text: 'Deposit',
+                                      icon: Icons.upload,
+                                    ),
+                                  ),
+                                  InkWell(
+                                    onTap: () async {
+                                      // await notifier.selectTournament(
+                                      //     widget.tournament);
+                                      showModalBottomSheet<void>(
+                                        backgroundColor: AppColors.glassColor,
+                                        barrierColor:
+                                            const Color.fromRGBO(7, 7, 7, 0.7),
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return const FractionallySizedBox(
+                                            heightFactor: 1.7,
+                                            child: WithdrawBottomSheet(),
+                                          );
+                                        },
+                                      );
+                                    },
+                                    child: const CustomButton(
+                                      filled: true,
+                                      text: 'Withdraw',
+                                      icon: Icons.download,
+                                    ),
+                                  ),
+                                ],
                               )
                             ],
                           ),
-                        ),
-                      );
-                    },
-                    separatorBuilder: (BuildContext context, int index) {
-                      return const SizedBox(
-                        height: 12,
-                      );
-                    },
+                        )
+                      ],
+                    )),
+                // tab bar
+                SizedBox(
+                  height: 63.3.h,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const TabBarWallet(),
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.5,
+                        padding: const EdgeInsets.all(16),
+                        child: state.selectedWalletTab == WalletTab.withdraw
+                            ? _buildTransactionListview(
+                                provider.withdrawalTransactions, provider)
+                            : _buildTransactionListview(
+                                provider.depositTransactions, provider),
+                      )
+                    ],
                   ),
+                ),
+              ],
+            ),
+          );
+  }
+
+  ListView _buildTransactionListview(
+      List<TransactionHistory> transactions, WalletNotifier provider) {
+    return ListView.separated(
+      itemCount: transactions.length,
+      itemBuilder: (context, index) {
+        TransactionHistory transaction = transactions[index];
+
+        bool isToday = DateTime.now().year == transaction.datetime?.year &&
+            DateTime.now().month == transaction.datetime?.month &&
+            DateTime.now().day == transaction.datetime?.day;
+
+        String formattedTime;
+
+        if (isToday) {
+          formattedTime = DateFormat('h:mm a').format(transaction.datetime!);
+        } else {
+          formattedTime =
+              DateFormat('dd/MM/yy h:mm a').format(transaction.datetime!);
+        }
+        return Container(
+          height: 45,
+          width: double.infinity,
+          decoration:
+              customDecoration.copyWith(borderRadius: BorderRadius.circular(8)),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                            text:
+                                '${provider.getTransactionTypeText(transaction.transactionType)} of ',
+                            style: Theme.of(context).textTheme.bodyMedium),
+                        TextSpan(
+                          text: ' ₹ ',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(
+                                  color: provider.getTransactionTextColor(
+                                      transaction.transactionType),
+                                  fontWeight: FontWeight.w700),
+                        ),
+                        TextSpan(
+                          text: transaction.transaction.abs().toString(),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(
+                                  color: provider.getTransactionTextColor(
+                                      transaction.transactionType),
+                                  fontWeight: FontWeight.w700),
+                        ),
+                        TextSpan(
+                            text:
+                                ' ${provider.getTransactionStatusText(transaction.transactionStatus)}',
+                            style: Theme.of(context).textTheme.bodyMedium),
+                      ],
+                    ),
+                  ),
+                ),
+                Text(
+                  formattedTime,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodySmall
+                      ?.copyWith(fontSize: 10),
                 )
               ],
             ),
           ),
-        ],
-      ),
+        );
+      },
+      separatorBuilder: (BuildContext context, int index) {
+        return const SizedBox(
+          height: 12,
+        );
+      },
     );
   }
 }
@@ -387,3 +430,7 @@ class Filter extends StatelessWidget {
             ),
           
  */
+
+
+
+
