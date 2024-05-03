@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:auto_route/auto_route.dart';
 import 'package:ff_moneyblaster/core/assets.dart';
 import 'package:ff_moneyblaster/core/constants.dart';
+import 'package:ff_moneyblaster/feautres/wallet/application/wallet_notifier.dart';
 import 'package:ff_moneyblaster/feautres/wallet/shared/provider.dart';
 import 'package:ff_moneyblaster/theme.dart';
 import 'package:ff_moneyblaster/widgets/app_text_field.dart';
@@ -23,6 +24,9 @@ class DepositBottomSheet extends ConsumerStatefulWidget {
 class _DepositBottomSheetState extends ConsumerState<DepositBottomSheet> {
   bool _isForm = false;
 
+  TextEditingController _transactionIdController = TextEditingController();
+  TextEditingController _amountController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final notifier = ref.read(walletProvider.notifier);
@@ -41,16 +45,20 @@ class _DepositBottomSheetState extends ConsumerState<DepositBottomSheet> {
           decoration: customDecoration.copyWith(
               color: AppColors.popUpColor,
               borderRadius: BorderRadius.circular(20)),
-          child: _isForm ? depositForm(context) : depositQR(context),
+          child: _isForm
+              ? depositForm(
+                  context,
+                )
+              : depositQR(context),
         ),
       ),
     );
   }
 
   Widget depositQR(BuildContext context) {
-    const String _qrCodeUrl =
+    const String qrCodeUrl =
         "https://via.placeholder.com/500x500.png/a59090/000000?Text=500x500";
-    const String _upiId = "9876543210@okaxis";
+    const String upiId = "9876543210@okaxis";
     return Column(
       children: [
         Row(
@@ -72,7 +80,9 @@ class _DepositBottomSheetState extends ConsumerState<DepositBottomSheet> {
             ),
           ],
         ),
-        const SizedBox(height: 24,),
+        const SizedBox(
+          height: 24,
+        ),
         Container(
           height: MediaQuery.of(context).size.width * 0.5,
           width: MediaQuery.of(context).size.width * 0.5,
@@ -91,7 +101,7 @@ class _DepositBottomSheetState extends ConsumerState<DepositBottomSheet> {
           child: Padding(
             padding: const EdgeInsets.all(30),
             child: Image.network(
-              _qrCodeUrl,
+              qrCodeUrl,
               fit: BoxFit.cover,
             ),
           ),
@@ -136,51 +146,53 @@ class _DepositBottomSheetState extends ConsumerState<DepositBottomSheet> {
           height: 12,
         ),
         const _UpiField(
-          upiId: _upiId,
+          upiId: upiId,
         ),
         const SizedBox(
           height: 38,
         ),
         GestureDetector(
-              onTap: () {
-                setState(() {
-                  _isForm = true;
-                });
-              },
-              child: Container(
-                width: double.infinity,
-                height: 45,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  gradient: const LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                        Color.fromRGBO(206, 59, 59, 1),
-                        Color.fromRGBO(95, 18, 55, 1),
-                      ]),
-                ),
-                child: Center(
-                  child: Text(
-                    'Proceed',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodySmall
-                        ?.copyWith(fontWeight: FontWeight.w700),
-                  ),
-                ),
+          onTap: () {
+            setState(() {
+              _isForm = true;
+            });
+          },
+          child: Container(
+            width: double.infinity,
+            height: 45,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              gradient: const LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Color.fromRGBO(206, 59, 59, 1),
+                    Color.fromRGBO(95, 18, 55, 1),
+                  ]),
+            ),
+            child: Center(
+              child: Text(
+                'Proceed',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodySmall
+                    ?.copyWith(fontWeight: FontWeight.w700),
               ),
             ),
+          ),
+        ),
       ],
     );
   }
 
   Widget depositForm(BuildContext context) {
+    final notifier = ref.read(walletProvider.notifier);
+    final state = ref.read(walletProvider);
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // 1 title and x
         Row(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -203,10 +215,9 @@ class _DepositBottomSheetState extends ConsumerState<DepositBottomSheet> {
         const SizedBox(
           height: 50,
         ),
-
         AppTextField(
           hintText: "Transaction ID",
-          controller: TextEditingController(),
+          controller: _transactionIdController,
           title: "Enter Transaction ID",
         ),
         const SizedBox(
@@ -214,7 +225,8 @@ class _DepositBottomSheetState extends ConsumerState<DepositBottomSheet> {
         ),
         AppTextField(
           hintText: "Deposit Amount",
-          controller: TextEditingController(),
+          controller: _amountController,
+          keyboardType: TextInputType.number,
           title: "Enter Deposit Amount",
         ),
         const SizedBox(
@@ -228,8 +240,28 @@ class _DepositBottomSheetState extends ConsumerState<DepositBottomSheet> {
               height: 12,
             ),
             GestureDetector(
-              onTap: () {
-                context.maybePop();
+              onTap: () async {
+                if (_transactionIdController.text.isNotEmpty &&
+                    _amountController.text.isNotEmpty) {
+                  await notifier.requestDeposit(
+                    context,
+                    transactionId:
+                        _transactionIdController.text.toLowerCase().trim(),
+                    amount: double.parse(_amountController.text),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text(
+                        'All fields are mandatory.',
+                      ),
+                      duration: Duration(seconds: 3),
+                    ),
+                  );
+                }
+                if (context.mounted) {
+                  context.maybePop();
+                }
               },
               child: Container(
                 width: double.infinity,
@@ -245,13 +277,15 @@ class _DepositBottomSheetState extends ConsumerState<DepositBottomSheet> {
                       ]),
                 ),
                 child: Center(
-                  child: Text(
-                    'Proceed',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodySmall
-                        ?.copyWith(fontWeight: FontWeight.w700),
-                  ),
+                  child: state.isLoading
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      : Text(
+                          'Proceed',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall
+                              ?.copyWith(fontWeight: FontWeight.w700),
+                        ),
                 ),
               ),
             ),
@@ -275,101 +309,104 @@ class _UpiField extends StatelessWidget {
     return Row(
       children: [
         Expanded(child: _idField(context)),
-        const SizedBox(width: 20,),
+        const SizedBox(
+          width: 20,
+        ),
         _copyButton(context),
-
       ],
     );
   }
 
   Widget _copyButton(BuildContext context) {
     return SizedBox(
-    height: 50, 
-    width: 50,
-    child: Stack(
-      children: [
-        Image.asset(
-          "assets/images/textfield.png",
-          width: 50,
-          height: 50, 
-          fit: BoxFit.cover,
-        ),
-        Positioned.fill(
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.5),
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  spreadRadius: 2,
-                  blurRadius: 4,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
+      height: 50,
+      width: 50,
+      child: Stack(
+        children: [
+          Image.asset(
+            "assets/images/textfield.png",
+            width: 50,
+            height: 50,
+            fit: BoxFit.cover,
           ),
-        ),
-        const Positioned.fill(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 6),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Icon(
-                Icons.copy,
-                color: Colors.white,
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.5),
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    spreadRadius: 2,
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
               ),
             ),
           ),
-        ),
-      ],
-    ),
-  );}
+          const Positioned.fill(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 6),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Icon(
+                  Icons.copy,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
   Widget _idField(BuildContext context) {
     return SizedBox(
-    height: 50, 
-    // width: MediaQuery.of(context).size.width * 0.6,
-    child: Stack(
-      children: [
-        Image.asset(
-          "assets/images/textfield.png",
-          // width: MediaQuery.of(context).size.width * 0.6,
-          height: 50, 
-          fit: BoxFit.cover,
-        ),
-        Positioned.fill(
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.5),
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  spreadRadius: 2,
-                  blurRadius: 4,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
+      height: 50,
+      // width: MediaQuery.of(context).size.width * 0.6,
+      child: Stack(
+        children: [
+          Image.asset(
+            "assets/images/textfield.png",
+            // width: MediaQuery.of(context).size.width * 0.6,
+            height: 50,
+            fit: BoxFit.cover,
           ),
-        ),
-        Positioned.fill(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                upiId, // Displaying the UPI ID
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  fontSize: 18,
-                ), // Example text style
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.5),
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    spreadRadius: 2,
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
               ),
             ),
           ),
-        ),
-      ],
-    ),
-  );
+          Positioned.fill(
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  upiId, // Displaying the UPI ID
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        fontSize: 18,
+                      ), // Example text style
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

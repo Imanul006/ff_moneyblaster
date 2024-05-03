@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ff_moneyblaster/core/constants.dart';
 import 'package:ff_moneyblaster/feautres/auth/domain/user_model.dart';
 import 'package:ff_moneyblaster/feautres/wallet/application/user_wallet_state.dart';
 import 'package:ff_moneyblaster/feautres/wallet/domain/i_wallet_repository.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:riverpod/riverpod.dart';
 
@@ -21,6 +23,88 @@ class WalletNotifier extends StateNotifier<UserWalletState> {
 
   void selectTab(WalletTab tab) {
     state = state.copyWith(selectedWalletTab: tab);
+  }
+
+  Future<void> requestWithdraw(
+    BuildContext context, {
+    required String name,
+    required String accountNo,
+    required String ifscCode,
+    required double amount,
+  }) async {
+    state = state.copyWith(isLoading: true);
+    Map<String, dynamic> newTransaction = {
+      'datetime': Timestamp.now(),
+      'transaction': amount,
+      'transactionStatus': 'requested',
+      'transactionType': 'withdraw',
+      'fullName': name,
+      'accountNo': accountNo,
+      'ifscCode': ifscCode,
+    };
+    bool result =
+        await _walletRepository.addTransactionToWallet(newTransaction);
+    state = state.copyWith(isLoading: false);    
+    if (context.mounted) {
+      if (result) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Withdraw requested. It will reflect in your bank account, once we verify.',
+            ),
+            duration: Duration(seconds: 3),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Something went wrong, please try again.',
+            ),
+            duration: Duration(seconds: 3),
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> requestDeposit(
+    BuildContext context, {
+    required String transactionId,
+    required double amount,
+  }) async {
+    state = state.copyWith(isLoading: true);
+    Map<String, dynamic> newTransaction = {
+      'datetime': Timestamp.now(),
+      'transaction': amount,
+      'transactionStatus': 'requested',
+      'transactionType': 'deposit',
+      'transactionId': transactionId,
+    };
+    bool result =
+        await _walletRepository.addTransactionToWallet(newTransaction);
+    state = state.copyWith(isLoading: false);    
+    if (context.mounted) {
+      if (result) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Deposit requested. It will reflect in your wallet, once we verify.',
+            ),
+            duration: Duration(seconds: 3),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Something went wrong, please try again.',
+            ),
+            duration: Duration(seconds: 3),
+          ),
+        );
+      }
+    }
   }
 
   Future<void> fetchUserDetails() async {

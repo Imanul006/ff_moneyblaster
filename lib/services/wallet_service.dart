@@ -8,74 +8,36 @@ class WalletRepository implements IWalletRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
-  Future<void> signUpWithUsernameAndPassword({
-    required String username,
-    required String gameId,
-    required String phoneNumber,
-    required String password,
-  }) async {
-    try {
-      var existingEmail = await _firestore.collection('usernames').doc(username).get();
-      if (existingEmail.exists) {
-        throw FirebaseAuthException(
-          code: 'username-already-in-use',
-          message: 'Username is already taken.',
-        );
-      }
+Future<bool> addTransactionToWallet(Map<String, dynamic> transaction) async {
+  final String uid = _firebaseAuth.currentUser?.uid ?? '';
 
-      UserCredential userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
-        email: '$username@yourappdomain.com', 
-        password: password,
-      );
+  if (uid.isEmpty) {
+    print('No user logged in!');
+    return false;
+  }
 
+  try {
+    DocumentReference userRef = _firestore.collection('appusers').doc(uid);
+    var snapshot = await userRef.get();
 
-      await _firestore.collection('users').doc(userCredential.user!.uid).set({
-        'username': username,
-        'gameId': gameId,
-        'phoneNumber': phoneNumber,
-        'email': userCredential.user!.email,
-      });
-
-
-      await _firestore.collection('usernames').doc(username).set({
-        'userId': userCredential.user!.uid,
-      });
-    } on FirebaseAuthException catch (e) {
-      rethrow; 
+    if (!snapshot.exists) {
+      print('User document does not exist!');
+      // Optionally create the document or handle the lack of it appropriately
+      return false;
     }
-  }
 
-  @override
-  Future<void> signInWithUsernameAndPassword(String username, String password) async {
-  var email = await _getEmailForUsername(username);
-  if (email == null) {
-    throw FirebaseAuthException(
-      code: 'user-not-found',
-      message: 'No user found for that username.',
-    );
+    await userRef.update({
+      'wallet.history': FieldValue.arrayUnion([transaction])
+    });
+    return true;
+  } catch (error) {
+    print('Error adding transaction: $error');
+    return false;
   }
-  
-  await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password).then((value) => null);
 }
 
 
-  Future<String?> _getEmailForUsername(String username) async {
-    var docSnapshot = await _firestore.collection('usernames').doc(username).get();
-    return docSnapshot.data()?['email'] as String?;
-  }
-
   @override
-  Future<void> logout() async {
-    return _firebaseAuth.signOut();
-  }
-
-  @override
-  Future<bool> isUserLoggedIn() async {
-    var user = _firebaseAuth.currentUser;
-    return user != null;
-  }
-
-   @override
   Future<UserModel> getUserModel() async {
     try {
       var userDoc = await _firestore

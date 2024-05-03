@@ -21,12 +21,20 @@ class WithdrawBottomSheet extends ConsumerStatefulWidget {
 }
 
 class _WithdrawBottomSheetState extends ConsumerState<WithdrawBottomSheet> {
+  final TextEditingController _nameController = TextEditingController();
+    final TextEditingController _acNoController = TextEditingController();
+    final TextEditingController _ifscController = TextEditingController();
+    final TextEditingController _amountController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final notifier = ref.read(walletProvider.notifier);
     final state = ref.read(walletProvider);
     final FirebaseAuth auth = FirebaseAuth.instance;
     final uid = auth.currentUser!.uid;
+
+    
+
     return BackdropFilter(
       filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
       child: ConstrainedBox(
@@ -67,7 +75,7 @@ class _WithdrawBottomSheetState extends ConsumerState<WithdrawBottomSheet> {
               ),
               AppTextField(
                 hintText: "Full Name",
-                controller: TextEditingController(),
+                controller: _nameController,
                 title: "Enter Full Name",
               ),
               const SizedBox(
@@ -75,7 +83,8 @@ class _WithdrawBottomSheetState extends ConsumerState<WithdrawBottomSheet> {
               ),
               AppTextField(
                 hintText: "Account Number",
-                controller: TextEditingController(),
+                controller: _acNoController,
+                keyboardType: TextInputType.number,
                 title: "Enter Account Number",
               ),
               const SizedBox(
@@ -83,7 +92,7 @@ class _WithdrawBottomSheetState extends ConsumerState<WithdrawBottomSheet> {
               ),
               AppTextField(
                 hintText: "IFSC Code",
-                controller: TextEditingController(),
+                controller: _ifscController,
                 title: "Enter IFSC Code",
               ),
               const SizedBox(
@@ -91,7 +100,8 @@ class _WithdrawBottomSheetState extends ConsumerState<WithdrawBottomSheet> {
               ),
               AppTextField(
                 hintText: "Withdraw Amount",
-                controller: TextEditingController(),
+                controller: _amountController,
+                keyboardType: TextInputType.number,
                 title: "Enter Withdraw Amount",
               ),
               const SizedBox(
@@ -105,8 +115,31 @@ class _WithdrawBottomSheetState extends ConsumerState<WithdrawBottomSheet> {
                     height: 12,
                   ),
                   GestureDetector(
-                    onTap: () {
-                      context.maybePop();
+                    onTap: () async {
+                      if (_nameController.text.isNotEmpty &&
+                          _acNoController.text.isNotEmpty &&
+                          _ifscController.text.isNotEmpty &&
+                          _amountController.text.isNotEmpty) {
+                        await notifier.requestWithdraw(
+                          context,
+                          name: _nameController.text,
+                          accountNo: _acNoController.text,
+                          ifscCode: _ifscController.text,
+                          amount: double.parse(_amountController.text),
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              'All fields are mandatory.',
+                            ),
+                            duration: Duration(seconds: 3),
+                          ),
+                        );
+                      }
+                      if (context.mounted) {
+                        context.maybePop();
+                      }
                     },
                     child: Container(
                       width: double.infinity,
@@ -124,10 +157,10 @@ class _WithdrawBottomSheetState extends ConsumerState<WithdrawBottomSheet> {
                       child: Center(
                         child: Text(
                           'Proceed',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodySmall
-                              ?.copyWith(fontWeight: FontWeight.w700),
+                          style:
+                              Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                  ),
                         ),
                       ),
                     ),

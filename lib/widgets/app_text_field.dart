@@ -4,12 +4,14 @@ class AppTextField extends StatelessWidget {
   final String hintText;
   final String title;
   final TextEditingController controller;
+  final TextInputType keyboardType = TextInputType.text;
 
   const AppTextField({
     Key? key,
     required this.hintText,
     required this.controller,
     required this.title,
+    keyboardType,
   }) : super(key: key);
 
   @override
@@ -46,7 +48,7 @@ class AppTextField extends StatelessWidget {
         color: Colors.black.withOpacity(0.1),
         spreadRadius: 2,
         blurRadius: 4,
-        offset: Offset(0, 2), // changes position of shadow
+        offset: const Offset(0, 2),
       ),
     ],
   ),)),
@@ -56,6 +58,7 @@ class AppTextField extends StatelessWidget {
                       const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6),
                   child: TextField(
                     controller: controller,
+                    keyboardType: keyboardType,
                     decoration: InputDecoration(
                     
                       border: InputBorder.none,
