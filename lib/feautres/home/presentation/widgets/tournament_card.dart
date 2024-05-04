@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:clipboard/clipboard.dart';
 import 'package:ff_moneyblaster/core/assets.dart';
 import 'package:ff_moneyblaster/core/constants.dart';
 import 'package:ff_moneyblaster/feautres/home/domain/tournament.dart';
@@ -11,7 +12,9 @@ import 'package:ff_moneyblaster/routes/app_router.gr.dart';
 import 'package:ff_moneyblaster/theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -854,6 +857,7 @@ class _JoinTournamamentWidgetState
                   // match starts in
                   Row(
                     mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Row(
                         mainAxisSize: MainAxisSize.min,
@@ -871,7 +875,16 @@ class _JoinTournamamentWidgetState
                           ),
                         ],
                       ),
-                      const Icon(Icons.copy),
+                      GestureDetector(
+                          onTap: () {
+                            FlutterClipboard.copy(widget.tournament.lobby ?? '')
+                                .then((value) => Fluttertoast.showToast(
+                                    msg: 'Lobby ID Copied.'));
+                          },
+                          child: const Icon(
+                            Icons.copy,
+                            color: Colors.white,
+                          )),
                     ],
                   ),
                 ],
