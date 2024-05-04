@@ -21,6 +21,12 @@ class WalletNotifier extends StateNotifier<UserWalletState> {
   List<TransactionHistory> withdrawalTransactions = [];
   List<TransactionHistory> depositTransactions = [];
 
+  Future<void> getQr() async {
+    final qrs = await _walletRepository.getQrs();
+    state = state.copyWith(
+        qr: qrs.singleWhere((element) => element.isDefault == true));
+  }
+
   void selectTab(WalletTab tab) {
     state = state.copyWith(selectedWalletTab: tab);
   }
@@ -44,7 +50,7 @@ class WalletNotifier extends StateNotifier<UserWalletState> {
     };
     bool result =
         await _walletRepository.addTransactionToWallet(newTransaction);
-    state = state.copyWith(isLoading: false);    
+    state = state.copyWith(isLoading: false);
     if (context.mounted) {
       if (result) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -83,7 +89,7 @@ class WalletNotifier extends StateNotifier<UserWalletState> {
     };
     bool result =
         await _walletRepository.addTransactionToWallet(newTransaction);
-    state = state.copyWith(isLoading: false);    
+    state = state.copyWith(isLoading: false);
     if (context.mounted) {
       if (result) {
         ScaffoldMessenger.of(context).showSnackBar(

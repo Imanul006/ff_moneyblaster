@@ -1,5 +1,6 @@
 import 'package:ff_moneyblaster/feautres/auth/domain/user_model.dart';
 import 'package:ff_moneyblaster/feautres/wallet/application/wallet_notifier.dart';
+import 'package:ff_moneyblaster/feautres/wallet/domain/qr_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'user_wallet_state.freezed.dart';
@@ -11,6 +12,7 @@ class UserWalletState with _$UserWalletState {
     @Default(false) bool isLoading,
     UserModel? user,
     @Default('') String errorMessage,
+    QrModel? qr,
   }) = _UserWalletState;
 
   const UserWalletState._();

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ff_moneyblaster/feautres/auth/domain/user_model.dart';
 import 'package:ff_moneyblaster/feautres/wallet/domain/i_wallet_repository.dart';
+import 'package:ff_moneyblaster/feautres/wallet/domain/qr_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class WalletRepository implements IWalletRepository {
@@ -8,34 +9,33 @@ class WalletRepository implements IWalletRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
-Future<bool> addTransactionToWallet(Map<String, dynamic> transaction) async {
-  final String uid = _firebaseAuth.currentUser?.uid ?? '';
+  Future<bool> addTransactionToWallet(Map<String, dynamic> transaction) async {
+    final String uid = _firebaseAuth.currentUser?.uid ?? '';
 
-  if (uid.isEmpty) {
-    print('No user logged in!');
-    return false;
-  }
-
-  try {
-    DocumentReference userRef = _firestore.collection('appusers').doc(uid);
-    var snapshot = await userRef.get();
-
-    if (!snapshot.exists) {
-      print('User document does not exist!');
-      // Optionally create the document or handle the lack of it appropriately
+    if (uid.isEmpty) {
+      print('No user logged in!');
       return false;
     }
 
-    await userRef.update({
-      'wallet.history': FieldValue.arrayUnion([transaction])
-    });
-    return true;
-  } catch (error) {
-    print('Error adding transaction: $error');
-    return false;
-  }
-}
+    try {
+      DocumentReference userRef = _firestore.collection('appusers').doc(uid);
+      var snapshot = await userRef.get();
 
+      if (!snapshot.exists) {
+        print('User document does not exist!');
+        // Optionally create the document or handle the lack of it appropriately
+        return false;
+      }
+
+      await userRef.update({
+        'wallet.history': FieldValue.arrayUnion([transaction])
+      });
+      return true;
+    } catch (error) {
+      print('Error adding transaction: $error');
+      return false;
+    }
+  }
 
   @override
   Future<UserModel> getUserModel() async {
@@ -77,5 +77,16 @@ Future<bool> addTransactionToWallet(Map<String, dynamic> transaction) async {
         message: 'Error occurred while fetching user data.',
       );
     }
+  }
+
+  @override
+  Future<List<QrModel>> getQrs() async {
+    var collection = FirebaseFirestore.instance.collection('qrs');
+    var snapshot = await collection.get();
+
+    var some =
+        snapshot.docs.map((doc) => QrModel.fromJson(doc.data())).toList();
+    print(some);
+    return some;
   }
 }

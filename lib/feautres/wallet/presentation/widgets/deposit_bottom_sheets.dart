@@ -10,7 +10,9 @@ import 'package:ff_moneyblaster/widgets/app_text_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:clipboard/clipboard.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class DepositBottomSheet extends ConsumerStatefulWidget {
   const DepositBottomSheet({
@@ -28,9 +30,18 @@ class _DepositBottomSheetState extends ConsumerState<DepositBottomSheet> {
   TextEditingController _amountController = TextEditingController();
 
   @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      final notifier = ref.watch(walletProvider.notifier);
+      await notifier.getQr();
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final notifier = ref.read(walletProvider.notifier);
-    final state = ref.read(walletProvider);
+    final state = ref.watch(walletProvider);
     final FirebaseAuth auth = FirebaseAuth.instance;
     final uid = auth.currentUser!.uid;
     return BackdropFilter(
@@ -56,6 +67,7 @@ class _DepositBottomSheetState extends ConsumerState<DepositBottomSheet> {
   }
 
   Widget depositQR(BuildContext context) {
+    final state = ref.watch(walletProvider);
     const String qrCodeUrl =
         "https://via.placeholder.com/500x500.png/a59090/000000?Text=500x500";
     const String upiId = "9876543210@okaxis";
@@ -84,8 +96,8 @@ class _DepositBottomSheetState extends ConsumerState<DepositBottomSheet> {
           height: 24,
         ),
         Container(
-          height: MediaQuery.of(context).size.width * 0.5,
-          width: MediaQuery.of(context).size.width * 0.5,
+          // height: MediaQuery.of(context).size.width * 0.5,
+          // width: MediaQuery.of(context).size.width * 0.5,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(20),
@@ -99,10 +111,11 @@ class _DepositBottomSheetState extends ConsumerState<DepositBottomSheet> {
             ],
           ),
           child: Padding(
-            padding: const EdgeInsets.all(30),
+            padding: const EdgeInsets.all(0),
             child: Image.network(
-              qrCodeUrl,
-              fit: BoxFit.cover,
+              state.qr?.qrImage ?? qrCodeUrl,
+              fit: BoxFit.contain,
+              width: MediaQuery.of(context).size.width * 0.5,
             ),
           ),
         ),
@@ -145,8 +158,8 @@ class _DepositBottomSheetState extends ConsumerState<DepositBottomSheet> {
         const SizedBox(
           height: 12,
         ),
-        const _UpiField(
-          upiId: upiId,
+        _UpiField(
+          upiId: state.qr?.upiId ?? upiId,
         ),
         const SizedBox(
           height: 38,
@@ -318,46 +331,52 @@ class _UpiField extends StatelessWidget {
   }
 
   Widget _copyButton(BuildContext context) {
-    return SizedBox(
-      height: 50,
-      width: 50,
-      child: Stack(
-        children: [
-          Image.asset(
-            "assets/images/textfield.png",
-            width: 50,
-            height: 50,
-            fit: BoxFit.cover,
-          ),
-          Positioned.fill(
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.5),
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    spreadRadius: 2,
-                    blurRadius: 4,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
+    return GestureDetector(
+      onTap: () {
+        FlutterClipboard.copy(upiId)
+            .then((value) => Fluttertoast.showToast(msg: 'UPI ID Copied.'));
+      },
+      child: SizedBox(
+        height: 50,
+        width: 50,
+        child: Stack(
+          children: [
+            Image.asset(
+              "assets/images/textfield.png",
+              width: 50,
+              height: 50,
+              fit: BoxFit.cover,
             ),
-          ),
-          const Positioned.fill(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 6),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Icon(
-                  Icons.copy,
-                  color: Colors.white,
+            Positioned.fill(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.5),
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      spreadRadius: 2,
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
                 ),
               ),
             ),
-          ),
-        ],
+            const Positioned.fill(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 6),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Icon(
+                    Icons.copy,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
