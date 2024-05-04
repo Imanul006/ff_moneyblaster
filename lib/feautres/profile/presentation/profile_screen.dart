@@ -1,10 +1,13 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:ff_moneyblaster/core/assets.dart';
 import 'package:ff_moneyblaster/core/constants.dart';
+import 'package:ff_moneyblaster/feautres/auth/shared/provider.dart';
 import 'package:ff_moneyblaster/feautres/wallet/presentation/widgets/tabbar.dart';
 
 import 'package:ff_moneyblaster/feautres/wallet/shared/provider.dart';
+import 'package:ff_moneyblaster/routes/app_router.gr.dart';
 import 'package:ff_moneyblaster/theme.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -265,6 +268,23 @@ class ProfileScreen extends ConsumerWidget {
                   PlayerDetailInfo(
                     title: 'UPI ID',
                     value: '23424x@okicici',
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  GestureDetector(
+                    onTap: () async {
+                      final notfier = ref.read(authProvider.notifier);
+                      await notfier.logout().then((value) =>
+                          context.router.replaceAll([const SplashScreen()]));
+                    },
+                    child: CustomButton(
+                      text: 'Logout',
+                      icon: Icons.logout,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 32,
                   ),
                 ],
               ),

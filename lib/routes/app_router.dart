@@ -16,5 +16,6 @@ class AppRouter extends $AppRouter {
         AutoRoute(page: LeaderboardScreen.page, path: '/leaderboard'),
         AutoRoute(page: ProfileScreen.page, path: '/profile'),
         AutoRoute(page: NotificationScreen.page, path: '/notifications'),
+        AutoRoute(page: ResultScreen.page, path: '/result'),
       ];
 }

@@ -39,4 +39,9 @@ class Assets {
   static const String playerLeaderboardSmall = 'assets/images/player_small.png';
   static const String profileImg = 'assets/images/profile_img.png';
   static const String notificationImg = 'assets/images/notification_img.png';
+
+  //results
+  static const String first = 'assets/icons/first.png';
+  static const String second = 'assets/icons/second.png';
+  static const String third = 'assets/icons/third.png';
 }

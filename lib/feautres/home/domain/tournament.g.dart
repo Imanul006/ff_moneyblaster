@@ -45,6 +45,11 @@ _$TournamentImpl _$$TournamentImplFromJson(Map<String, dynamic> json) =>
           const [],
       lobby: json['lobby'] as String?,
       liveLink: json['liveLink'] as String?,
+      result: (json['result'] as List<dynamic>?)
+          ?.map((e) => e == null
+              ? null
+              : ResultModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$TournamentImplToJson(_$TournamentImpl instance) =>
@@ -64,4 +69,23 @@ Map<String, dynamic> _$$TournamentImplToJson(_$TournamentImpl instance) =>
       'registeredPlayersId': instance.registeredPlayersId,
       'lobby': instance.lobby,
       'liveLink': instance.liveLink,
+      'result': instance.result,
+    };
+
+_$ResultModelImpl _$$ResultModelImplFromJson(Map<String, dynamic> json) =>
+    _$ResultModelImpl(
+      playerGameId: json['playerGameId'] as String?,
+      playerId: json['playerId'] as String?,
+      playerKills: (json['playerKills'] as num?)?.toInt(),
+      playerRank: (json['playerRank'] as num?)?.toInt(),
+      playerUsername: json['playerUsername'] as String?,
+    );
+
+Map<String, dynamic> _$$ResultModelImplToJson(_$ResultModelImpl instance) =>
+    <String, dynamic>{
+      'playerGameId': instance.playerGameId,
+      'playerId': instance.playerId,
+      'playerKills': instance.playerKills,
+      'playerRank': instance.playerRank,
+      'playerUsername': instance.playerUsername,
     };

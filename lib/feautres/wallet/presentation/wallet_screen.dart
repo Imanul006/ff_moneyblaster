@@ -27,10 +27,23 @@ class WalletScreen extends ConsumerWidget {
     final provider = ref.read(walletProvider.notifier);
 
     return isLoading
-        ? const Center(
-            child: CircularProgressIndicator(
-            color: Colors.white,
-          ))
+        ? Container(
+            width: double.infinity,
+            height: MediaQuery.sizeOf(context).height * 1,
+            decoration: BoxDecoration(
+              color: AppColors.blackBackground,
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: Image.asset(
+                  'assets/images/bg.png',
+                ).image,
+              ),
+            ),
+            child: const Center(
+                child: CircularProgressIndicator(
+              color: Colors.white,
+            )),
+          )
         : Container(
             width: double.infinity,
             height: MediaQuery.sizeOf(context).height * 1,
@@ -136,57 +149,61 @@ class WalletScreen extends ConsumerWidget {
                               ),
                               // buttons deposit and withdrawl
                               const Spacer(),
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  InkWell(
-                                    onTap: () async {
-                                      // await notifier.selectTournament(
-                                      //     widget.tournament);
-                                      showModalBottomSheet<void>(
-                                        backgroundColor: AppColors.glassColor,
-                                        barrierColor:
-                                            const Color.fromRGBO(7, 7, 7, 0.7),
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return const FractionallySizedBox(
-                                            heightFactor: 1.55,
-                                            child: DepositBottomSheet(),
-                                          );
-                                        },
-                                      );
-                                    },
-                                    child: const CustomButton(
-                                      text: 'Deposit',
-                                      icon: Icons.upload,
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 10.0),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    InkWell(
+                                      onTap: () async {
+                                        // await notifier.selectTournament(
+                                        //     widget.tournament);
+                                        showModalBottomSheet<void>(
+                                          backgroundColor: AppColors.glassColor,
+                                          barrierColor: const Color.fromRGBO(
+                                              7, 7, 7, 0.7),
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return const FractionallySizedBox(
+                                              heightFactor: 1.55,
+                                              child: DepositBottomSheet(),
+                                            );
+                                          },
+                                        );
+                                      },
+                                      child: const CustomButton(
+                                        text: 'Deposit',
+                                        icon: Icons.upload,
+                                      ),
                                     ),
-                                  ),
-                                  InkWell(
-                                    onTap: () async {
-                                      // await notifier.selectTournament(
-                                      //     widget.tournament);
-                                      showModalBottomSheet<void>(
-                                        backgroundColor: AppColors.glassColor,
-                                        barrierColor:
-                                            const Color.fromRGBO(7, 7, 7, 0.7),
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return const FractionallySizedBox(
-                                            heightFactor: 1.7,
-                                            child: WithdrawBottomSheet(),
-                                          );
-                                        },
-                                      );
-                                    },
-                                    child: const CustomButton(
-                                      filled: true,
-                                      text: 'Withdraw',
-                                      icon: Icons.download,
+                                    InkWell(
+                                      onTap: () async {
+                                        // await notifier.selectTournament(
+                                        //     widget.tournament);
+                                        showModalBottomSheet<void>(
+                                          backgroundColor: AppColors.glassColor,
+                                          barrierColor: const Color.fromRGBO(
+                                              7, 7, 7, 0.7),
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return const FractionallySizedBox(
+                                              heightFactor: 1.7,
+                                              child: WithdrawBottomSheet(),
+                                            );
+                                          },
+                                        );
+                                      },
+                                      child: const CustomButton(
+                                        filled: true,
+                                        text: 'Withdraw',
+                                        icon: Icons.download,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               )
                             ],
                           ),

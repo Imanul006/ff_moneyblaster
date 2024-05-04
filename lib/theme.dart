@@ -25,7 +25,7 @@ final ThemeData gameThemeDark = ThemeData(
     bodyMedium: TextStyle(
       color: Colors.white,
       fontFamily: 'Montserrat',
-      fontSize: 14,
+      fontSize: 16,
     ),
     bodySmall: TextStyle(
       color: Colors.white,

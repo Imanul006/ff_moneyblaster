@@ -6,6 +6,7 @@ import 'package:ff_moneyblaster/feautres/home/domain/tournament.dart';
 import 'package:ff_moneyblaster/feautres/home/presentation/widgets/tournament_card.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:riverpod/riverpod.dart';
 
 class HomeNotifier extends StateNotifier<HomeState> {
@@ -15,6 +16,35 @@ class HomeNotifier extends StateNotifier<HomeState> {
     this._homeRepository,
   ) : super(const HomeState()) {
     fetchTournaments();
+  }
+  RefreshController refreshController =
+      RefreshController(initialRefresh: false);
+
+  ScrollController scrollController = ScrollController();
+
+  void dispose() async {
+    scrollController.dispose();
+    refreshController.dispose();
+  }
+
+  void onRefresh() async {
+    // monitor network fetch
+    // Store current scroll position
+    double _scrollPosition = scrollController.position.pixels;
+    if (mounted) await fetchTournaments();
+    // if failed,use refreshFailed()
+    refreshController.refreshCompleted();
+    // scrollController.jumpTo(_scrollPosition);
+  }
+
+  void onLoading() async {
+    // monitor network fetch
+    double _scrollPosition = scrollController.position.pixels;
+
+    // if failed,use loadFailed(),if no data return,use LoadNodata()
+
+    refreshController.loadComplete();
+    // scrollController.jumpTo(_scrollPosition);
   }
 
   void selectTab(GameState tab) {
@@ -46,6 +76,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
     try {
       List<Tournament> tournaments = await _homeRepository.getTournaments();
       state = state.copyWith(tournaments: tournaments, isLoading: false);
+      print('ftched tournaments successfully');
     } catch (e) {
       state = state.copyWith(errorMessage: e.toString(), isLoading: false);
     }

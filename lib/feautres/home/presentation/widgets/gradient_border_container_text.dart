@@ -43,6 +43,7 @@ class _GradientBorderContainerTextState
 
   @override
   void dispose() {
+    super.dispose();
     unfocusNode.dispose();
   }
 

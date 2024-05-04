@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:auto_route/auto_route.dart';
@@ -6,11 +7,13 @@ import 'package:ff_moneyblaster/core/assets.dart';
 import 'package:ff_moneyblaster/core/constants.dart';
 import 'package:ff_moneyblaster/feautres/home/domain/tournament.dart';
 import 'package:ff_moneyblaster/feautres/home/shared/provider.dart';
+import 'package:ff_moneyblaster/routes/app_router.gr.dart';
 import 'package:ff_moneyblaster/theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 enum GameState {
   ongoing,
@@ -42,6 +45,28 @@ class _TournamentCardState extends ConsumerState<TournamentCard> {
       Timer.periodic(const Duration(seconds: 1), (_) => _updateDuration());
     }
     super.initState();
+  }
+
+  _launchURL(String address) async {
+    if (Platform.isIOS) {
+      final url = Uri.parse(address);
+      if (await canLaunchUrl(url)) {
+        await launchUrl(url);
+      } else {
+        if (await canLaunchUrl(url)) {
+          await launchUrl(url);
+        } else {
+          throw 'Could not launch $url';
+        }
+      }
+    } else {
+      final url = Uri.parse(address);
+      if (await canLaunchUrl(url)) {
+        await launchUrl(url);
+      } else {
+        throw 'Could not launch $url';
+      }
+    }
   }
 
   void _updateDuration() {
@@ -234,11 +259,20 @@ class _TournamentCardState extends ConsumerState<TournamentCard> {
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 4),
-                                      child: buildButton(
-                                          context,
-                                          'Result',
-                                          const Color(0xFF0051EF),
-                                          const Color(0xFF0051EF)),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          // sent to reslut page
+                                          context.pushRoute(ResultScreen(
+                                              result: widget.tournament.result,
+                                              title: widget
+                                                  .tournament.tournamentName!));
+                                        },
+                                        child: buildButton(
+                                            context,
+                                            'Result',
+                                            const Color(0xFF0051EF),
+                                            const Color(0xFF0051EF)),
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -247,17 +281,27 @@ class _TournamentCardState extends ConsumerState<TournamentCard> {
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 4),
-                                      child: buildButton(
-                                          context,
-                                          'Watch Live',
-                                          const Color(0xFFCF3A3A),
-                                          const Color(0xFF9D0000)),
-                                    ),
-                                  ),
+                                  widget.tournament.liveLink != null
+                                      ? Expanded(
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 4),
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                _launchURL(widget
+                                                    .tournament.liveLink!);
+                                                print(
+                                                    widget.tournament.liveLink);
+                                              },
+                                              child: buildButton(
+                                                  context,
+                                                  'Watch Live',
+                                                  const Color(0xFFCF3A3A),
+                                                  const Color(0xFF9D0000)),
+                                            ),
+                                          ),
+                                        )
+                                      : const SizedBox.shrink(),
                                   Expanded(
                                     child: GestureDetector(
                                       onTap: () async {

@@ -34,6 +34,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final state = ref.watch(authProvider);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.black,
@@ -98,7 +99,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                       await context.router.push(const SignupScreen());
                     },
                     child: Text(
-                      "Create BGMI Account",
+                      "Create ${state.gameOptionSelected} Account",
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
@@ -112,12 +113,12 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                   height: 70,
                   child: GlazedButtonFilled(
                     onTap: () async {
-                      debugPrint('Login Button clicked!');
+                      debugPrint('Login clicked!');
                       await context.router.push(const LoginScreen());
                     },
-                    child: const Text(
-                      "Login BGMI Account",
-                      style: TextStyle(
+                    child: Text(
+                      "Login ${state.gameOptionSelected}  Account",
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
                         color: Colors.white,

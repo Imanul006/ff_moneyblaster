@@ -9,23 +9,48 @@ import 'package:ff_moneyblaster/feautres/home/shared/provider.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sizer/sizer.dart';
 
 import 'widgets/gradient_border_container.dart';
 
 @RoutePage(name: 'HomeScreen')
-class HomeScreen extends ConsumerWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends ConsumerState<HomeScreen> {
+  @override
+  void dispose() {
+    final provider = ref.read(homeProvider.notifier);
+    provider.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final isLoading =
         ref.watch(homeProvider.select((state) => state.isLoading));
     final homeState = ref.watch(homeProvider);
     final provider = ref.read(homeProvider.notifier);
 
-    List<Tournament> ongoingTournaments = homeState.tournaments.where((tournament) => provider.getDifferenceInMilliseconds(tournament.dateTime!) > 0).toList();
-    List<Tournament> upcomingTournaments = homeState.tournaments.where((tournament) => provider.getDifferenceInMilliseconds(tournament.dateTime!) <=  0).toList();
+    List<Tournament> ongoingTournaments = homeState.tournaments
+        .where((tournament) =>
+            provider.getDifferenceInMilliseconds(tournament.dateTime!) > 0 &&
+            (tournament.result == null))
+        .toList();
+    List<Tournament> upcomingTournaments = homeState.tournaments
+        .where((tournament) =>
+            provider.getDifferenceInMilliseconds(tournament.dateTime!) <= 0)
+        .toList();
+    List<Tournament> pastTournaments = homeState.tournaments
+        .where((tournament) =>
+            provider.getDifferenceInMilliseconds(tournament.dateTime!) > 0 &&
+            tournament.result != null)
+        .toList();
 
     return SafeArea(
       child: Container(
@@ -156,7 +181,6 @@ class HomeScreen extends ConsumerWidget {
                               colors: AppColors.goldGradientBorder,
                               child:
                                   'https://media.wired.com/photos/5b17381815b2c744cb650b5f/master/w_2560%2Cc_limit/GettyImages-134367495.jpg',
-                                
                             ),
                           ),
                         ),
@@ -275,30 +299,69 @@ class HomeScreen extends ConsumerWidget {
                           ? const Center(child: CircularProgressIndicator())
                           : homeState.errorMessage.isNotEmpty
                               ? Text("Error: ${homeState.errorMessage}")
-                              : ListView.separated(
-                                  shrinkWrap: true,
-                                  itemCount: homeState.selectedHomeTab == GameState.upcoming ? upcomingTournaments.length : homeState.selectedHomeTab == GameState.ongoing ? ongoingTournaments.length : ongoingTournaments.length,
-                                  separatorBuilder:
-                                      (BuildContext context, int index) =>
-                                          const SizedBox(height: 10),
-                                  itemBuilder: (context, index) {
-
-                                    
-                                   
-                                    return homeState.selectedHomeTab == GameState.upcoming ? TournamentCard(
-                                      isLessThan24Hours: provider.isLessThan24Hours(upcomingTournaments[index].dateTime!),
-                                      gameState: homeState.selectedHomeTab,
-                                      tournament: upcomingTournaments[index],
-                                    ) : homeState.selectedHomeTab == GameState.ongoing ? TournamentCard(
-                                      isLessThan24Hours: provider.isLessThan24Hours(ongoingTournaments[index].dateTime!),
-                                      gameState: homeState.selectedHomeTab,
-                                      tournament: ongoingTournaments[index],
-                                    ) : TournamentCard(
-                                      isLessThan24Hours: provider.isLessThan24Hours(ongoingTournaments[index].dateTime!),
-                                      gameState: homeState.selectedHomeTab,
-                                      tournament: ongoingTournaments[index],
-                                    );
-                                  }),
+                              : SmartRefresher(
+                                  enablePullDown: true,
+                                  controller: provider.refreshController,
+                                  onRefresh: () {
+                                    provider.onRefresh();
+                                  },
+                                  onLoading: () {
+                                    provider.onLoading();
+                                  },
+                                  child: ListView.separated(
+                                      controller: provider.scrollController,
+                                      shrinkWrap: true,
+                                      itemCount: homeState.selectedHomeTab ==
+                                              GameState.upcoming
+                                          ? upcomingTournaments.length
+                                          : homeState.selectedHomeTab ==
+                                                  GameState.ongoing
+                                              ? ongoingTournaments.length
+                                              : pastTournaments.length,
+                                      separatorBuilder:
+                                          (BuildContext context, int index) =>
+                                              const SizedBox(height: 10),
+                                      itemBuilder: (context, index) {
+                                        return homeState.selectedHomeTab ==
+                                                GameState.upcoming
+                                            ? TournamentCard(
+                                                isLessThan24Hours:
+                                                    provider.isLessThan24Hours(
+                                                        upcomingTournaments[
+                                                                index]
+                                                            .dateTime!),
+                                                gameState:
+                                                    homeState.selectedHomeTab,
+                                                tournament:
+                                                    upcomingTournaments[index],
+                                              )
+                                            : homeState.selectedHomeTab ==
+                                                    GameState.ongoing
+                                                ? TournamentCard(
+                                                    isLessThan24Hours: provider
+                                                        .isLessThan24Hours(
+                                                            ongoingTournaments[
+                                                                    index]
+                                                                .dateTime!),
+                                                    gameState: homeState
+                                                        .selectedHomeTab,
+                                                    tournament:
+                                                        ongoingTournaments[
+                                                            index],
+                                                  )
+                                                : TournamentCard(
+                                                    isLessThan24Hours: provider
+                                                        .isLessThan24Hours(
+                                                            pastTournaments[
+                                                                    index]
+                                                                .dateTime!),
+                                                    gameState: homeState
+                                                        .selectedHomeTab,
+                                                    tournament:
+                                                        pastTournaments[index],
+                                                  );
+                                      }),
+                                ),
                     ),
                   )
                 ],

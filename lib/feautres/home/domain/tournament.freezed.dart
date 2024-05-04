@@ -242,6 +242,8 @@ mixin _$Tournament {
   String? get lobby => throw _privateConstructorUsedError;
   @JsonKey(name: 'liveLink')
   String? get liveLink => throw _privateConstructorUsedError;
+  @JsonKey(name: 'result')
+  List<ResultModel?>? get result => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -274,7 +276,8 @@ abstract class $TournamentCopyWith<$Res> {
       @JsonKey(name: 'tournamentName') String? tournamentName,
       @JsonKey(name: 'registeredPlayersId') List<String> registeredPlayersId,
       @JsonKey(name: 'lobby') String? lobby,
-      @JsonKey(name: 'liveLink') String? liveLink});
+      @JsonKey(name: 'liveLink') String? liveLink,
+      @JsonKey(name: 'result') List<ResultModel?>? result});
 
   $GameTypeCopyWith<$Res>? get gameType;
 }
@@ -307,6 +310,7 @@ class _$TournamentCopyWithImpl<$Res, $Val extends Tournament>
     Object? registeredPlayersId = null,
     Object? lobby = freezed,
     Object? liveLink = freezed,
+    Object? result = freezed,
   }) {
     return _then(_value.copyWith(
       createdAt: freezed == createdAt
@@ -369,6 +373,10 @@ class _$TournamentCopyWithImpl<$Res, $Val extends Tournament>
           ? _value.liveLink
           : liveLink // ignore: cast_nullable_to_non_nullable
               as String?,
+      result: freezed == result
+          ? _value.result
+          : result // ignore: cast_nullable_to_non_nullable
+              as List<ResultModel?>?,
     ) as $Val);
   }
 
@@ -412,7 +420,8 @@ abstract class _$$TournamentImplCopyWith<$Res>
       @JsonKey(name: 'tournamentName') String? tournamentName,
       @JsonKey(name: 'registeredPlayersId') List<String> registeredPlayersId,
       @JsonKey(name: 'lobby') String? lobby,
-      @JsonKey(name: 'liveLink') String? liveLink});
+      @JsonKey(name: 'liveLink') String? liveLink,
+      @JsonKey(name: 'result') List<ResultModel?>? result});
 
   @override
   $GameTypeCopyWith<$Res>? get gameType;
@@ -444,6 +453,7 @@ class __$$TournamentImplCopyWithImpl<$Res>
     Object? registeredPlayersId = null,
     Object? lobby = freezed,
     Object? liveLink = freezed,
+    Object? result = freezed,
   }) {
     return _then(_$TournamentImpl(
       createdAt: freezed == createdAt
@@ -506,6 +516,10 @@ class __$$TournamentImplCopyWithImpl<$Res>
           ? _value.liveLink
           : liveLink // ignore: cast_nullable_to_non_nullable
               as String?,
+      result: freezed == result
+          ? _value._result
+          : result // ignore: cast_nullable_to_non_nullable
+              as List<ResultModel?>?,
     ));
   }
 }
@@ -533,10 +547,12 @@ class _$TournamentImpl implements _Tournament {
       @JsonKey(name: 'registeredPlayersId')
       final List<String> registeredPlayersId = const [],
       @JsonKey(name: 'lobby') this.lobby,
-      @JsonKey(name: 'liveLink') this.liveLink})
+      @JsonKey(name: 'liveLink') this.liveLink,
+      @JsonKey(name: 'result') final List<ResultModel?>? result})
       : _prizePool = prizePool,
         _status = status,
-        _registeredPlayersId = registeredPlayersId;
+        _registeredPlayersId = registeredPlayersId,
+        _result = result;
 
   factory _$TournamentImpl.fromJson(Map<String, dynamic> json) =>
       _$$TournamentImplFromJson(json);
@@ -611,10 +627,20 @@ class _$TournamentImpl implements _Tournament {
   @override
   @JsonKey(name: 'liveLink')
   final String? liveLink;
+  final List<ResultModel?>? _result;
+  @override
+  @JsonKey(name: 'result')
+  List<ResultModel?>? get result {
+    final value = _result;
+    if (value == null) return null;
+    if (_result is EqualUnmodifiableListView) return _result;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'Tournament(createdAt: $createdAt, dateTime: $dateTime, uid: $uid, entryFee: $entryFee, gameType: $gameType, gameOption: $gameOption, lastUpdatedAt: $lastUpdatedAt, perKill: $perKill, prizePool: $prizePool, status: $status, totalPlayersAllowed: $totalPlayersAllowed, tournamentName: $tournamentName, registeredPlayersId: $registeredPlayersId, lobby: $lobby, liveLink: $liveLink)';
+    return 'Tournament(createdAt: $createdAt, dateTime: $dateTime, uid: $uid, entryFee: $entryFee, gameType: $gameType, gameOption: $gameOption, lastUpdatedAt: $lastUpdatedAt, perKill: $perKill, prizePool: $prizePool, status: $status, totalPlayersAllowed: $totalPlayersAllowed, tournamentName: $tournamentName, registeredPlayersId: $registeredPlayersId, lobby: $lobby, liveLink: $liveLink, result: $result)';
   }
 
   @override
@@ -647,7 +673,8 @@ class _$TournamentImpl implements _Tournament {
                 .equals(other._registeredPlayersId, _registeredPlayersId) &&
             (identical(other.lobby, lobby) || other.lobby == lobby) &&
             (identical(other.liveLink, liveLink) ||
-                other.liveLink == liveLink));
+                other.liveLink == liveLink) &&
+            const DeepCollectionEquality().equals(other._result, _result));
   }
 
   @JsonKey(ignore: true)
@@ -668,7 +695,8 @@ class _$TournamentImpl implements _Tournament {
       tournamentName,
       const DeepCollectionEquality().hash(_registeredPlayersId),
       lobby,
-      liveLink);
+      liveLink,
+      const DeepCollectionEquality().hash(_result));
 
   @JsonKey(ignore: true)
   @override
@@ -686,26 +714,28 @@ class _$TournamentImpl implements _Tournament {
 
 abstract class _Tournament implements Tournament {
   factory _Tournament(
-      {@JsonKey(name: 'created_at') final String? createdAt,
-      @JsonKey(
-          name: 'dateTime',
-          fromJson: _dateTimeFromTimestamp,
-          toJson: _dateTimeToTimestamp)
-      final DateTime? dateTime,
-      required final String? uid,
-      @JsonKey(name: 'entryFee') final int? entryFee,
-      @JsonKey(name: 'gameType') final GameType? gameType,
-      @JsonKey(name: 'gameOption') final String? gameOption,
-      @JsonKey(name: 'last_updated_at') final String? lastUpdatedAt,
-      @JsonKey(name: 'perKill') final int? perKill,
-      @JsonKey(name: 'prizePool') final List<int>? prizePool,
-      @JsonKey(name: 'status') final List<String>? status,
-      @JsonKey(name: 'totalPlayersAllowed') final int? totalPlayersAllowed,
-      @JsonKey(name: 'tournamentName') final String? tournamentName,
-      @JsonKey(name: 'registeredPlayersId')
-      final List<String> registeredPlayersId,
-      @JsonKey(name: 'lobby') final String? lobby,
-      @JsonKey(name: 'liveLink') final String? liveLink}) = _$TournamentImpl;
+          {@JsonKey(name: 'created_at') final String? createdAt,
+          @JsonKey(
+              name: 'dateTime',
+              fromJson: _dateTimeFromTimestamp,
+              toJson: _dateTimeToTimestamp)
+          final DateTime? dateTime,
+          required final String? uid,
+          @JsonKey(name: 'entryFee') final int? entryFee,
+          @JsonKey(name: 'gameType') final GameType? gameType,
+          @JsonKey(name: 'gameOption') final String? gameOption,
+          @JsonKey(name: 'last_updated_at') final String? lastUpdatedAt,
+          @JsonKey(name: 'perKill') final int? perKill,
+          @JsonKey(name: 'prizePool') final List<int>? prizePool,
+          @JsonKey(name: 'status') final List<String>? status,
+          @JsonKey(name: 'totalPlayersAllowed') final int? totalPlayersAllowed,
+          @JsonKey(name: 'tournamentName') final String? tournamentName,
+          @JsonKey(name: 'registeredPlayersId')
+          final List<String> registeredPlayersId,
+          @JsonKey(name: 'lobby') final String? lobby,
+          @JsonKey(name: 'liveLink') final String? liveLink,
+          @JsonKey(name: 'result') final List<ResultModel?>? result}) =
+      _$TournamentImpl;
 
   factory _Tournament.fromJson(Map<String, dynamic> json) =
       _$TournamentImpl.fromJson;
@@ -758,7 +788,252 @@ abstract class _Tournament implements Tournament {
   @JsonKey(name: 'liveLink')
   String? get liveLink;
   @override
+  @JsonKey(name: 'result')
+  List<ResultModel?>? get result;
+  @override
   @JsonKey(ignore: true)
   _$$TournamentImplCopyWith<_$TournamentImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+ResultModel _$ResultModelFromJson(Map<String, dynamic> json) {
+  return _ResultModel.fromJson(json);
+}
+
+/// @nodoc
+mixin _$ResultModel {
+  @JsonKey(name: 'playerGameId')
+  String? get playerGameId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'playerId')
+  String? get playerId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'playerKills')
+  int? get playerKills => throw _privateConstructorUsedError;
+  @JsonKey(name: 'playerRank')
+  int? get playerRank => throw _privateConstructorUsedError;
+  @JsonKey(name: 'playerUsername')
+  String? get playerUsername => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $ResultModelCopyWith<ResultModel> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $ResultModelCopyWith<$Res> {
+  factory $ResultModelCopyWith(
+          ResultModel value, $Res Function(ResultModel) then) =
+      _$ResultModelCopyWithImpl<$Res, ResultModel>;
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'playerGameId') String? playerGameId,
+      @JsonKey(name: 'playerId') String? playerId,
+      @JsonKey(name: 'playerKills') int? playerKills,
+      @JsonKey(name: 'playerRank') int? playerRank,
+      @JsonKey(name: 'playerUsername') String? playerUsername});
+}
+
+/// @nodoc
+class _$ResultModelCopyWithImpl<$Res, $Val extends ResultModel>
+    implements $ResultModelCopyWith<$Res> {
+  _$ResultModelCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? playerGameId = freezed,
+    Object? playerId = freezed,
+    Object? playerKills = freezed,
+    Object? playerRank = freezed,
+    Object? playerUsername = freezed,
+  }) {
+    return _then(_value.copyWith(
+      playerGameId: freezed == playerGameId
+          ? _value.playerGameId
+          : playerGameId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      playerId: freezed == playerId
+          ? _value.playerId
+          : playerId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      playerKills: freezed == playerKills
+          ? _value.playerKills
+          : playerKills // ignore: cast_nullable_to_non_nullable
+              as int?,
+      playerRank: freezed == playerRank
+          ? _value.playerRank
+          : playerRank // ignore: cast_nullable_to_non_nullable
+              as int?,
+      playerUsername: freezed == playerUsername
+          ? _value.playerUsername
+          : playerUsername // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$ResultModelImplCopyWith<$Res>
+    implements $ResultModelCopyWith<$Res> {
+  factory _$$ResultModelImplCopyWith(
+          _$ResultModelImpl value, $Res Function(_$ResultModelImpl) then) =
+      __$$ResultModelImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'playerGameId') String? playerGameId,
+      @JsonKey(name: 'playerId') String? playerId,
+      @JsonKey(name: 'playerKills') int? playerKills,
+      @JsonKey(name: 'playerRank') int? playerRank,
+      @JsonKey(name: 'playerUsername') String? playerUsername});
+}
+
+/// @nodoc
+class __$$ResultModelImplCopyWithImpl<$Res>
+    extends _$ResultModelCopyWithImpl<$Res, _$ResultModelImpl>
+    implements _$$ResultModelImplCopyWith<$Res> {
+  __$$ResultModelImplCopyWithImpl(
+      _$ResultModelImpl _value, $Res Function(_$ResultModelImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? playerGameId = freezed,
+    Object? playerId = freezed,
+    Object? playerKills = freezed,
+    Object? playerRank = freezed,
+    Object? playerUsername = freezed,
+  }) {
+    return _then(_$ResultModelImpl(
+      playerGameId: freezed == playerGameId
+          ? _value.playerGameId
+          : playerGameId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      playerId: freezed == playerId
+          ? _value.playerId
+          : playerId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      playerKills: freezed == playerKills
+          ? _value.playerKills
+          : playerKills // ignore: cast_nullable_to_non_nullable
+              as int?,
+      playerRank: freezed == playerRank
+          ? _value.playerRank
+          : playerRank // ignore: cast_nullable_to_non_nullable
+              as int?,
+      playerUsername: freezed == playerUsername
+          ? _value.playerUsername
+          : playerUsername // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$ResultModelImpl implements _ResultModel {
+  _$ResultModelImpl(
+      {@JsonKey(name: 'playerGameId') this.playerGameId,
+      @JsonKey(name: 'playerId') this.playerId,
+      @JsonKey(name: 'playerKills') this.playerKills,
+      @JsonKey(name: 'playerRank') this.playerRank,
+      @JsonKey(name: 'playerUsername') this.playerUsername});
+
+  factory _$ResultModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ResultModelImplFromJson(json);
+
+  @override
+  @JsonKey(name: 'playerGameId')
+  final String? playerGameId;
+  @override
+  @JsonKey(name: 'playerId')
+  final String? playerId;
+  @override
+  @JsonKey(name: 'playerKills')
+  final int? playerKills;
+  @override
+  @JsonKey(name: 'playerRank')
+  final int? playerRank;
+  @override
+  @JsonKey(name: 'playerUsername')
+  final String? playerUsername;
+
+  @override
+  String toString() {
+    return 'ResultModel(playerGameId: $playerGameId, playerId: $playerId, playerKills: $playerKills, playerRank: $playerRank, playerUsername: $playerUsername)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ResultModelImpl &&
+            (identical(other.playerGameId, playerGameId) ||
+                other.playerGameId == playerGameId) &&
+            (identical(other.playerId, playerId) ||
+                other.playerId == playerId) &&
+            (identical(other.playerKills, playerKills) ||
+                other.playerKills == playerKills) &&
+            (identical(other.playerRank, playerRank) ||
+                other.playerRank == playerRank) &&
+            (identical(other.playerUsername, playerUsername) ||
+                other.playerUsername == playerUsername));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, playerGameId, playerId,
+      playerKills, playerRank, playerUsername);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ResultModelImplCopyWith<_$ResultModelImpl> get copyWith =>
+      __$$ResultModelImplCopyWithImpl<_$ResultModelImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$ResultModelImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _ResultModel implements ResultModel {
+  factory _ResultModel(
+          {@JsonKey(name: 'playerGameId') final String? playerGameId,
+          @JsonKey(name: 'playerId') final String? playerId,
+          @JsonKey(name: 'playerKills') final int? playerKills,
+          @JsonKey(name: 'playerRank') final int? playerRank,
+          @JsonKey(name: 'playerUsername') final String? playerUsername}) =
+      _$ResultModelImpl;
+
+  factory _ResultModel.fromJson(Map<String, dynamic> json) =
+      _$ResultModelImpl.fromJson;
+
+  @override
+  @JsonKey(name: 'playerGameId')
+  String? get playerGameId;
+  @override
+  @JsonKey(name: 'playerId')
+  String? get playerId;
+  @override
+  @JsonKey(name: 'playerKills')
+  int? get playerKills;
+  @override
+  @JsonKey(name: 'playerRank')
+  int? get playerRank;
+  @override
+  @JsonKey(name: 'playerUsername')
+  String? get playerUsername;
+  @override
+  @JsonKey(ignore: true)
+  _$$ResultModelImplCopyWith<_$ResultModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
