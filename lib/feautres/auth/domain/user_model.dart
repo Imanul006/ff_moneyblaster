@@ -7,6 +7,9 @@ import 'package:flutter/foundation.dart';
 part 'user_model.freezed.dart';
 part 'user_model.g.dart';
 
+
+
+
 @freezed
 class UserModel with _$UserModel {
   @JsonSerializable(explicitToJson: true)
@@ -32,6 +35,7 @@ class GameStats with _$GameStats {
     @Default(0) int totalGames,
     @Default(0) int totalKills,
     @Default(0) int totalWins,
+    @Default(0) int totalWinAmount,
   }) = _GameStats;
 
   factory GameStats.fromJson(Map<String, dynamic> json) => _$GameStatsFromJson(json);

@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ff_moneyblaster/core/assets.dart';
 import 'package:ff_moneyblaster/core/constants.dart';
 
@@ -7,12 +8,12 @@ import 'package:ff_moneyblaster/feautres/home/presentation/widgets/tournament_ca
 import 'package:ff_moneyblaster/feautres/leaderboard/shared/provider.dart';
 import 'package:ff_moneyblaster/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gradient_borders/gradient_borders.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../auth/domain/user_model.dart';
 import 'widgets/gradient_border_container.dart';
 
 @RoutePage(name: 'LeaderboardScreen')
@@ -23,6 +24,8 @@ class LeaderbaordScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isLoading =
         ref.watch(leaderboardProvider.select((value) => value.isLoading));
+    final state = ref.watch(leaderboardProvider);
+    final provider = ref.read(leaderboardProvider.notifier);
 
     return Container(
       width: double.infinity,
@@ -81,7 +84,7 @@ class LeaderbaordScreen extends ConsumerWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Padding(
-                        padding: EdgeInsets.all(16),
+                        padding: const EdgeInsets.all(16),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -100,11 +103,11 @@ class LeaderbaordScreen extends ConsumerWidget {
                                   width: 66,
                                   height: 22,
                                   decoration: BoxDecoration(
-                                    color: Color(0x68FFFFFF),
+                                    color: const Color(0x68FFFFFF),
                                     borderRadius: BorderRadius.circular(35),
                                     shape: BoxShape.rectangle,
                                   ),
-                                  alignment: AlignmentDirectional(0, 0),
+                                  alignment: const AlignmentDirectional(0, 0),
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
@@ -129,11 +132,11 @@ class LeaderbaordScreen extends ConsumerWidget {
                                     width: 66,
                                     height: 22,
                                     decoration: BoxDecoration(
-                                      color: Color(0x68FFFFFF),
+                                      color: const Color(0x68FFFFFF),
                                       borderRadius: BorderRadius.circular(35),
                                       shape: BoxShape.rectangle,
                                     ),
-                                    alignment: AlignmentDirectional(0, 0),
+                                    alignment: const AlignmentDirectional(0, 0),
                                     child: Row(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
@@ -143,7 +146,7 @@ class LeaderbaordScreen extends ConsumerWidget {
                                               .textTheme
                                               .bodySmall,
                                         ),
-                                        Icon(Icons.keyboard_arrow_down,
+                                        const Icon(Icons.keyboard_arrow_down,
                                             color: Colors.white, size: 14),
                                       ],
                                     ),
@@ -203,7 +206,7 @@ class LeaderbaordScreen extends ConsumerWidget {
                                         const EdgeInsetsDirectional.fromSTEB(
                                             0, 6, 0, 0),
                                     child: Text(
-                                      'Techno Frank',
+                                      state.topUsers.isNotEmpty ? state.topUsers[1].username : "",
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodySmall
@@ -217,7 +220,7 @@ class LeaderbaordScreen extends ConsumerWidget {
                                     ),
                                   ),
                                   Text(
-                                    '₹800',
+                                    '₹${state.topUsers.isNotEmpty ? state.topUsers[1].gameStats.totalWinAmount : ""}',
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodySmall
@@ -270,7 +273,7 @@ class LeaderbaordScreen extends ConsumerWidget {
                                   padding: const EdgeInsetsDirectional.fromSTEB(
                                       0, 6, 0, 0),
                                   child: Text(
-                                    'MadMAx#',
+                                    state.topUsers.isNotEmpty ? state.topUsers[0].username : "",
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodySmall
@@ -284,7 +287,7 @@ class LeaderbaordScreen extends ConsumerWidget {
                                   ),
                                 ),
                                 Text(
-                                  '₹3200',
+                                  '₹${state.topUsers.isNotEmpty ? state.topUsers[0].gameStats.totalWinAmount : ""}',
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodySmall
@@ -342,7 +345,7 @@ class LeaderbaordScreen extends ConsumerWidget {
                                         const EdgeInsetsDirectional.fromSTEB(
                                             0, 6, 0, 0),
                                     child: Text(
-                                      'SahilKiller',
+                                      state.topUsers.isNotEmpty ? state.topUsers[2].username : "",
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodyMedium
@@ -356,7 +359,7 @@ class LeaderbaordScreen extends ConsumerWidget {
                                     ),
                                   ),
                                   Text(
-                                    '₹300',
+                                    '₹${state.topUsers.isNotEmpty ? state.topUsers[2].gameStats.totalWinAmount : ""}',
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodyMedium
@@ -394,107 +397,128 @@ class LeaderbaordScreen extends ConsumerWidget {
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     height: 50.h,
-                    child: ListView.separated(
-                        shrinkWrap: true,
-                        itemCount: 4,
-                        separatorBuilder: (BuildContext context, int index) =>
-                            const SizedBox(height: 12),
-                        itemBuilder: (context, index) {
-                          return Container(
-                            height: 70,
-                            width: double.infinity,
-                            // margin: const EdgeInsets.all(4),
-                            decoration: customDecoration.copyWith(
-                                borderRadius: BorderRadius.circular(8)),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 16, horizontal: 12),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  //left child
-                                  Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "1",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headlineMedium
-                                            ?.copyWith(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.w600),
-                                      ),
-                                      SizedBox(width: 12),
-                                      Container(
-                                        height: 32,
-                                        width: 32,
-                                        decoration: customDecoration.copyWith(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                        ),
-                                        child: Image.asset(
-                                            Assets.playerLeaderboardSmall),
-                                      ),
-                                      const SizedBox(width: 8),
-                                      Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            'MaDMaN',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodySmall
-                                                ?.copyWith(
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                          ),
-                                          Text('11 wins',
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .labelSmall),
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                  //right child
-                                  Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text(
-                                        '₹',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyMedium
-                                            ?.copyWith(
-                                                fontWeight: FontWeight.w700),
-                                      ),
-                                      Text(
-                                        '22030',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyMedium
-                                            ?.copyWith(
-                                                fontWeight: FontWeight.w700),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
+                    child: FutureBuilder<List<UserModel>>(
+                      future: provider.getTop10Users(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
                             ),
                           );
-                        }),
+                        } else if (snapshot.hasError) {
+                          return Center(
+                              child: Text('Error: ${snapshot.error}'));
+                        } else {
+                          return ListView.separated(
+                            shrinkWrap: true,
+                            itemCount: snapshot.data!.length,
+                            separatorBuilder:
+                                (BuildContext context, int index) =>
+                                    const SizedBox(height: 12),
+                            itemBuilder: (context, index) {
+                              return LeaderboardItem(
+                                  count: index + 1, user: snapshot.data![index]);
+                            },
+                          );
+                        }
+                      },
+                    ),
                   ),
-                )
+                ),
               ],
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class LeaderboardItem extends StatelessWidget {
+  final int count;
+  final UserModel user;
+  const LeaderboardItem({
+    required this.count,
+    required this.user,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 70,
+      width: double.infinity,
+      // margin: const EdgeInsets.all(4),
+      decoration:
+          customDecoration.copyWith(borderRadius: BorderRadius.circular(8)),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            //left child
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(
+                  count.toString(),
+                  style: Theme.of(context)
+                      .textTheme
+                      .headlineMedium
+                      ?.copyWith(fontSize: 20, fontWeight: FontWeight.w600),
+                ),
+                const SizedBox(width: 12),
+                Container(
+                  height: 32,
+                  width: 32,
+                  decoration: customDecoration.copyWith(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Image.asset(Assets.playerLeaderboardSmall),
+                ),
+                const SizedBox(width: 8),
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      user.username,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                    ),
+                    Text('${user.gameStats.totalWins} wins',
+                        style: Theme.of(context).textTheme.labelSmall),
+                  ],
+                )
+              ],
+            ),
+            //right child
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  '₹',
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.copyWith(fontWeight: FontWeight.w700),
+                ),
+                Text(
+                  user.gameStats.totalWinAmount.toString(),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.copyWith(fontWeight: FontWeight.w700),
+                ),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

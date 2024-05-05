@@ -17,6 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$LeaderboardState {
   bool get isLoading => throw _privateConstructorUsedError;
+  List<UserModel> get topUsers => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $LeaderboardStateCopyWith<LeaderboardState> get copyWith =>
@@ -29,7 +30,7 @@ abstract class $LeaderboardStateCopyWith<$Res> {
           LeaderboardState value, $Res Function(LeaderboardState) then) =
       _$LeaderboardStateCopyWithImpl<$Res, LeaderboardState>;
   @useResult
-  $Res call({bool isLoading});
+  $Res call({bool isLoading, List<UserModel> topUsers});
 }
 
 /// @nodoc
@@ -46,12 +47,17 @@ class _$LeaderboardStateCopyWithImpl<$Res, $Val extends LeaderboardState>
   @override
   $Res call({
     Object? isLoading = null,
+    Object? topUsers = null,
   }) {
     return _then(_value.copyWith(
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
               as bool,
+      topUsers: null == topUsers
+          ? _value.topUsers
+          : topUsers // ignore: cast_nullable_to_non_nullable
+              as List<UserModel>,
     ) as $Val);
   }
 }
@@ -64,7 +70,7 @@ abstract class _$$LeaderboardStateImplCopyWith<$Res>
       __$$LeaderboardStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool isLoading});
+  $Res call({bool isLoading, List<UserModel> topUsers});
 }
 
 /// @nodoc
@@ -79,12 +85,17 @@ class __$$LeaderboardStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? isLoading = null,
+    Object? topUsers = null,
   }) {
     return _then(_$LeaderboardStateImpl(
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
               as bool,
+      topUsers: null == topUsers
+          ? _value._topUsers
+          : topUsers // ignore: cast_nullable_to_non_nullable
+              as List<UserModel>,
     ));
   }
 }
@@ -92,15 +103,26 @@ class __$$LeaderboardStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$LeaderboardStateImpl extends _LeaderboardState {
-  const _$LeaderboardStateImpl({this.isLoading = false}) : super._();
+  const _$LeaderboardStateImpl(
+      {this.isLoading = false, final List<UserModel> topUsers = const []})
+      : _topUsers = topUsers,
+        super._();
 
   @override
   @JsonKey()
   final bool isLoading;
+  final List<UserModel> _topUsers;
+  @override
+  @JsonKey()
+  List<UserModel> get topUsers {
+    if (_topUsers is EqualUnmodifiableListView) return _topUsers;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_topUsers);
+  }
 
   @override
   String toString() {
-    return 'LeaderboardState(isLoading: $isLoading)';
+    return 'LeaderboardState(isLoading: $isLoading, topUsers: $topUsers)';
   }
 
   @override
@@ -109,11 +131,13 @@ class _$LeaderboardStateImpl extends _LeaderboardState {
         (other.runtimeType == runtimeType &&
             other is _$LeaderboardStateImpl &&
             (identical(other.isLoading, isLoading) ||
-                other.isLoading == isLoading));
+                other.isLoading == isLoading) &&
+            const DeepCollectionEquality().equals(other._topUsers, _topUsers));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isLoading);
+  int get hashCode => Object.hash(
+      runtimeType, isLoading, const DeepCollectionEquality().hash(_topUsers));
 
   @JsonKey(ignore: true)
   @override
@@ -124,12 +148,15 @@ class _$LeaderboardStateImpl extends _LeaderboardState {
 }
 
 abstract class _LeaderboardState extends LeaderboardState {
-  const factory _LeaderboardState({final bool isLoading}) =
-      _$LeaderboardStateImpl;
+  const factory _LeaderboardState(
+      {final bool isLoading,
+      final List<UserModel> topUsers}) = _$LeaderboardStateImpl;
   const _LeaderboardState._() : super._();
 
   @override
   bool get isLoading;
+  @override
+  List<UserModel> get topUsers;
   @override
   @JsonKey(ignore: true)
   _$$LeaderboardStateImplCopyWith<_$LeaderboardStateImpl> get copyWith =>

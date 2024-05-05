@@ -366,6 +366,7 @@ mixin _$GameStats {
   int get totalGames => throw _privateConstructorUsedError;
   int get totalKills => throw _privateConstructorUsedError;
   int get totalWins => throw _privateConstructorUsedError;
+  int get totalWinAmount => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -378,7 +379,12 @@ abstract class $GameStatsCopyWith<$Res> {
   factory $GameStatsCopyWith(GameStats value, $Res Function(GameStats) then) =
       _$GameStatsCopyWithImpl<$Res, GameStats>;
   @useResult
-  $Res call({String game, int totalGames, int totalKills, int totalWins});
+  $Res call(
+      {String game,
+      int totalGames,
+      int totalKills,
+      int totalWins,
+      int totalWinAmount});
 }
 
 /// @nodoc
@@ -398,6 +404,7 @@ class _$GameStatsCopyWithImpl<$Res, $Val extends GameStats>
     Object? totalGames = null,
     Object? totalKills = null,
     Object? totalWins = null,
+    Object? totalWinAmount = null,
   }) {
     return _then(_value.copyWith(
       game: null == game
@@ -416,6 +423,10 @@ class _$GameStatsCopyWithImpl<$Res, $Val extends GameStats>
           ? _value.totalWins
           : totalWins // ignore: cast_nullable_to_non_nullable
               as int,
+      totalWinAmount: null == totalWinAmount
+          ? _value.totalWinAmount
+          : totalWinAmount // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -428,7 +439,12 @@ abstract class _$$GameStatsImplCopyWith<$Res>
       __$$GameStatsImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String game, int totalGames, int totalKills, int totalWins});
+  $Res call(
+      {String game,
+      int totalGames,
+      int totalKills,
+      int totalWins,
+      int totalWinAmount});
 }
 
 /// @nodoc
@@ -446,6 +462,7 @@ class __$$GameStatsImplCopyWithImpl<$Res>
     Object? totalGames = null,
     Object? totalKills = null,
     Object? totalWins = null,
+    Object? totalWinAmount = null,
   }) {
     return _then(_$GameStatsImpl(
       game: null == game
@@ -464,6 +481,10 @@ class __$$GameStatsImplCopyWithImpl<$Res>
           ? _value.totalWins
           : totalWins // ignore: cast_nullable_to_non_nullable
               as int,
+      totalWinAmount: null == totalWinAmount
+          ? _value.totalWinAmount
+          : totalWinAmount // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -476,7 +497,8 @@ class _$GameStatsImpl with DiagnosticableTreeMixin implements _GameStats {
       {required this.game,
       this.totalGames = 0,
       this.totalKills = 0,
-      this.totalWins = 0});
+      this.totalWins = 0,
+      this.totalWinAmount = 0});
 
   factory _$GameStatsImpl.fromJson(Map<String, dynamic> json) =>
       _$$GameStatsImplFromJson(json);
@@ -492,10 +514,13 @@ class _$GameStatsImpl with DiagnosticableTreeMixin implements _GameStats {
   @override
   @JsonKey()
   final int totalWins;
+  @override
+  @JsonKey()
+  final int totalWinAmount;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'GameStats(game: $game, totalGames: $totalGames, totalKills: $totalKills, totalWins: $totalWins)';
+    return 'GameStats(game: $game, totalGames: $totalGames, totalKills: $totalKills, totalWins: $totalWins, totalWinAmount: $totalWinAmount)';
   }
 
   @override
@@ -506,7 +531,8 @@ class _$GameStatsImpl with DiagnosticableTreeMixin implements _GameStats {
       ..add(DiagnosticsProperty('game', game))
       ..add(DiagnosticsProperty('totalGames', totalGames))
       ..add(DiagnosticsProperty('totalKills', totalKills))
-      ..add(DiagnosticsProperty('totalWins', totalWins));
+      ..add(DiagnosticsProperty('totalWins', totalWins))
+      ..add(DiagnosticsProperty('totalWinAmount', totalWinAmount));
   }
 
   @override
@@ -520,13 +546,15 @@ class _$GameStatsImpl with DiagnosticableTreeMixin implements _GameStats {
             (identical(other.totalKills, totalKills) ||
                 other.totalKills == totalKills) &&
             (identical(other.totalWins, totalWins) ||
-                other.totalWins == totalWins));
+                other.totalWins == totalWins) &&
+            (identical(other.totalWinAmount, totalWinAmount) ||
+                other.totalWinAmount == totalWinAmount));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, game, totalGames, totalKills, totalWins);
+  int get hashCode => Object.hash(
+      runtimeType, game, totalGames, totalKills, totalWins, totalWinAmount);
 
   @JsonKey(ignore: true)
   @override
@@ -547,7 +575,8 @@ abstract class _GameStats implements GameStats {
       {required final String game,
       final int totalGames,
       final int totalKills,
-      final int totalWins}) = _$GameStatsImpl;
+      final int totalWins,
+      final int totalWinAmount}) = _$GameStatsImpl;
 
   factory _GameStats.fromJson(Map<String, dynamic> json) =
       _$GameStatsImpl.fromJson;
@@ -560,6 +589,8 @@ abstract class _GameStats implements GameStats {
   int get totalKills;
   @override
   int get totalWins;
+  @override
+  int get totalWinAmount;
   @override
   @JsonKey(ignore: true)
   _$$GameStatsImplCopyWith<_$GameStatsImpl> get copyWith =>

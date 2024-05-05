@@ -3,13 +3,9 @@ import 'package:ff_moneyblaster/core/assets.dart';
 import 'package:ff_moneyblaster/core/constants.dart';
 import 'package:ff_moneyblaster/feautres/auth/shared/provider.dart';
 import 'package:ff_moneyblaster/feautres/wallet/presentation/widgets/tabbar.dart';
-
-import 'package:ff_moneyblaster/feautres/wallet/shared/provider.dart';
 import 'package:ff_moneyblaster/routes/app_router.gr.dart';
 import 'package:ff_moneyblaster/theme.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gradient_borders/gradient_borders.dart';
@@ -20,24 +16,28 @@ class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<ProfileScreen> createState() => _ProfileScreenState();
+  _ProfileScreenState createState() => _ProfileScreenState();
 }
 
 class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      final walletNotifier = ref.read(walletProvider.notifier);
-      await walletNotifier.fetchUserDetails();
+    Future.delayed(Duration.zero, () {
+      _initial();
     });
     super.initState();
   }
 
+  _initial() async {
+    await ref.read(authProvider.notifier).fetchCurrentUserData();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(walletProvider);
-    final isLoading =
-        ref.watch(walletProvider.select((state) => state.isLoading));
+    final state = ref.watch(authProvider);
+    final provider = ref.read(authProvider.notifier);
+
+    final isLoading = state.isLoading;
 
     return Container(
       width: double.infinity,
@@ -51,264 +51,278 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           ).image,
         ),
       ),
-      child: Column(
-        children: [
-          Container(
-              width: MediaQuery.sizeOf(context).width,
-              height: MediaQuery.sizeOf(context).height * 0.15,
-              child: Container(
-                width: MediaQuery.sizeOf(context).width,
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
-                      colors: [
-                        Color.fromRGBO(206, 59, 59, 1),
-                        Color.fromRGBO(95, 18, 55, 1),
-                      ]),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      left: 16.0, right: 16, top: 50, bottom: 24),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            'PROFILE',
-                            style: Theme.of(context)
-                                .textTheme
-                                .headlineMedium
-                                ?.copyWith(fontWeight: FontWeight.w500),
-                          )
-                        ],
+      child: isLoading
+          ? const CircularProgressIndicator(color: Colors.white)
+          : Column(
+              children: [
+                SizedBox(
+                    width: MediaQuery.sizeOf(context).width,
+                    height: MediaQuery.sizeOf(context).height * 0.15,
+                    child: Container(
+                      width: MediaQuery.sizeOf(context).width,
+                      decoration: const BoxDecoration(
+                        gradient: LinearGradient(
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                            colors: [
+                              Color.fromRGBO(206, 59, 59, 1),
+                              Color.fromRGBO(95, 18, 55, 1),
+                            ]),
                       ),
-                    ],
-                  ),
-                ),
-              )),
-          const ProfileTaB(),
-          const SizedBox(
-            height: 20,
-          ),
-          // tab bar
-          Container(
-            height: 70.h,
-            padding: const EdgeInsets.only(left: 16, right: 16),
-            child: SingleChildScrollView(
-              primary: true,
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            height: 90,
-                            width: 90,
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: GradientBoxBorder(
-                                width: 5,
-                                gradient: LinearGradient(colors: [
-                                  Color.fromRGBO(206, 59, 59, 1),
-                                  Color.fromRGBO(95, 18, 55, 1),
-                                ]),
-                              ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            left: 16.0, right: 16, top: 50, bottom: 24),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  'PROFILE',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineMedium
+                                      ?.copyWith(fontWeight: FontWeight.w500),
+                                )
+                              ],
                             ),
-                            child: Image.asset(
-                              Assets.profileImg,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 12,
-                          ),
-                          Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                state.user?.username ?? '',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium
-                                    ?.copyWith(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w700),
-                              ),
-                              Text(
-                                'Game Type: ${state.user?.gameStats.game}',
-                                style: Theme.of(context).textTheme.bodySmall,
-                              ),
-                            ],
-                          )
-                        ],
+                          ],
+                        ),
                       ),
-                      // IconButton(
-                      //     onPressed: () {},
-                      //     icon: Image.asset(
-                      //       Assets.edit,
-                      //       scale: 2,
-                      //     ))
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  // player stats
-                  Container(
-                    width: double.infinity,
-                    // height: 240,
-                    padding: const EdgeInsets.all(16),
-                    decoration: customDecoration.copyWith(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
+                    )),
+                const ProfileTaB(),
+                const SizedBox(
+                  height: 20,
+                ),
+                // tab bar
+                Container(
+                  height: 70.h,
+                  padding: const EdgeInsets.only(left: 16, right: 16),
+                  child: SingleChildScrollView(
+                    primary: true,
                     child: Column(
                       mainAxisSize: MainAxisSize.max,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // 1 total winning
-                        Text(
-                          'TOTAL WININGS',
-                          style: Theme.of(context)
-                              .textTheme
-                              .headlineSmall
-                              ?.copyWith(fontWeight: FontWeight.w500),
-                        ),
-                        // 2 money
                         Row(
-                          mainAxisSize: MainAxisSize.min,
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              '₹ ${state.user?.wallet.balance}', // TODO total wins display
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge
-                                  ?.copyWith(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 32,
-                                      color: AppColors.blue),
-                            )
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Container(
+                                  height: 90,
+                                  width: 90,
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: GradientBoxBorder(
+                                      width: 5,
+                                      gradient: LinearGradient(colors: [
+                                        Color.fromRGBO(206, 59, 59, 1),
+                                        Color.fromRGBO(95, 18, 55, 1),
+                                      ]),
+                                    ),
+                                  ),
+                                  child: Image.asset(
+                                    Assets.profileImg,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 12,
+                                ),
+                                Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      provider.user?.username ?? "",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium
+                                          ?.copyWith(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w700),
+                                    ),
+                                    Text(
+                                      'Member since 24.04.24',
+                                      style:
+                                          Theme.of(context).textTheme.bodySmall,
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                            IconButton(
+                                onPressed: () {},
+                                icon: Image.asset(
+                                  Assets.edit,
+                                  scale: 2,
+                                ))
                           ],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
-                        // 3 matches played
-                        Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Matches Played',
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                            Text(
-                              state.user?.gameStats.totalGames.toString() ??
-                                  '0',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(fontWeight: FontWeight.w700),
-                            ),
-                          ],
+                        // player stats
+                        Container(
+                          width: double.infinity,
+                          // height: 240,
+                          padding: const EdgeInsets.all(16),
+                          decoration: customDecoration.copyWith(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              // 1 total winning
+                              Text(
+                                'TOTAL WININGS',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineSmall
+                                    ?.copyWith(fontWeight: FontWeight.w500),
+                              ),
+                              // 2 money
+                              Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    '₹ ${provider.user?.gameStats.totalWinAmount}',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge
+                                        ?.copyWith(
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 32,
+                                            color: AppColors.blue),
+                                  )
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              // 3 matches played
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Matches Played',
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium,
+                                  ),
+                                  Text(
+                                    provider.user?.gameStats.totalGames
+                                            .toString() ??
+                                        '',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.copyWith(fontWeight: FontWeight.w700),
+                                  ),
+                                ],
+                              ),
+                              // 4 matches won
+                              const SizedBox(
+                                height: 12,
+                              ),
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Matches Won',
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium,
+                                  ),
+                                  Text(
+                                    provider.user?.gameStats.totalWins
+                                            .toString() ??
+                                        '',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.copyWith(fontWeight: FontWeight.w700),
+                                  ),
+                                ],
+                              ),
+                              // kills
+                              const SizedBox(
+                                height: 12,
+                              ),
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Total Kills',
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium,
+                                  ),
+                                  Text(
+                                    provider.user?.gameStats.totalKills
+                                            .toString() ??
+                                        '',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.copyWith(fontWeight: FontWeight.w700),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
                         ),
-                        // 4 matches won
-                        SizedBox(
-                          height: 12,
+                        // info
+                        const SizedBox(
+                          height: 20,
                         ),
-                        Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Matches Won',
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                            Text(
-                              state.user?.gameStats.totalWins.toString() ?? '0',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(fontWeight: FontWeight.w700),
-                            ),
-                          ],
+                        PlayerDetailInfo(
+                          title: 'Game ID',
+                          value: provider.user?.gameId.toString() ?? '',
                         ),
-                        // kills
-                        SizedBox(
-                          height: 12,
+                        PlayerDetailInfo(
+                          title: 'Phone Number',
+                          value: provider.user?.phoneNumber.toString() ?? '',
                         ),
-                        Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Total Kills',
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                            Text(
-                              state.user?.gameStats.totalKills.toString() ??
-                                  '0',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(fontWeight: FontWeight.w700),
-                            ),
-                          ],
-                        )
+                        const PlayerDetailInfo(
+                          title: 'UPI ID',
+                          value: '23424x@okicici',
+                        ),
+                        const SizedBox(
+                          height: 16,
+                        ),
+                        GestureDetector(
+                          onTap: () async {
+                            final notfier = ref.read(authProvider.notifier);
+                            await notfier.logout().then((value) => context
+                                .router
+                                .replaceAll([const SplashScreen()]));
+                          },
+                          child: const CustomButton(
+                            text: 'Logout',
+                            icon: Icons.logout,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 32,
+                        ),
                       ],
                     ),
                   ),
-                  // info
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  PlayerDetailInfo(
-                    title: 'Game ID',
-                    value: 'IFFS2034SNERRR1',
-                  ),
-                  PlayerDetailInfo(
-                    title: 'Phone Number',
-                    value: '32484928429',
-                  ),
-                  // PlayerDetailInfo(
-                  //   title: 'UPI ID',
-                  //   value: '23424x@okicici',
-                  // ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  GestureDetector(
-                    onTap: () async {
-                      final notfier = ref.read(authProvider.notifier);
-                      await notfier.logout().then((value) =>
-                          context.router.replaceAll([const SplashScreen()]));
-                    },
-                    child: CustomButton(
-                      text: 'Logout',
-                      icon: Icons.logout,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 32,
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
     );
   }
 }
@@ -395,7 +409,7 @@ class CustomButton extends StatelessWidget {
               icon,
               color: filled ? AppColors.red : AppColors.greyText,
             ),
-            SizedBox(
+            const SizedBox(
               width: 6,
             ),
             Text(

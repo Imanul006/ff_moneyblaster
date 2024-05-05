@@ -19,8 +19,9 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      await Future.delayed(const Duration(seconds: 2));
       final authNotifer = ref.watch(authProvider.notifier);
+      authNotifer.calculateAndUpdateTotalEarning();
+      await Future.delayed(const Duration(seconds: 2));
       final state = ref.watch(authProvider);
       bool hasUser = await authNotifer.checkCurrentUser();
 

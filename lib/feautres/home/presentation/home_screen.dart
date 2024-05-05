@@ -129,7 +129,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           padding:
                               const EdgeInsetsDirectional.fromSTEB(0, 6, 0, 0),
                           child: Text(
-                            'Techno Frank',
+                            homeState.topUsers.isNotEmpty ? homeState.topUsers[1].username : "",
                             style:
                                 Theme.of(context).textTheme.bodySmall?.copyWith(
                                       fontFamily: 'Readex Pro',
@@ -141,7 +141,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           ),
                         ),
                         Text(
-                          '₹800',
+                          '₹${homeState.topUsers.isNotEmpty ? homeState.topUsers[1].gameStats.totalWinAmount : ""}',
                           style:
                               Theme.of(context).textTheme.bodySmall?.copyWith(
                                     fontFamily: 'Readex Pro',
@@ -191,7 +191,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         padding:
                             const EdgeInsetsDirectional.fromSTEB(0, 6, 0, 0),
                         child: Text(
-                          'MadMAx#',
+                          homeState.topUsers.isNotEmpty ? homeState.topUsers[0].username : "",
                           style:
                               Theme.of(context).textTheme.bodySmall?.copyWith(
                                     fontFamily: 'Readex Pro',
@@ -203,7 +203,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         ),
                       ),
                       Text(
-                        '₹3200',
+                        '₹${homeState.topUsers.isNotEmpty ? homeState.topUsers[0].gameStats.totalWinAmount : ""}',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                               fontFamily: 'Readex Pro',
                               color: Colors.white,
@@ -254,7 +254,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           padding:
                               const EdgeInsetsDirectional.fromSTEB(0, 6, 0, 0),
                           child: Text(
-                            'SahilKiller',
+                            homeState.topUsers.isNotEmpty ? homeState.topUsers[2].username : "",
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyMedium
@@ -268,7 +268,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           ),
                         ),
                         Text(
-                          '₹300',
+                          '₹${homeState.topUsers.isNotEmpty ? homeState.topUsers[2].gameStats.totalWinAmount : ""}',
                           style:
                               Theme.of(context).textTheme.bodyMedium?.copyWith(
                                     fontFamily: 'Readex Pro',

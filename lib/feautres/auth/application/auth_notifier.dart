@@ -18,10 +18,50 @@ class AuthNotifier extends StateNotifier<AuthState> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  UserModel? _user;
+
+  UserModel? get user => _user;
+
   AuthNotifier(this._authRepository) : super(const AuthState());
 
   void selectGame(String gameSelected) {
     state = state.copyWith(gameOptionSelected: gameSelected, isLoading: false);
+  }
+
+  Future<void> fetchCurrentUserData() async {
+    state = state.copyWith(isLoading: true);
+    User? currentUser = _auth.currentUser;
+    if (currentUser != null) {
+      final userDocRef = _firestore.collection('appusers').doc(currentUser.uid);
+      DocumentSnapshot userDoc = await userDocRef.get();
+      if (userDoc.exists) {
+        _user = UserModel.fromJson(userDoc.data() as Map<String, dynamic>);
+      }
+    }
+    state = state.copyWith(isLoading: false);
+  }
+
+  Future<void> calculateAndUpdateTotalEarning() async {
+    User? currentUser = _auth.currentUser;
+    if (currentUser != null) {
+      final userDocRef = _firestore.collection('appusers').doc(currentUser.uid);
+      DocumentSnapshot userDoc = await userDocRef.get();
+      if (userDoc.exists) {
+        UserModel user =
+            UserModel.fromJson(userDoc.data() as Map<String, dynamic>);
+
+        double totalEarning = 0;
+
+        for (var element in user.wallet.history) {
+          if (element.transaction > 0 &&
+              element.transactionStatus != "success") {
+            totalEarning += element.transaction;
+          }
+        }
+
+        await userDocRef.update({'gameStats.totalWinAmount': totalEarning});
+      }
+    }
   }
 
   Future<bool> isCurrentUserVerified(BuildContext context,

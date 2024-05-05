@@ -1,4 +1,5 @@
 import 'package:ff_moneyblaster/firebase_options.dart';
+import 'package:ff_moneyblaster/services/Fcm_service.dart';
 import 'package:ff_moneyblaster/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await FCMService().initNotification();
   runApp(
     ProviderScope(child: MyApp()),
   );

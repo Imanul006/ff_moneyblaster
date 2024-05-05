@@ -21,6 +21,7 @@ mixin _$HomeState {
   List<Tournament> get tournaments => throw _privateConstructorUsedError;
   String get errorMessage => throw _privateConstructorUsedError;
   Tournament? get selectedTournament => throw _privateConstructorUsedError;
+  List<UserModel> get topUsers => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $HomeStateCopyWith<HomeState> get copyWith =>
@@ -37,7 +38,8 @@ abstract class $HomeStateCopyWith<$Res> {
       GameState selectedHomeTab,
       List<Tournament> tournaments,
       String errorMessage,
-      Tournament? selectedTournament});
+      Tournament? selectedTournament,
+      List<UserModel> topUsers});
 
   $TournamentCopyWith<$Res>? get selectedTournament;
 }
@@ -60,6 +62,7 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
     Object? tournaments = null,
     Object? errorMessage = null,
     Object? selectedTournament = freezed,
+    Object? topUsers = null,
   }) {
     return _then(_value.copyWith(
       isLoading: null == isLoading
@@ -82,6 +85,10 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
           ? _value.selectedTournament
           : selectedTournament // ignore: cast_nullable_to_non_nullable
               as Tournament?,
+      topUsers: null == topUsers
+          ? _value.topUsers
+          : topUsers // ignore: cast_nullable_to_non_nullable
+              as List<UserModel>,
     ) as $Val);
   }
 
@@ -111,7 +118,8 @@ abstract class _$$HomeStateImplCopyWith<$Res>
       GameState selectedHomeTab,
       List<Tournament> tournaments,
       String errorMessage,
-      Tournament? selectedTournament});
+      Tournament? selectedTournament,
+      List<UserModel> topUsers});
 
   @override
   $TournamentCopyWith<$Res>? get selectedTournament;
@@ -133,6 +141,7 @@ class __$$HomeStateImplCopyWithImpl<$Res>
     Object? tournaments = null,
     Object? errorMessage = null,
     Object? selectedTournament = freezed,
+    Object? topUsers = null,
   }) {
     return _then(_$HomeStateImpl(
       isLoading: null == isLoading
@@ -155,6 +164,10 @@ class __$$HomeStateImplCopyWithImpl<$Res>
           ? _value.selectedTournament
           : selectedTournament // ignore: cast_nullable_to_non_nullable
               as Tournament?,
+      topUsers: null == topUsers
+          ? _value._topUsers
+          : topUsers // ignore: cast_nullable_to_non_nullable
+              as List<UserModel>,
     ));
   }
 }
@@ -167,8 +180,10 @@ class _$HomeStateImpl extends _HomeState {
       this.selectedHomeTab = GameState.ongoing,
       final List<Tournament> tournaments = const [],
       this.errorMessage = '',
-      this.selectedTournament})
+      this.selectedTournament,
+      final List<UserModel> topUsers = const []})
       : _tournaments = tournaments,
+        _topUsers = topUsers,
         super._();
 
   @override
@@ -191,10 +206,18 @@ class _$HomeStateImpl extends _HomeState {
   final String errorMessage;
   @override
   final Tournament? selectedTournament;
+  final List<UserModel> _topUsers;
+  @override
+  @JsonKey()
+  List<UserModel> get topUsers {
+    if (_topUsers is EqualUnmodifiableListView) return _topUsers;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_topUsers);
+  }
 
   @override
   String toString() {
-    return 'HomeState(isLoading: $isLoading, selectedHomeTab: $selectedHomeTab, tournaments: $tournaments, errorMessage: $errorMessage, selectedTournament: $selectedTournament)';
+    return 'HomeState(isLoading: $isLoading, selectedHomeTab: $selectedHomeTab, tournaments: $tournaments, errorMessage: $errorMessage, selectedTournament: $selectedTournament, topUsers: $topUsers)';
   }
 
   @override
@@ -211,7 +234,8 @@ class _$HomeStateImpl extends _HomeState {
             (identical(other.errorMessage, errorMessage) ||
                 other.errorMessage == errorMessage) &&
             (identical(other.selectedTournament, selectedTournament) ||
-                other.selectedTournament == selectedTournament));
+                other.selectedTournament == selectedTournament) &&
+            const DeepCollectionEquality().equals(other._topUsers, _topUsers));
   }
 
   @override
@@ -221,7 +245,8 @@ class _$HomeStateImpl extends _HomeState {
       selectedHomeTab,
       const DeepCollectionEquality().hash(_tournaments),
       errorMessage,
-      selectedTournament);
+      selectedTournament,
+      const DeepCollectionEquality().hash(_topUsers));
 
   @JsonKey(ignore: true)
   @override
@@ -236,7 +261,8 @@ abstract class _HomeState extends HomeState {
       final GameState selectedHomeTab,
       final List<Tournament> tournaments,
       final String errorMessage,
-      final Tournament? selectedTournament}) = _$HomeStateImpl;
+      final Tournament? selectedTournament,
+      final List<UserModel> topUsers}) = _$HomeStateImpl;
   const _HomeState._() : super._();
 
   @override
@@ -249,6 +275,8 @@ abstract class _HomeState extends HomeState {
   String get errorMessage;
   @override
   Tournament? get selectedTournament;
+  @override
+  List<UserModel> get topUsers;
   @override
   @JsonKey(ignore: true)
   _$$HomeStateImplCopyWith<_$HomeStateImpl> get copyWith =>

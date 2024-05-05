@@ -1,5 +1,7 @@
 // auth_notifier.dart
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ff_moneyblaster/feautres/auth/domain/user_model.dart';
 import 'package:ff_moneyblaster/feautres/home/application/home_state.dart';
 import 'package:ff_moneyblaster/feautres/home/domain/i_home_repository.dart';
 import 'package:ff_moneyblaster/feautres/home/domain/tournament.dart';
@@ -16,6 +18,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
     this._homeRepository,
   ) : super(const HomeState()) {
     fetchTournaments();
+    updateStateTopUsers();
   }
   RefreshController refreshController =
       RefreshController(initialRefresh: false);
@@ -25,6 +28,21 @@ class HomeNotifier extends StateNotifier<HomeState> {
   void dispose() async {
     scrollController.dispose();
     refreshController.dispose();
+  }
+
+  void updateStateTopUsers() async {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('appusers')
+        .orderBy('gameStats.totalWinAmount', descending: true)
+        .limit(3)
+        .get();
+
+    List<UserModel> topUsers = [];
+    for (var doc in querySnapshot.docs) {
+      topUsers.add(UserModel.fromJson(doc.data() as Map<String, dynamic>));
+    }
+
+    state = state.copyWith(topUsers: topUsers);
   }
 
   void onRefresh() async {

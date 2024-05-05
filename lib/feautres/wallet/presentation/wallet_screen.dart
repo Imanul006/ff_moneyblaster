@@ -185,6 +185,8 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
                                         // await notifier.selectTournament(
                                         //     widget.tournament);
                                         showModalBottomSheet<void>(
+                                          // enableDrag: true,
+                                          // isDismissible: false,
                                           backgroundColor: AppColors.glassColor,
                                           barrierColor: const Color.fromRGBO(
                                               7, 7, 7, 0.7),
@@ -207,13 +209,15 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
                                         // await notifier.selectTournament(
                                         //     widget.tournament);
                                         showModalBottomSheet<void>(
+                                         
+                                          // isDismissible: false,
                                           backgroundColor: AppColors.glassColor,
                                           barrierColor: const Color.fromRGBO(
                                               7, 7, 7, 0.7),
                                           context: context,
                                           builder: (BuildContext context) {
                                             return const FractionallySizedBox(
-                                              heightFactor: 1.7,
+                                              heightFactor: 1.6,
                                               child: WithdrawBottomSheet(),
                                             );
                                           },
