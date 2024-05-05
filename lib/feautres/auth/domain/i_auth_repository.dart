@@ -1,6 +1,7 @@
 // auth_repository.dart
 
 import 'package:ff_moneyblaster/feautres/auth/domain/user_model.dart';
+import 'package:flutter/material.dart';
 
 abstract class IAuthRepository {
   Future<bool> signInWithUsernameAndPassword(String userName, String password);
@@ -18,4 +19,8 @@ abstract class IAuthRepository {
   Future<bool> isUserLoggedIn();
   Future<bool> isUserVerified();
   Future<UserModel> getUserModel();
+  Future<void> verifyNumber(
+      {required String number,
+      BuildContext? context,
+      VoidCallback? successCallBack});
 }

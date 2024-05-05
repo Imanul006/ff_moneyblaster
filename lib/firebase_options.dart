@@ -15,7 +15,6 @@ import 'package:flutter/foundation.dart'
 /// );
 /// ```
 
-
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
@@ -67,4 +66,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'money-blaster-c39fc.appspot.com',
     iosBundleId: 'com.example.ffMoneyblaster',
   );
+
 }

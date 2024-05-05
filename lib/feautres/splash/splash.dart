@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:ff_moneyblaster/core/assets.dart';
 import 'package:ff_moneyblaster/core/widgets/animated_background.dart';
 import 'package:ff_moneyblaster/feautres/auth/shared/provider.dart';
 import 'package:ff_moneyblaster/routes/app_router.gr.dart';
@@ -23,7 +24,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       final state = ref.watch(authProvider);
       bool hasUser = await authNotifer.checkCurrentUser();
 
-      if (hasUser ) {
+      if (hasUser) {
         await authNotifer.checkIsUserVerified().then((value) {
           if (value) {
             context.router.replaceAll([const BaseRoute()]);
@@ -35,7 +36,6 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
         if (context.mounted) {
           context.router.replaceAll([const OnboardingScreen()]);
         }
-        
       }
     });
     super.initState();
@@ -43,7 +43,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.black,
       body: SafeArea(
@@ -52,7 +52,12 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
         right: false,
         child: Stack(
           children: [
-            AnimatedBackground(),
+            const AnimatedBackground(),
+            Align(
+              child: Center(
+                child: Image.asset(Assets.logo),
+              ),
+            )
           ],
         ),
       ),

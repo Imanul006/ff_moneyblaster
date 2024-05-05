@@ -1,17 +1,31 @@
+import 'package:ff_moneyblaster/core/assets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
-class LoginTextField extends StatelessWidget {
+class LoginTextField extends StatefulWidget {
   final String hintText;
   final String title;
   final TextEditingController controller;
+  final bool isPassword;
+  final Function(String)? onChanged;
+  final TextInputType? textInputType;
 
-  const LoginTextField({
-    Key? key,
-    required this.hintText,
-    required this.controller,
-    required this.title,
-  }) : super(key: key);
+  const LoginTextField(
+      {Key? key,
+      required this.hintText,
+      this.isPassword = false,
+      required this.controller,
+      required this.title,
+      this.textInputType = TextInputType.text,
+      this.onChanged})
+      : super(key: key);
 
+  @override
+  State<LoginTextField> createState() => _LoginTextFieldState();
+}
+
+class _LoginTextFieldState extends State<LoginTextField> {
+  bool passVisible = false;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -23,7 +37,7 @@ class LoginTextField extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 5),
             child: Text(
-              title,
+              widget.title,
               style: const TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.w600,
@@ -42,11 +56,32 @@ class LoginTextField extends StatelessWidget {
                 child: Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6),
-                  child: TextField(
-                    controller: controller,
+                  child: TextFormField(
+                    keyboardType: widget.textInputType,
+                    obscureText: widget.isPassword && !passVisible,
+                    controller: widget.controller,
+                    onChanged: widget.onChanged,
                     decoration: InputDecoration(
+                      suffix: widget.isPassword
+                          ? GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  passVisible = !passVisible;
+                                });
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 10.0),
+                                child: Image.asset(
+                                  passVisible
+                                      ? Assets.eyeShown
+                                      : Assets.eyeHidden,
+                                  scale: 2,
+                                ),
+                              ),
+                            )
+                          : const SizedBox.shrink(),
                       border: InputBorder.none,
-                      hintText: hintText,
+                      hintText: widget.hintText,
                       hintStyle: const TextStyle(
                         color: Color(0xffABABAB),
                         fontWeight: FontWeight.w300,

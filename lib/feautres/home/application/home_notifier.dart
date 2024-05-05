@@ -98,4 +98,13 @@ class HomeNotifier extends StateNotifier<HomeState> {
       state = state.copyWith(errorMessage: e.toString(), isLoading: false);
     }
   }
+
+  Future<void> drawWallet(int val) async {
+    state = state.copyWith(isLoading: true);
+    try {
+      final tournament = await _homeRepository.drawWallet(val: val);
+    } catch (e) {
+      state = state.copyWith(errorMessage: e.toString(), isLoading: false);
+    }
+  }
 }

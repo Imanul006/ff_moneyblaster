@@ -16,11 +16,26 @@ import 'package:gradient_borders/gradient_borders.dart';
 import 'package:sizer/sizer.dart';
 
 @RoutePage(name: 'ProfileScreen')
-class ProfileScreen extends ConsumerWidget {
+class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends ConsumerState<ProfileScreen> {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      final walletNotifier = ref.read(walletProvider.notifier);
+      await walletNotifier.fetchUserDetails();
+    });
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final state = ref.watch(walletProvider);
     final isLoading =
         ref.watch(walletProvider.select((state) => state.isLoading));
 
@@ -124,7 +139,7 @@ class ProfileScreen extends ConsumerWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Skyrider007',
+                                state.user?.username ?? '',
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyMedium
@@ -133,19 +148,19 @@ class ProfileScreen extends ConsumerWidget {
                                         fontWeight: FontWeight.w700),
                               ),
                               Text(
-                                'Member since 24.04.24',
+                                'Game Type: ${state.user?.gameStats.game}',
                                 style: Theme.of(context).textTheme.bodySmall,
                               ),
                             ],
                           )
                         ],
                       ),
-                      IconButton(
-                          onPressed: () {},
-                          icon: Image.asset(
-                            Assets.edit,
-                            scale: 2,
-                          ))
+                      // IconButton(
+                      //     onPressed: () {},
+                      //     icon: Image.asset(
+                      //       Assets.edit,
+                      //       scale: 2,
+                      //     ))
                     ],
                   ),
                   const SizedBox(
@@ -176,7 +191,7 @@ class ProfileScreen extends ConsumerWidget {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
-                              '₹ 3000',
+                              '₹ ${state.user?.wallet.balance}', // TODO total wins display
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyLarge
@@ -200,7 +215,8 @@ class ProfileScreen extends ConsumerWidget {
                               style: Theme.of(context).textTheme.bodyMedium,
                             ),
                             Text(
-                              '35',
+                              state.user?.gameStats.totalGames.toString() ??
+                                  '0',
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium
@@ -221,7 +237,7 @@ class ProfileScreen extends ConsumerWidget {
                               style: Theme.of(context).textTheme.bodyMedium,
                             ),
                             Text(
-                              '5',
+                              state.user?.gameStats.totalWins.toString() ?? '0',
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium
@@ -242,7 +258,8 @@ class ProfileScreen extends ConsumerWidget {
                               style: Theme.of(context).textTheme.bodyMedium,
                             ),
                             Text(
-                              '100',
+                              state.user?.gameStats.totalKills.toString() ??
+                                  '0',
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium
@@ -265,10 +282,10 @@ class ProfileScreen extends ConsumerWidget {
                     title: 'Phone Number',
                     value: '32484928429',
                   ),
-                  PlayerDetailInfo(
-                    title: 'UPI ID',
-                    value: '23424x@okicici',
-                  ),
+                  // PlayerDetailInfo(
+                  //   title: 'UPI ID',
+                  //   value: '23424x@okicici',
+                  // ),
                   const SizedBox(
                     height: 16,
                   ),

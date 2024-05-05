@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ff_moneyblaster/feautres/auth/domain/user_model.dart';
 import 'package:ff_moneyblaster/feautres/home/domain/i_home_repository.dart';
 import 'package:ff_moneyblaster/feautres/home/domain/tournament.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -30,5 +31,21 @@ class HomeRepository implements IHomeRepository {
 
     // Convert the tournament data to a Tournament object
     return Tournament.fromJson(tournamentData!);
+  }
+
+  @override
+  Future<void> drawWallet({required int val}) async {
+    final uid = _auth.currentUser!.uid;
+    final ref = _firestore.collection('appusers').doc(uid);
+    DocumentSnapshot documentSnapshot = await ref.get();
+    if (documentSnapshot.exists) {
+      Map<String, dynamic> data =
+          documentSnapshot.data() as Map<String, dynamic>;
+
+      final vig = data['wallet']['balance'];
+
+      data['wallet']['balance'] = (vig - val);
+      await ref.update(data);
+    }
   }
 }

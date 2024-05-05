@@ -6,6 +6,7 @@ import 'package:ff_moneyblaster/feautres/home/domain/tournament.dart';
 import 'package:ff_moneyblaster/feautres/home/presentation/widgets/tabbar.dart';
 import 'package:ff_moneyblaster/feautres/home/presentation/widgets/tournament_card.dart';
 import 'package:ff_moneyblaster/feautres/home/shared/provider.dart';
+import 'package:ff_moneyblaster/feautres/wallet/shared/provider.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -36,11 +37,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ref.watch(homeProvider.select((state) => state.isLoading));
     final homeState = ref.watch(homeProvider);
     final provider = ref.read(homeProvider.notifier);
+    final walletState = ref.watch(walletProvider);
 
     List<Tournament> ongoingTournaments = homeState.tournaments
         .where((tournament) =>
             provider.getDifferenceInMilliseconds(tournament.dateTime!) > 0 &&
-            (tournament.result == null))
+            (tournament.result == null && tournament.lobby != null))
         .toList();
     List<Tournament> upcomingTournaments = homeState.tournaments
         .where((tournament) =>
@@ -325,6 +327,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                         return homeState.selectedHomeTab ==
                                                 GameState.upcoming
                                             ? TournamentCard(
+                                                bal: walletState
+                                                        .user?.wallet.balance ??
+                                                    0,
                                                 isLessThan24Hours:
                                                     provider.isLessThan24Hours(
                                                         upcomingTournaments[
@@ -338,6 +343,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                             : homeState.selectedHomeTab ==
                                                     GameState.ongoing
                                                 ? TournamentCard(
+                                                    bal: walletState.user
+                                                            ?.wallet.balance ??
+                                                        0,
                                                     isLessThan24Hours: provider
                                                         .isLessThan24Hours(
                                                             ongoingTournaments[
@@ -350,6 +358,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                                             index],
                                                   )
                                                 : TournamentCard(
+                                                    bal: walletState.user
+                                                            ?.wallet.balance ??
+                                                        0,
                                                     isLessThan24Hours: provider
                                                         .isLessThan24Hours(
                                                             pastTournaments[

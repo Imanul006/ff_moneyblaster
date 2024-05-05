@@ -1,4 +1,6 @@
 class Assets {
+  static const String logo = 'assets/images/logo_tmp.png';
+
   static const String background = 'assets/animations/background.riv';
   static const String backgroundHome = 'assets/images/bg.png';
   static const String backgroundLeaderboard =
@@ -34,6 +36,8 @@ class Assets {
   // icons
   static const String edit = 'assets/icons/edit.png';
   static const String close = 'assets/icons/close.png';
+  static const String eyeHidden = 'assets/icons/eye-hide.png';
+  static const String eyeShown = 'assets/icons/eye-show.png';
 
   // images temp
   static const String playerLeaderboardSmall = 'assets/images/player_small.png';

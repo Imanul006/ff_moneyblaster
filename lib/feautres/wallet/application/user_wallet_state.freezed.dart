@@ -20,6 +20,7 @@ mixin _$UserWalletState {
   bool get isLoading => throw _privateConstructorUsedError;
   UserModel? get user => throw _privateConstructorUsedError;
   String get errorMessage => throw _privateConstructorUsedError;
+  QrModel? get qr => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $UserWalletStateCopyWith<UserWalletState> get copyWith =>
@@ -36,9 +37,11 @@ abstract class $UserWalletStateCopyWith<$Res> {
       {WalletTab selectedWalletTab,
       bool isLoading,
       UserModel? user,
-      String errorMessage});
+      String errorMessage,
+      QrModel? qr});
 
   $UserModelCopyWith<$Res>? get user;
+  $QrModelCopyWith<$Res>? get qr;
 }
 
 /// @nodoc
@@ -58,6 +61,7 @@ class _$UserWalletStateCopyWithImpl<$Res, $Val extends UserWalletState>
     Object? isLoading = null,
     Object? user = freezed,
     Object? errorMessage = null,
+    Object? qr = freezed,
   }) {
     return _then(_value.copyWith(
       selectedWalletTab: null == selectedWalletTab
@@ -76,6 +80,10 @@ class _$UserWalletStateCopyWithImpl<$Res, $Val extends UserWalletState>
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
               as String,
+      qr: freezed == qr
+          ? _value.qr
+          : qr // ignore: cast_nullable_to_non_nullable
+              as QrModel?,
     ) as $Val);
   }
 
@@ -88,6 +96,18 @@ class _$UserWalletStateCopyWithImpl<$Res, $Val extends UserWalletState>
 
     return $UserModelCopyWith<$Res>(_value.user!, (value) {
       return _then(_value.copyWith(user: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $QrModelCopyWith<$Res>? get qr {
+    if (_value.qr == null) {
+      return null;
+    }
+
+    return $QrModelCopyWith<$Res>(_value.qr!, (value) {
+      return _then(_value.copyWith(qr: value) as $Val);
     });
   }
 }
@@ -104,10 +124,13 @@ abstract class _$$UserWalletStateImplCopyWith<$Res>
       {WalletTab selectedWalletTab,
       bool isLoading,
       UserModel? user,
-      String errorMessage});
+      String errorMessage,
+      QrModel? qr});
 
   @override
   $UserModelCopyWith<$Res>? get user;
+  @override
+  $QrModelCopyWith<$Res>? get qr;
 }
 
 /// @nodoc
@@ -125,6 +148,7 @@ class __$$UserWalletStateImplCopyWithImpl<$Res>
     Object? isLoading = null,
     Object? user = freezed,
     Object? errorMessage = null,
+    Object? qr = freezed,
   }) {
     return _then(_$UserWalletStateImpl(
       selectedWalletTab: null == selectedWalletTab
@@ -143,6 +167,10 @@ class __$$UserWalletStateImplCopyWithImpl<$Res>
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
               as String,
+      qr: freezed == qr
+          ? _value.qr
+          : qr // ignore: cast_nullable_to_non_nullable
+              as QrModel?,
     ));
   }
 }
@@ -154,7 +182,8 @@ class _$UserWalletStateImpl extends _UserWalletState {
       {this.selectedWalletTab = WalletTab.withdraw,
       this.isLoading = false,
       this.user,
-      this.errorMessage = ''})
+      this.errorMessage = '',
+      this.qr})
       : super._();
 
   @override
@@ -168,10 +197,12 @@ class _$UserWalletStateImpl extends _UserWalletState {
   @override
   @JsonKey()
   final String errorMessage;
+  @override
+  final QrModel? qr;
 
   @override
   String toString() {
-    return 'UserWalletState(selectedWalletTab: $selectedWalletTab, isLoading: $isLoading, user: $user, errorMessage: $errorMessage)';
+    return 'UserWalletState(selectedWalletTab: $selectedWalletTab, isLoading: $isLoading, user: $user, errorMessage: $errorMessage, qr: $qr)';
   }
 
   @override
@@ -185,12 +216,13 @@ class _$UserWalletStateImpl extends _UserWalletState {
                 other.isLoading == isLoading) &&
             (identical(other.user, user) || other.user == user) &&
             (identical(other.errorMessage, errorMessage) ||
-                other.errorMessage == errorMessage));
+                other.errorMessage == errorMessage) &&
+            (identical(other.qr, qr) || other.qr == qr));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, selectedWalletTab, isLoading, user, errorMessage);
+      runtimeType, selectedWalletTab, isLoading, user, errorMessage, qr);
 
   @JsonKey(ignore: true)
   @override
@@ -205,7 +237,8 @@ abstract class _UserWalletState extends UserWalletState {
       {final WalletTab selectedWalletTab,
       final bool isLoading,
       final UserModel? user,
-      final String errorMessage}) = _$UserWalletStateImpl;
+      final String errorMessage,
+      final QrModel? qr}) = _$UserWalletStateImpl;
   const _UserWalletState._() : super._();
 
   @override
@@ -216,6 +249,8 @@ abstract class _UserWalletState extends UserWalletState {
   UserModel? get user;
   @override
   String get errorMessage;
+  @override
+  QrModel? get qr;
   @override
   @JsonKey(ignore: true)
   _$$UserWalletStateImplCopyWith<_$UserWalletStateImpl> get copyWith =>

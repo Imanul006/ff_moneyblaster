@@ -6,8 +6,11 @@ import 'package:auto_route/auto_route.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:ff_moneyblaster/core/assets.dart';
 import 'package:ff_moneyblaster/core/constants.dart';
+import 'package:ff_moneyblaster/feautres/auth/shared/provider.dart';
+import 'package:ff_moneyblaster/feautres/base/shared/providers.dart';
 import 'package:ff_moneyblaster/feautres/home/domain/tournament.dart';
 import 'package:ff_moneyblaster/feautres/home/shared/provider.dart';
+import 'package:ff_moneyblaster/feautres/wallet/shared/provider.dart';
 import 'package:ff_moneyblaster/routes/app_router.gr.dart';
 import 'package:ff_moneyblaster/theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -28,10 +31,12 @@ class TournamentCard extends ConsumerStatefulWidget {
   const TournamentCard(
       {super.key,
       required this.gameState,
+      required this.bal,
       required this.tournament,
       required this.isLessThan24Hours});
 
   final GameState gameState;
+  final int bal;
   final Tournament tournament;
   final bool isLessThan24Hours;
 
@@ -47,6 +52,8 @@ class _TournamentCardState extends ConsumerState<TournamentCard> {
       _updateDuration();
       Timer.periodic(const Duration(seconds: 1), (_) => _updateDuration());
     }
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {});
+
     super.initState();
   }
 
@@ -93,6 +100,7 @@ class _TournamentCardState extends ConsumerState<TournamentCard> {
   Widget build(BuildContext context) {
     final notifier = ref.read(homeProvider.notifier);
     final FirebaseAuth auth = FirebaseAuth.instance;
+    final walletState = ref.read(walletProvider);
     final uid = auth.currentUser!.uid;
     return Padding(
       padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
@@ -258,6 +266,27 @@ class _TournamentCardState extends ConsumerState<TournamentCard> {
                         : widget.gameState == GameState.past
                             ? Row(
                                 children: [
+                                  widget.tournament.liveLink != null
+                                      ? Expanded(
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 4),
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                _launchURL(widget
+                                                    .tournament.liveLink!);
+                                                print(
+                                                    widget.tournament.liveLink);
+                                              },
+                                              child: buildButton(
+                                                  context,
+                                                  'Watch',
+                                                  const Color(0xFFCF3A3A),
+                                                  const Color(0xFF9D0000)),
+                                            ),
+                                          ),
+                                        )
+                                      : const SizedBox.shrink(),
                                   Expanded(
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(
@@ -310,17 +339,34 @@ class _TournamentCardState extends ConsumerState<TournamentCard> {
                                       onTap: () async {
                                         await notifier.selectTournament(
                                             widget.tournament);
-                                        showModalBottomSheet<void>(
-                                          backgroundColor: AppColors.glassColor,
-                                          barrierColor: const Color.fromRGBO(
-                                              7, 7, 7, 0.7),
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return JoinTournamamentWidget(
-                                              tournament: widget.tournament,
-                                            );
-                                          },
-                                        );
+                                        final notifierWallet =
+                                            ref.read(walletProvider.notifier);
+                                        await notifierWallet.fetchUserDetails();
+                                        walletState.isLoading == false
+                                            ? showModalBottomSheet<void>(
+                                                backgroundColor:
+                                                    AppColors.glassColor,
+                                                barrierColor:
+                                                    const Color.fromRGBO(
+                                                        7, 7, 7, 0.7),
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return (walletState.user!
+                                                              .wallet.balance >
+                                                          widget.tournament
+                                                              .entryFee!)
+                                                      ? JoinTournamamentWidget(
+                                                          bal: widget.bal,
+                                                          tournament:
+                                                              widget.tournament,
+                                                        )
+                                                      : DepositBeforeJoining(
+                                                          tournament: widget
+                                                              .tournament);
+                                                },
+                                              )
+                                            : CircularProgressIndicator();
                                       },
                                       child: Padding(
                                         padding: const EdgeInsets.symmetric(
@@ -596,8 +642,10 @@ class _TournamentCardState extends ConsumerState<TournamentCard> {
 
 class JoinTournamamentWidget extends ConsumerStatefulWidget {
   final Tournament tournament;
+  final int bal;
   const JoinTournamamentWidget({
     required this.tournament,
+    required this.bal,
     super.key,
   });
 
@@ -621,7 +669,9 @@ class _JoinTournamamentWidgetState
     final now = DateTime.now();
     final remaining = widget.tournament.dateTime!.difference(now);
     _duration = remaining.isNegative ? Duration.zero : remaining;
-    setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   String formatDuration(Duration duration) {
@@ -906,7 +956,7 @@ class _JoinTournamamentWidgetState
                           'You have ',
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
-                        Text('₹2340',
+                        Text('₹${widget.bal}',
                             style:
                                 Theme.of(context).textTheme.bodySmall?.copyWith(
                                       fontWeight: FontWeight.w700,
@@ -921,43 +971,185 @@ class _JoinTournamamentWidgetState
                     const SizedBox(
                       height: 12,
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        notifier
-                            .registerForTournament(state.selectedTournament!)
-                            .then((value) {
-                          context.maybePop();
-                        });
-                      },
-                      child: Container(
-                        width: double.infinity,
-                        height: 45,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          gradient: const LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: [
-                                Color.fromRGBO(206, 59, 59, 1),
-                                Color.fromRGBO(95, 18, 55, 1),
-                              ]),
-                        ),
-                        child: Center(
-                          child: Text(
-                            'Proceed',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodySmall
-                                ?.copyWith(fontWeight: FontWeight.w700),
+                    if (!widget.tournament.registeredPlayersId
+                        .contains(FirebaseAuth.instance.currentUser!.uid))
+                      GestureDetector(
+                        onTap: () async {
+                          await notifier
+                              .drawWallet(widget.tournament.entryFee!);
+                          await notifier
+                              .registerForTournament(state.selectedTournament!)
+                              .then((value) {
+                            context.maybePop();
+                          });
+                        },
+                        child: Container(
+                          width: double.infinity,
+                          height: 45,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            gradient: const LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: [
+                                  Color.fromRGBO(206, 59, 59, 1),
+                                  Color.fromRGBO(95, 18, 55, 1),
+                                ]),
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Pay ₹${widget.tournament.entryFee}',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(fontWeight: FontWeight.w700),
+                            ),
                           ),
                         ),
                       ),
-                    ),
                   ],
                 )
               ],
             ),
           ),
+        ),
+        // Positioned(
+        //     top: 100,
+        //     child: Image.asset(
+        //       Assets.tournamentJoining,
+        //       scale: 2,
+        //     )),
+      ],
+    );
+  }
+}
+
+class DepositBeforeJoining extends ConsumerStatefulWidget {
+  final Tournament tournament;
+  const DepositBeforeJoining({
+    required this.tournament,
+    super.key,
+  });
+
+  @override
+  ConsumerState<DepositBeforeJoining> createState() =>
+      _DepositBeforeJoiningState();
+}
+
+class _DepositBeforeJoiningState extends ConsumerState<DepositBeforeJoining> {
+  Duration _duration = Duration.zero;
+
+  @override
+  void initState() {
+    super.initState();
+    _updateDuration();
+    Timer.periodic(const Duration(seconds: 1), (_) => _updateDuration());
+  }
+
+  void _updateDuration() {
+    final now = DateTime.now();
+    final remaining = widget.tournament.dateTime!.difference(now);
+    _duration = remaining.isNegative ? Duration.zero : remaining;
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
+  String formatDuration(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, "0");
+    final hours = twoDigits(duration.inHours);
+    final minutes = twoDigits(duration.inMinutes % 60);
+    final seconds = twoDigits(duration.inSeconds % 60);
+    return "match starts in : $hours hr $minutes min $seconds sec";
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        // Positioned(
+        //     top: 0,
+        //     right: 0,
+        //     child: Image.asset(
+        //       Assets.tournamentJoining,
+        //       scale: 2,
+        //     )),
+        BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
+          child: Container(
+              height: MediaQuery.of(context).size.height * 0.2,
+              padding: const EdgeInsets.all(20),
+              decoration: customDecoration.copyWith(
+                  color: AppColors.popUpColor,
+                  borderRadius: BorderRadius.circular(20)),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // 1 title and x
+                  // const Spacer(),
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'You need ',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              fontWeight: FontWeight.w700,
+                              // color: AppColors.blue,
+                            ),
+                      ),
+                      Text('₹${widget.tournament.entryFee}',
+                          style:
+                              Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                    color: AppColors.blue,
+                                  )),
+                      Text(
+                        ' more to participate',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              fontWeight: FontWeight.w700,
+                              // color: AppColors.blue,
+                            ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      final notifier = ref.read(baseNotifierProvider.notifier);
+                      context.maybePop();
+                      notifier.tapBottomNavIndex(1);
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      height: 45,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        gradient: const LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              Color.fromRGBO(206, 59, 59, 1),
+                              Color.fromRGBO(95, 18, 55, 1),
+                            ]),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Deposit',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall
+                              ?.copyWith(fontWeight: FontWeight.w700),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              )),
         ),
         // Positioned(
         //     top: 100,

@@ -10,6 +10,7 @@ class AuthState with _$AuthState {
     @Default(false) bool isUser,
     @Default(false) bool isUserVerified,
     @Default('') String? gameOptionSelected,
+    @Default('') String number,
   }) = _AuthState;
 
   const AuthState._();

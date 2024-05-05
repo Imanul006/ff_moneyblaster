@@ -1,9 +1,15 @@
 // firebase_auth_repository.dart
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ff_moneyblaster/core/constants.dart';
 import 'package:ff_moneyblaster/feautres/auth/domain/i_auth_repository.dart';
 import 'package:ff_moneyblaster/feautres/auth/domain/user_model.dart';
+import 'package:ff_moneyblaster/feautres/profile/presentation/profile_screen.dart';
+import 'package:ff_moneyblaster/theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:sizer/sizer.dart';
 
 class FirebaseAuthRepository implements IAuthRepository {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -165,5 +171,59 @@ class FirebaseAuthRepository implements IAuthRepository {
         message: 'Error occurred while fetching user data: $e',
       );
     }
+  }
+
+  @override
+  Future<void> verifyNumber(
+      {required String number,
+      BuildContext? context,
+      VoidCallback? successCallBack}) async {
+    // Use a TextEditingController to store the verification code
+    TextEditingController smsCodeController = TextEditingController();
+
+    // Request OTP verification for the provided phone number
+    await _firebaseAuth.verifyPhoneNumber(
+      phoneNumber: '+91${number.trim()}',
+      verificationCompleted: (PhoneAuthCredential credential) {
+        successCallBack?.call();
+      },
+      verificationFailed: (FirebaseAuthException e) {
+        Fluttertoast.showToast(msg: 'Verifcation Failed');
+      },
+      codeSent: (String verificationId, int? resendToken) async {
+        // Handle code sent to the user's phone number, for manual verification
+        // Save the verification ID for later use
+        String? smsCode = await showDialog(
+          context: context!,
+          builder: (context) => AlertDialog(
+            title: Text('Enter OTP'),
+            content: TextField(controller: smsCodeController),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context, smsCodeController.text);
+                },
+                child: Text('Submit'),
+              ),
+            ],
+          ),
+        );
+
+        // Create a PhoneAuthCredential using the verification ID and the user-entered OTP
+        PhoneAuthCredential credential = PhoneAuthProvider.credential(
+          verificationId: verificationId,
+          smsCode: smsCode!,
+        );
+
+        // Use the credential to verify the phone number
+        await _firebaseAuth.signInWithCredential(credential);
+
+        // After phone number verification is successful, you can proceed with signing in with email and password
+        // signInWithEmailPassword(email, password);
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {
+        // Handle code auto-retrieval timeout, if necessary
+      },
+    );
   }
 }

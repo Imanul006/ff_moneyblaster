@@ -120,4 +120,22 @@ class AuthNotifier extends StateNotifier<AuthState> {
   Future<void> logout() async {
     await _authRepository.logout();
   }
+
+  Future<void> verifyNumber(
+      BuildContext context, VoidCallback? voidCallback) async {
+    try {
+      await _authRepository.verifyNumber(
+          number: state.number,
+          context: context,
+          successCallBack: () {
+            // voidCallback?.call();
+          });
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  void setNumber(String number) {
+    state = state.copyWith(number: number);
+  }
 }

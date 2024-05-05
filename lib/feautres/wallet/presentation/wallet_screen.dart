@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:ff_moneyblaster/core/assets.dart';
 import 'package:ff_moneyblaster/core/constants.dart';
 import 'package:ff_moneyblaster/feautres/auth/domain/user_model.dart';
+import 'package:ff_moneyblaster/feautres/home/shared/provider.dart';
 import 'package:ff_moneyblaster/feautres/wallet/application/wallet_notifier.dart';
 import 'package:ff_moneyblaster/feautres/wallet/presentation/widgets/deposit_bottom_sheets.dart';
 import 'package:ff_moneyblaster/feautres/wallet/presentation/widgets/tabbar.dart';
@@ -13,14 +14,36 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sizer/sizer.dart';
 
 @RoutePage(name: 'WalletScreen')
-class WalletScreen extends ConsumerWidget {
+class WalletScreen extends ConsumerStatefulWidget {
   const WalletScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<WalletScreen> createState() => _WalletScreenState();
+}
+
+class _WalletScreenState extends ConsumerState<WalletScreen> {
+  @override
+  void dispose() {
+    final provider = ref.read(walletProvider.notifier);
+    provider.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      final notifier = ref.read(walletProvider.notifier);
+      await notifier.fetchUserDetails();
+    });
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final isLoading =
         ref.watch(walletProvider.select((state) => state.isLoading));
     final state = ref.watch(walletProvider);
@@ -220,14 +243,23 @@ class WalletScreen extends ConsumerWidget {
                     children: [
                       const TabBarWallet(),
                       Container(
-                        height: MediaQuery.of(context).size.height * 0.5,
-                        padding: const EdgeInsets.all(16),
-                        child: state.selectedWalletTab == WalletTab.withdraw
-                            ? _buildTransactionListview(
-                                provider.withdrawalTransactions, provider)
-                            : _buildTransactionListview(
-                                provider.depositTransactions, provider),
-                      )
+                          height: MediaQuery.of(context).size.height * 0.5,
+                          padding: const EdgeInsets.all(16),
+                          child: state.isLoading
+                              ? const Center(child: CircularProgressIndicator())
+                              : state.errorMessage.isNotEmpty
+                                  ? Text("Error: ${state.errorMessage}")
+                                  : MediaQuery.removePadding(
+                                      context: context,
+                                      removeTop: true,
+                                      child: state.selectedWalletTab ==
+                                              WalletTab.withdraw
+                                          ? _buildTransactionListview(
+                                              provider.withdrawalTransactions,
+                                              provider)
+                                          : _buildTransactionListview(
+                                              provider.depositTransactions,
+                                              provider)))
                     ],
                   ),
                 ),
