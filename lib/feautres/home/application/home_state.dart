@@ -10,6 +10,7 @@ class HomeState with _$HomeState {
   const factory HomeState({
     @Default(false) bool isLoading,
     @Default(GameState.ongoing) GameState selectedHomeTab,
+    @Default(ProfileTabState.profile) ProfileTabState selectedProfileTab,
     @Default([]) List<Tournament> tournaments,
     @Default('') String errorMessage,
     Tournament? selectedTournament,
@@ -17,4 +18,9 @@ class HomeState with _$HomeState {
   }) = _HomeState;
 
   const HomeState._();
+}
+
+enum ProfileTabState {
+  profile,
+  promode,
 }

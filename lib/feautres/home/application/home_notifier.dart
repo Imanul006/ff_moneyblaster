@@ -69,6 +69,10 @@ class HomeNotifier extends StateNotifier<HomeState> {
     state = state.copyWith(selectedHomeTab: tab);
   }
 
+  void selectProfileTab(ProfileTabState tab) {
+    state = state.copyWith(selectedProfileTab: tab);
+  }
+
   int getDifferenceInMilliseconds(DateTime inputTime) {
     DateTime currentTime = DateTime.now();
     Duration difference = currentTime.difference(inputTime);

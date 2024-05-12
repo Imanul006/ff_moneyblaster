@@ -1,13 +1,19 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:clipboard/clipboard.dart';
 import 'package:ff_moneyblaster/core/assets.dart';
 import 'package:ff_moneyblaster/core/constants.dart';
 import 'package:ff_moneyblaster/feautres/auth/shared/provider.dart';
+import 'package:ff_moneyblaster/feautres/home/application/home_state.dart';
+import 'package:ff_moneyblaster/feautres/home/shared/provider.dart';
+import 'package:ff_moneyblaster/feautres/profile/presentation/profile_tab.dart';
+import 'package:ff_moneyblaster/feautres/profile/presentation/promode_tab.dart';
 import 'package:ff_moneyblaster/feautres/wallet/presentation/widgets/tabbar.dart';
 import 'package:ff_moneyblaster/routes/app_router.gr.dart';
 import 'package:ff_moneyblaster/theme.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gradient_borders/gradient_borders.dart';
 import 'package:sizer/sizer.dart';
 
@@ -35,6 +41,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(authProvider);
+    final tabState = ref.watch(homeProvider).selectedProfileTab;
     final provider = ref.read(authProvider.notifier);
 
     final isLoading = state.isLoading;
@@ -80,7 +87,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                             Row(
                               children: [
                                 Text(
-                                  'PROFILE',
+                                  tabState == ProfileTabState.profile
+                                      ? 'PROFILE'
+                                      : 'PROFESSIONAL MODE',
                                   style: Theme.of(context)
                                       .textTheme
                                       .headlineMedium
@@ -97,230 +106,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   height: 20,
                 ),
                 // tab bar
-                Container(
-                  height: 70.h,
-                  padding: const EdgeInsets.only(left: 16, right: 16),
-                  child: SingleChildScrollView(
-                    primary: true,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Container(
-                                  height: 90,
-                                  width: 90,
-                                  decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: GradientBoxBorder(
-                                      width: 5,
-                                      gradient: LinearGradient(colors: [
-                                        Color.fromRGBO(206, 59, 59, 1),
-                                        Color.fromRGBO(95, 18, 55, 1),
-                                      ]),
-                                    ),
-                                  ),
-                                  child: Image.asset(
-                                    Assets.profileImg,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 12,
-                                ),
-                                Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      provider.user?.username ?? "",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium
-                                          ?.copyWith(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.w700),
-                                    ),
-                                    Text(
-                                      'Member since 24.04.24',
-                                      style:
-                                          Theme.of(context).textTheme.bodySmall,
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                            IconButton(
-                                onPressed: () {},
-                                icon: Image.asset(
-                                  Assets.edit,
-                                  scale: 2,
-                                ))
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        // player stats
-                        Container(
-                          width: double.infinity,
-                          // height: 240,
-                          padding: const EdgeInsets.all(16),
-                          decoration: customDecoration.copyWith(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.max,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              // 1 total winning
-                              Text(
-                                'TOTAL WININGS',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headlineSmall
-                                    ?.copyWith(fontWeight: FontWeight.w500),
-                              ),
-                              // 2 money
-                              Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    '₹ ${provider.user?.gameStats.totalWinAmount}',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyLarge
-                                        ?.copyWith(
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 32,
-                                            color: AppColors.blue),
-                                  )
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              // 3 matches played
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'Matches Played',
-                                    style:
-                                        Theme.of(context).textTheme.bodyMedium,
-                                  ),
-                                  Text(
-                                    provider.user?.gameStats.totalGames
-                                            .toString() ??
-                                        '',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium
-                                        ?.copyWith(fontWeight: FontWeight.w700),
-                                  ),
-                                ],
-                              ),
-                              // 4 matches won
-                              const SizedBox(
-                                height: 12,
-                              ),
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'Matches Won',
-                                    style:
-                                        Theme.of(context).textTheme.bodyMedium,
-                                  ),
-                                  Text(
-                                    provider.user?.gameStats.totalWins
-                                            .toString() ??
-                                        '',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium
-                                        ?.copyWith(fontWeight: FontWeight.w700),
-                                  ),
-                                ],
-                              ),
-                              // kills
-                              const SizedBox(
-                                height: 12,
-                              ),
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'Total Kills',
-                                    style:
-                                        Theme.of(context).textTheme.bodyMedium,
-                                  ),
-                                  Text(
-                                    provider.user?.gameStats.totalKills
-                                            .toString() ??
-                                        '',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium
-                                        ?.copyWith(fontWeight: FontWeight.w700),
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
-                        ),
-                        // info
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        PlayerDetailInfo(
-                          title: 'Game ID',
-                          value: provider.user?.gameId.toString() ?? '',
-                        ),
-                        PlayerDetailInfo(
-                          title: 'Phone Number',
-                          value: provider.user?.phoneNumber.toString() ?? '',
-                        ),
-                        const PlayerDetailInfo(
-                          title: 'UPI ID',
-                          value: '23424x@okicici',
-                        ),
-                        const SizedBox(
-                          height: 16,
-                        ),
-                        GestureDetector(
-                          onTap: () async {
-                            final notfier = ref.read(authProvider.notifier);
-                            await notfier.logout().then((value) => context
-                                .router
-                                .replaceAll([const SplashScreen()]));
-                          },
-                          child: const CustomButton(
-                            text: 'Logout',
-                            icon: Icons.logout,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 32,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                if (tabState == ProfileTabState.profile) const ProfileTab(),
+                if (tabState == ProfileTabState.promode) const ProModeTab(),
               ],
             ),
     );
@@ -332,10 +119,12 @@ class PlayerDetailInfo extends StatelessWidget {
     super.key,
     required this.title,
     required this.value,
+    this.withCopy = true,
   });
 
   final String title;
   final String value;
+  final bool withCopy;
 
   @override
   Widget build(BuildContext context) {
@@ -354,13 +143,15 @@ class PlayerDetailInfo extends StatelessWidget {
           height: 8,
         ),
         Container(
-          height: 50,
+          height: 60,
           width: double.infinity,
           padding: const EdgeInsets.symmetric(horizontal: 16),
           decoration:
               customDecoration.copyWith(borderRadius: BorderRadius.circular(8)),
           child: Center(
             child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   value,
@@ -369,6 +160,49 @@ class PlayerDetailInfo extends StatelessWidget {
                       .bodySmall
                       ?.copyWith(color: AppColors.greyLight),
                 ),
+                GestureDetector(
+                  onTap: () {
+                    FlutterClipboard.copy(value).then((value) =>
+                        Fluttertoast.showToast(msg: 'UPI ID Copied.'));
+                  },
+                  child: SizedBox(
+                    height: 50,
+                    width: 50,
+                    child: Stack(
+                      children: [
+                        Positioned.fill(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.2),
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  spreadRadius: 2,
+                                  blurRadius: 4,
+                                  offset: const Offset(0, 2),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const Positioned.fill(
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 12.0, vertical: 6),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Icon(
+                                Icons.copy,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
               ],
             ),
           ),

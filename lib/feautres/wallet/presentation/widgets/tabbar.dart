@@ -1,3 +1,4 @@
+import 'package:ff_moneyblaster/feautres/home/application/home_state.dart';
 import 'package:ff_moneyblaster/feautres/home/presentation/widgets/tournament_card.dart';
 import 'package:ff_moneyblaster/feautres/home/shared/provider.dart';
 import 'package:ff_moneyblaster/feautres/wallet/application/wallet_notifier.dart';
@@ -22,8 +23,7 @@ class TabBarWallet extends ConsumerWidget {
         children: [
           Expanded(
             child: GestureDetector(
-              onTap: () =>
-                  provider.selectTab(WalletTab.deposit),
+              onTap: () => provider.selectTab(WalletTab.deposit),
               child: SizedBox(
                 width: double.infinity,
                 height: 48,
@@ -40,8 +40,7 @@ class TabBarWallet extends ConsumerWidget {
           ),
           Expanded(
             child: GestureDetector(
-              onTap: () =>
-                  provider.selectTab(WalletTab.withdraw),
+              onTap: () => provider.selectTab(WalletTab.withdraw),
               child: SizedBox(
                 width: double.infinity,
                 height: 48,
@@ -76,8 +75,9 @@ class ProfileTaB extends ConsumerWidget {
         children: [
           Expanded(
             child: GestureDetector(
-              onTap: () =>
-                  ref.read(homeProvider.notifier).selectTab(GameState.ongoing),
+              onTap: () => ref
+                  .read(homeProvider.notifier)
+                  .selectProfileTab(ProfileTabState.profile),
               child: SizedBox(
                 width: double.infinity,
                 height: 48,
@@ -87,15 +87,17 @@ class ProfileTaB extends ConsumerWidget {
                   radius: 0.0,
                   child: 'Profile',
                   colors: AppColors.tabBorder,
-                  isActive: homeState.selectedHomeTab == GameState.ongoing,
+                  isActive:
+                      homeState.selectedProfileTab == ProfileTabState.profile,
                 ),
               ),
             ),
           ),
           Expanded(
             child: GestureDetector(
-              onTap: () =>
-                  ref.read(homeProvider.notifier).selectTab(GameState.upcoming),
+              onTap: () => ref
+                  .read(homeProvider.notifier)
+                  .selectProfileTab(ProfileTabState.promode),
               child: SizedBox(
                 width: double.infinity,
                 height: 48,
@@ -105,7 +107,8 @@ class ProfileTaB extends ConsumerWidget {
                   radius: 0.0,
                   child: 'Pro Mode',
                   colors: AppColors.tabBorder,
-                  isActive: homeState.selectedHomeTab == GameState.upcoming,
+                  isActive:
+                      homeState.selectedProfileTab == ProfileTabState.promode,
                 ),
               ),
             ),

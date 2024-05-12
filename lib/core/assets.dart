@@ -48,4 +48,7 @@ class Assets {
   static const String first = 'assets/icons/first.png';
   static const String second = 'assets/icons/second.png';
   static const String third = 'assets/icons/third.png';
+
+  //profile
+  static const String coinIcon = 'assets/images/ruppe_icon.png';
 }
