@@ -4,19 +4,15 @@ import 'package:auto_route/auto_route.dart';
 import 'package:ff_moneyblaster/core/assets.dart';
 import 'package:ff_moneyblaster/core/constants.dart';
 import 'package:ff_moneyblaster/feautres/auth/domain/user_model.dart';
-import 'package:ff_moneyblaster/feautres/home/shared/provider.dart';
 import 'package:ff_moneyblaster/feautres/wallet/application/wallet_notifier.dart';
 import 'package:ff_moneyblaster/feautres/wallet/presentation/widgets/deposit_bottom_sheets.dart';
 import 'package:ff_moneyblaster/feautres/wallet/presentation/widgets/tabbar.dart';
 import 'package:ff_moneyblaster/feautres/wallet/presentation/widgets/withdraw_bottom_sheet.dart';
-
 import 'package:ff_moneyblaster/feautres/wallet/shared/provider.dart';
 import 'package:ff_moneyblaster/theme.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sizer/sizer.dart';
 
 @RoutePage(name: 'WalletScreen')
@@ -124,7 +120,7 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
                                     style: Theme.of(context)
                                         .textTheme
                                         .headlineMedium
-                                        ?.copyWith(fontWeight: FontWeight.w500),
+                                        ?.copyWith(fontWeight: FontWeight.bold),
                                   )
                                 ],
                               ),

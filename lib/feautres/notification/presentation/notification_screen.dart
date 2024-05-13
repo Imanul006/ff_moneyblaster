@@ -1,16 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:ff_moneyblaster/core/assets.dart';
 import 'package:ff_moneyblaster/core/constants.dart';
-import 'package:ff_moneyblaster/feautres/wallet/presentation/widgets/tabbar.dart';
-
 import 'package:ff_moneyblaster/feautres/wallet/shared/provider.dart';
 import 'package:ff_moneyblaster/theme.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gradient_borders/gradient_borders.dart';
 import 'package:sizer/sizer.dart';
 
 @RoutePage(name: 'NotificationScreen')
@@ -36,7 +30,7 @@ class NotificationScreen extends ConsumerWidget {
       ),
       child: Column(
         children: [
-          Container(
+          SizedBox(
               width: MediaQuery.sizeOf(context).width,
               height: MediaQuery.sizeOf(context).height * 0.15,
               child: Container(
@@ -65,7 +59,7 @@ class NotificationScreen extends ConsumerWidget {
                             style: Theme.of(context)
                                 .textTheme
                                 .headlineMedium
-                                ?.copyWith(fontWeight: FontWeight.w500),
+                                ?.copyWith(fontWeight: FontWeight.bold),
                           )
                         ],
                       ),
@@ -87,11 +81,11 @@ class NotificationScreen extends ConsumerWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: Color(0x68FFFFFF),
+                    color: const Color(0x68FFFFFF),
                     borderRadius: BorderRadius.circular(35),
                     shape: BoxShape.rectangle,
                   ),
-                  alignment: AlignmentDirectional(0, 0),
+                  alignment: const AlignmentDirectional(0, 0),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -120,7 +114,7 @@ class NotificationScreen extends ConsumerWidget {
                     separatorBuilder: (BuildContext context, int index) =>
                         const SizedBox(height: 12),
                     itemBuilder: (context, index) {
-                      return NoticationCard(
+                      return const NoticationCard(
                         msg: 'Cash cup match starts in 10 min!',
                       );
                     }),
@@ -190,7 +184,7 @@ class NoticationCard extends StatelessWidget {
                       .labelSmall
                       ?.copyWith(color: AppColors.greyLight, fontSize: 10),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 6,
                 ),
                 Text(

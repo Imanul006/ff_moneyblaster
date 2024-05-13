@@ -1,16 +1,10 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ff_moneyblaster/core/assets.dart';
 import 'package:ff_moneyblaster/core/constants.dart';
-
-import 'package:ff_moneyblaster/feautres/home/presentation/widgets/tabbar.dart';
-import 'package:ff_moneyblaster/feautres/home/presentation/widgets/tournament_card.dart';
 import 'package:ff_moneyblaster/feautres/leaderboard/shared/provider.dart';
 import 'package:ff_moneyblaster/theme.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gradient_borders/gradient_borders.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../auth/domain/user_model.dart';
@@ -94,7 +88,7 @@ class LeaderbaordScreen extends ConsumerWidget {
                               style: Theme.of(context)
                                   .textTheme
                                   .headlineMedium
-                                  ?.copyWith(fontWeight: FontWeight.w500),
+                                  ?.copyWith(fontWeight: FontWeight.bold),
                             ),
                             // Row(
                             //   mainAxisSize: MainAxisSize.min,

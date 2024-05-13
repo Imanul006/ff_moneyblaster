@@ -206,8 +206,8 @@ class _ProfileTabState extends ConsumerState<ProfileTab> {
               value: provider.user?.phoneNumber.toString() ?? '',
             ),
             const PlayerDetailInfo(
-              title: 'UPI ID',
-              value: '23424x@okicici',
+              title: 'MoneyBlaster Support',
+              value: 'officialmoneyblaster@gmail.com',
             ),
             const SizedBox(
               height: 16,
