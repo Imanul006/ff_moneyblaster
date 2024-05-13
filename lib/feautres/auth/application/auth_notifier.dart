@@ -1,4 +1,6 @@
 // auth_notifier.dart
+// ignore_for_file: unnecessary_const
+
 import 'dart:async';
 
 import 'package:auto_route/auto_route.dart';
@@ -126,30 +128,62 @@ class AuthNotifier extends StateNotifier<AuthState> {
     }
   }
 
-  Future<void> signUp({
+  Future<String?> findUserIdByReferralCode(String referralCode) async {
+    QuerySnapshot querySnapshot = await _firestore
+        .collection('usernames')
+        .where('referralCode', isEqualTo: referralCode.trim())
+        .get();
+
+    // Check if the query returned any documents
+    if (querySnapshot.docs.isNotEmpty) {
+      Map<String, dynamic> data =
+          querySnapshot.docs.first.data() as Map<String, dynamic>;
+      return data['userId'] as String?;
+    } else {
+      return null;
+    }
+  }
+
+  Future<void> signUp(
+    BuildContext context, {
     required String username,
     required String gameId,
     required String phoneNumber,
     required String password,
+    required String referralCode,
     VoidCallback? voidCallback,
   }) async {
     try {
+      String? referredBy;
+      if (referralCode.trim().isNotEmpty) {
+        referredBy = await findUserIdByReferralCode(referralCode);
+        if (referredBy == null) {
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: const Text(
+                  "Please enter a valid referral code.",
+                ),
+              ),
+            );
+            state = state.copyWith(isLoading: false);
+            return;
+          }
+        }
+      }
+
       final result = await _authRepository.signUpWithUsernameAndPassword(
         username: username,
         gameId: gameId,
         phoneNumber: phoneNumber,
         password: password,
+        refferedBy: referredBy ?? '',
         gameOptionSelected: state.gameOptionSelected!,
       );
 
       if (result) {
-        // Sign-up was successful
-        print("Result = $result");
         voidCallback?.call();
-      } else {
-        // Sign-up failed
-        // Handle the failure
-      }
+      } else {}
       state = state.copyWith(isLoading: false);
     } catch (e) {
       state = state.copyWith(isLoading: false);

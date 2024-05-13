@@ -120,11 +120,13 @@ class PlayerDetailInfo extends StatelessWidget {
     required this.title,
     required this.value,
     this.withCopy = true,
+    this.copyMsg = 'Value copied to clipboard',
   });
 
   final String title;
   final String value;
   final bool withCopy;
+  final String? copyMsg;
 
   @override
   Widget build(BuildContext context) {
@@ -163,7 +165,7 @@ class PlayerDetailInfo extends StatelessWidget {
                 GestureDetector(
                   onTap: () {
                     FlutterClipboard.copy(value).then((value) =>
-                        Fluttertoast.showToast(msg: 'UPI ID Copied.'));
+                        Fluttertoast.showToast(msg: copyMsg ?? 'UPI ID Copied.'));
                   },
                   child: SizedBox(
                     height: 50,

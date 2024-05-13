@@ -108,7 +108,8 @@ class _ProModeTabState extends ConsumerState<ProModeTab> {
             ),
             PlayerDetailInfo(
               title: 'Referral Code',
-              value: provider.user?.gameId.toString() ?? '',
+              value: provider.user?.referralCode.toString() ?? '',
+              copyMsg: "Referral code copied to clipboard.",
             ),
             Text(
               'Your Referrals',
@@ -118,256 +119,256 @@ class _ProModeTabState extends ConsumerState<ProModeTab> {
                   ?.copyWith(fontSize: 18, fontWeight: FontWeight.w700),
             ),
 
-            Column(
-              children: [
-                Container(
-                  height: 70,
-                  width: double.infinity,
-                  margin: const EdgeInsets.symmetric(vertical: 8),
-                  // margin: const EdgeInsets.all(4),
-                  decoration: customDecoration.copyWith(
-                      borderRadius: BorderRadius.circular(8)),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 16, horizontal: 12),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        //left child
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(
-                              '1',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineMedium
-                                  ?.copyWith(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w600),
-                            ),
-                            const SizedBox(width: 12),
-                            Container(
-                              height: 32,
-                              width: 32,
-                              decoration: customDecoration.copyWith(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Image.asset(Assets.playerLeaderboardSmall),
-                            ),
-                            const SizedBox(width: 8),
-                            Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Player Demo',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall
-                                      ?.copyWith(
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                ),
-                                Text('10 wins',
-                                    style:
-                                        Theme.of(context).textTheme.labelSmall),
-                              ],
-                            )
-                          ],
-                        ),
-                        //right child
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              '₹',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(fontWeight: FontWeight.w700),
-                            ),
-                            Text(
-                              '50',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(fontWeight: FontWeight.w700),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                Container(
-                  height: 70,
-                  width: double.infinity,
-                  margin: const EdgeInsets.symmetric(vertical: 8),
-                  // margin: const EdgeInsets.all(4),
-                  decoration: customDecoration.copyWith(
-                      borderRadius: BorderRadius.circular(8)),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 16, horizontal: 12),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        //left child
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(
-                              '1',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineMedium
-                                  ?.copyWith(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w600),
-                            ),
-                            const SizedBox(width: 12),
-                            Container(
-                              height: 32,
-                              width: 32,
-                              decoration: customDecoration.copyWith(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Image.asset(Assets.playerLeaderboardSmall),
-                            ),
-                            const SizedBox(width: 8),
-                            Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Player Demo',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall
-                                      ?.copyWith(
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                ),
-                                Text('10 wins',
-                                    style:
-                                        Theme.of(context).textTheme.labelSmall),
-                              ],
-                            )
-                          ],
-                        ),
-                        //right child
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              '₹',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(fontWeight: FontWeight.w700),
-                            ),
-                            Text(
-                              '50',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(fontWeight: FontWeight.w700),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                Container(
-                  height: 70,
-                  width: double.infinity,
-                  margin: const EdgeInsets.symmetric(vertical: 8),
-                  // margin: const EdgeInsets.all(4),
-                  decoration: customDecoration.copyWith(
-                      borderRadius: BorderRadius.circular(8)),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 16, horizontal: 12),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        //left child
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(
-                              '1',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineMedium
-                                  ?.copyWith(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w600),
-                            ),
-                            const SizedBox(width: 12),
-                            Container(
-                              height: 32,
-                              width: 32,
-                              decoration: customDecoration.copyWith(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Image.asset(Assets.playerLeaderboardSmall),
-                            ),
-                            const SizedBox(width: 8),
-                            Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Player Demo',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall
-                                      ?.copyWith(
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                ),
-                                Text('10 wins',
-                                    style:
-                                        Theme.of(context).textTheme.labelSmall),
-                              ],
-                            )
-                          ],
-                        ),
-                        //right child
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              '₹',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(fontWeight: FontWeight.w700),
-                            ),
-                            Text(
-                              '50',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(fontWeight: FontWeight.w700),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                )
-              ],
-            ),
+            // Column(
+            //   children: [
+            //     Container(
+            //       height: 70,
+            //       width: double.infinity,
+            //       margin: const EdgeInsets.symmetric(vertical: 8),
+            //       // margin: const EdgeInsets.all(4),
+            //       decoration: customDecoration.copyWith(
+            //           borderRadius: BorderRadius.circular(8)),
+            //       child: Padding(
+            //         padding: const EdgeInsets.symmetric(
+            //             vertical: 16, horizontal: 12),
+            //         child: Row(
+            //           mainAxisSize: MainAxisSize.max,
+            //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //           children: [
+            //             //left child
+            //             Row(
+            //               mainAxisSize: MainAxisSize.min,
+            //               mainAxisAlignment: MainAxisAlignment.start,
+            //               children: [
+            //                 Text(
+            //                   '1',
+            //                   style: Theme.of(context)
+            //                       .textTheme
+            //                       .headlineMedium
+            //                       ?.copyWith(
+            //                           fontSize: 20,
+            //                           fontWeight: FontWeight.w600),
+            //                 ),
+            //                 const SizedBox(width: 12),
+            //                 Container(
+            //                   height: 32,
+            //                   width: 32,
+            //                   decoration: customDecoration.copyWith(
+            //                     borderRadius: BorderRadius.circular(8),
+            //                   ),
+            //                   child: Image.asset(Assets.playerLeaderboardSmall),
+            //                 ),
+            //                 const SizedBox(width: 8),
+            //                 Column(
+            //                   mainAxisSize: MainAxisSize.min,
+            //                   crossAxisAlignment: CrossAxisAlignment.start,
+            //                   children: [
+            //                     Text(
+            //                       'Player Demo',
+            //                       style: Theme.of(context)
+            //                           .textTheme
+            //                           .bodySmall
+            //                           ?.copyWith(
+            //                             fontWeight: FontWeight.w600,
+            //                           ),
+            //                     ),
+            //                     Text('10 wins',
+            //                         style:
+            //                             Theme.of(context).textTheme.labelSmall),
+            //                   ],
+            //                 )
+            //               ],
+            //             ),
+            //             //right child
+            //             Row(
+            //               mainAxisSize: MainAxisSize.min,
+            //               children: [
+            //                 Text(
+            //                   '₹',
+            //                   style: Theme.of(context)
+            //                       .textTheme
+            //                       .bodyMedium
+            //                       ?.copyWith(fontWeight: FontWeight.w700),
+            //                 ),
+            //                 Text(
+            //                   '50',
+            //                   style: Theme.of(context)
+            //                       .textTheme
+            //                       .bodyMedium
+            //                       ?.copyWith(fontWeight: FontWeight.w700),
+            //                 ),
+            //               ],
+            //             )
+            //           ],
+            //         ),
+            //       ),
+            //     ),
+            //     Container(
+            //       height: 70,
+            //       width: double.infinity,
+            //       margin: const EdgeInsets.symmetric(vertical: 8),
+            //       // margin: const EdgeInsets.all(4),
+            //       decoration: customDecoration.copyWith(
+            //           borderRadius: BorderRadius.circular(8)),
+            //       child: Padding(
+            //         padding: const EdgeInsets.symmetric(
+            //             vertical: 16, horizontal: 12),
+            //         child: Row(
+            //           mainAxisSize: MainAxisSize.max,
+            //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //           children: [
+            //             //left child
+            //             Row(
+            //               mainAxisSize: MainAxisSize.min,
+            //               mainAxisAlignment: MainAxisAlignment.start,
+            //               children: [
+            //                 Text(
+            //                   '1',
+            //                   style: Theme.of(context)
+            //                       .textTheme
+            //                       .headlineMedium
+            //                       ?.copyWith(
+            //                           fontSize: 20,
+            //                           fontWeight: FontWeight.w600),
+            //                 ),
+            //                 const SizedBox(width: 12),
+            //                 Container(
+            //                   height: 32,
+            //                   width: 32,
+            //                   decoration: customDecoration.copyWith(
+            //                     borderRadius: BorderRadius.circular(8),
+            //                   ),
+            //                   child: Image.asset(Assets.playerLeaderboardSmall),
+            //                 ),
+            //                 const SizedBox(width: 8),
+            //                 Column(
+            //                   mainAxisSize: MainAxisSize.min,
+            //                   crossAxisAlignment: CrossAxisAlignment.start,
+            //                   children: [
+            //                     Text(
+            //                       'Player Demo',
+            //                       style: Theme.of(context)
+            //                           .textTheme
+            //                           .bodySmall
+            //                           ?.copyWith(
+            //                             fontWeight: FontWeight.w600,
+            //                           ),
+            //                     ),
+            //                     Text('10 wins',
+            //                         style:
+            //                             Theme.of(context).textTheme.labelSmall),
+            //                   ],
+            //                 )
+            //               ],
+            //             ),
+            //             //right child
+            //             Row(
+            //               mainAxisSize: MainAxisSize.min,
+            //               children: [
+            //                 Text(
+            //                   '₹',
+            //                   style: Theme.of(context)
+            //                       .textTheme
+            //                       .bodyMedium
+            //                       ?.copyWith(fontWeight: FontWeight.w700),
+            //                 ),
+            //                 Text(
+            //                   '50',
+            //                   style: Theme.of(context)
+            //                       .textTheme
+            //                       .bodyMedium
+            //                       ?.copyWith(fontWeight: FontWeight.w700),
+            //                 ),
+            //               ],
+            //             )
+            //           ],
+            //         ),
+            //       ),
+            //     ),
+            //     Container(
+            //       height: 70,
+            //       width: double.infinity,
+            //       margin: const EdgeInsets.symmetric(vertical: 8),
+            //       // margin: const EdgeInsets.all(4),
+            //       decoration: customDecoration.copyWith(
+            //           borderRadius: BorderRadius.circular(8)),
+            //       child: Padding(
+            //         padding: const EdgeInsets.symmetric(
+            //             vertical: 16, horizontal: 12),
+            //         child: Row(
+            //           mainAxisSize: MainAxisSize.max,
+            //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //           children: [
+            //             //left child
+            //             Row(
+            //               mainAxisSize: MainAxisSize.min,
+            //               mainAxisAlignment: MainAxisAlignment.start,
+            //               children: [
+            //                 Text(
+            //                   '1',
+            //                   style: Theme.of(context)
+            //                       .textTheme
+            //                       .headlineMedium
+            //                       ?.copyWith(
+            //                           fontSize: 20,
+            //                           fontWeight: FontWeight.w600),
+            //                 ),
+            //                 const SizedBox(width: 12),
+            //                 Container(
+            //                   height: 32,
+            //                   width: 32,
+            //                   decoration: customDecoration.copyWith(
+            //                     borderRadius: BorderRadius.circular(8),
+            //                   ),
+            //                   child: Image.asset(Assets.playerLeaderboardSmall),
+            //                 ),
+            //                 const SizedBox(width: 8),
+            //                 Column(
+            //                   mainAxisSize: MainAxisSize.min,
+            //                   crossAxisAlignment: CrossAxisAlignment.start,
+            //                   children: [
+            //                     Text(
+            //                       'Player Demo',
+            //                       style: Theme.of(context)
+            //                           .textTheme
+            //                           .bodySmall
+            //                           ?.copyWith(
+            //                             fontWeight: FontWeight.w600,
+            //                           ),
+            //                     ),
+            //                     Text('10 wins',
+            //                         style:
+            //                             Theme.of(context).textTheme.labelSmall),
+            //                   ],
+            //                 )
+            //               ],
+            //             ),
+            //             //right child
+            //             Row(
+            //               mainAxisSize: MainAxisSize.min,
+            //               children: [
+            //                 Text(
+            //                   '₹',
+            //                   style: Theme.of(context)
+            //                       .textTheme
+            //                       .bodyMedium
+            //                       ?.copyWith(fontWeight: FontWeight.w700),
+            //                 ),
+            //                 Text(
+            //                   '50',
+            //                   style: Theme.of(context)
+            //                       .textTheme
+            //                       .bodyMedium
+            //                       ?.copyWith(fontWeight: FontWeight.w700),
+            //                 ),
+            //               ],
+            //             )
+            //           ],
+            //         ),
+            //       ),
+            //     )
+            //   ],
+            // ),
 
             const SizedBox(
               height: 32,

@@ -31,6 +31,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
+  final TextEditingController _referralCodeController = TextEditingController();
 
   @override
   void initState() {
@@ -91,7 +92,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                         height: 30.h,
                         padding: const EdgeInsets.symmetric(horizontal: 15),
                         child: ListView(
-                          physics: const NeverScrollableScrollPhysics(),
+                          // physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
                           // mainAxisSize: MainAxisSize.min,
                           children: [
@@ -144,6 +145,11 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                               title: "Confirm Password",
                               hintText: "Confirm your password",
                               controller: _confirmPasswordController,
+                            ),
+                            LoginTextField(
+                              title: "Referral Code",
+                              hintText: "Enter referral code (if any)",
+                              controller: _referralCodeController,
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -199,7 +205,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                       child: GlazedButtonFilled(
                         onTap: () {
                           if (!isLoading) {
-                            _handleSignup();
+                            _handleSignup(context);
                           }
                         },
                         child: isLoading
@@ -254,14 +260,15 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
     super.dispose();
   }
 
-  void _handleSignup() async {
+  void _handleSignup(BuildContext context) async {
     try {
       final notifier = ref.read(authProvider.notifier);
-      await notifier.signUp(
+      await notifier.signUp(context,
         username: _usernameController.text,
         gameId: _gameIdController.text,
         phoneNumber: _phoneNumberController.text,
         password: _passwordController.text,
+        referralCode: _referralCodeController.text,
         voidCallback: () async {
           await context.router.replaceAll([const LoadingScreen()]);
         },

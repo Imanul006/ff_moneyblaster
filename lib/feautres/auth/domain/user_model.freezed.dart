@@ -26,6 +26,7 @@ mixin _$UserModel {
   String get phoneNumber => throw _privateConstructorUsedError;
   bool get isVerified => throw _privateConstructorUsedError;
   List<String> get tournamentIds => throw _privateConstructorUsedError;
+  String get referralCode => throw _privateConstructorUsedError;
   GameStats get gameStats => throw _privateConstructorUsedError;
   WalletModel get wallet => throw _privateConstructorUsedError;
 
@@ -47,6 +48,7 @@ abstract class $UserModelCopyWith<$Res> {
       String phoneNumber,
       bool isVerified,
       List<String> tournamentIds,
+      String referralCode,
       GameStats gameStats,
       WalletModel wallet});
 
@@ -73,6 +75,7 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
     Object? phoneNumber = null,
     Object? isVerified = null,
     Object? tournamentIds = null,
+    Object? referralCode = null,
     Object? gameStats = null,
     Object? wallet = null,
   }) {
@@ -101,6 +104,10 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
           ? _value.tournamentIds
           : tournamentIds // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      referralCode: null == referralCode
+          ? _value.referralCode
+          : referralCode // ignore: cast_nullable_to_non_nullable
+              as String,
       gameStats: null == gameStats
           ? _value.gameStats
           : gameStats // ignore: cast_nullable_to_non_nullable
@@ -144,6 +151,7 @@ abstract class _$$UserModelImplCopyWith<$Res>
       String phoneNumber,
       bool isVerified,
       List<String> tournamentIds,
+      String referralCode,
       GameStats gameStats,
       WalletModel wallet});
 
@@ -170,6 +178,7 @@ class __$$UserModelImplCopyWithImpl<$Res>
     Object? phoneNumber = null,
     Object? isVerified = null,
     Object? tournamentIds = null,
+    Object? referralCode = null,
     Object? gameStats = null,
     Object? wallet = null,
   }) {
@@ -198,6 +207,10 @@ class __$$UserModelImplCopyWithImpl<$Res>
           ? _value._tournamentIds
           : tournamentIds // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      referralCode: null == referralCode
+          ? _value.referralCode
+          : referralCode // ignore: cast_nullable_to_non_nullable
+              as String,
       gameStats: null == gameStats
           ? _value.gameStats
           : gameStats // ignore: cast_nullable_to_non_nullable
@@ -221,6 +234,7 @@ class _$UserModelImpl with DiagnosticableTreeMixin implements _UserModel {
       required this.phoneNumber,
       this.isVerified = false,
       final List<String> tournamentIds = const [],
+      required this.referralCode,
       required this.gameStats,
       required this.wallet})
       : _tournamentIds = tournamentIds;
@@ -249,13 +263,15 @@ class _$UserModelImpl with DiagnosticableTreeMixin implements _UserModel {
   }
 
   @override
+  final String referralCode;
+  @override
   final GameStats gameStats;
   @override
   final WalletModel wallet;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserModel(id: $id, username: $username, gameId: $gameId, phoneNumber: $phoneNumber, isVerified: $isVerified, tournamentIds: $tournamentIds, gameStats: $gameStats, wallet: $wallet)';
+    return 'UserModel(id: $id, username: $username, gameId: $gameId, phoneNumber: $phoneNumber, isVerified: $isVerified, tournamentIds: $tournamentIds, referralCode: $referralCode, gameStats: $gameStats, wallet: $wallet)';
   }
 
   @override
@@ -269,6 +285,7 @@ class _$UserModelImpl with DiagnosticableTreeMixin implements _UserModel {
       ..add(DiagnosticsProperty('phoneNumber', phoneNumber))
       ..add(DiagnosticsProperty('isVerified', isVerified))
       ..add(DiagnosticsProperty('tournamentIds', tournamentIds))
+      ..add(DiagnosticsProperty('referralCode', referralCode))
       ..add(DiagnosticsProperty('gameStats', gameStats))
       ..add(DiagnosticsProperty('wallet', wallet));
   }
@@ -288,6 +305,8 @@ class _$UserModelImpl with DiagnosticableTreeMixin implements _UserModel {
                 other.isVerified == isVerified) &&
             const DeepCollectionEquality()
                 .equals(other._tournamentIds, _tournamentIds) &&
+            (identical(other.referralCode, referralCode) ||
+                other.referralCode == referralCode) &&
             (identical(other.gameStats, gameStats) ||
                 other.gameStats == gameStats) &&
             (identical(other.wallet, wallet) || other.wallet == wallet));
@@ -303,6 +322,7 @@ class _$UserModelImpl with DiagnosticableTreeMixin implements _UserModel {
       phoneNumber,
       isVerified,
       const DeepCollectionEquality().hash(_tournamentIds),
+      referralCode,
       gameStats,
       wallet);
 
@@ -328,6 +348,7 @@ abstract class _UserModel implements UserModel {
       required final String phoneNumber,
       final bool isVerified,
       final List<String> tournamentIds,
+      required final String referralCode,
       required final GameStats gameStats,
       required final WalletModel wallet}) = _$UserModelImpl;
 
@@ -346,6 +367,8 @@ abstract class _UserModel implements UserModel {
   bool get isVerified;
   @override
   List<String> get tournamentIds;
+  @override
+  String get referralCode;
   @override
   GameStats get gameStats;
   @override
@@ -782,6 +805,7 @@ mixin _$TransactionHistory {
   int get transaction => throw _privateConstructorUsedError;
   String get transactionStatus => throw _privateConstructorUsedError;
   String get transactionType => throw _privateConstructorUsedError;
+  String get transactionId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -800,7 +824,8 @@ abstract class $TransactionHistoryCopyWith<$Res> {
       DateTime? datetime,
       int transaction,
       String transactionStatus,
-      String transactionType});
+      String transactionType,
+      String transactionId});
 }
 
 /// @nodoc
@@ -820,6 +845,7 @@ class _$TransactionHistoryCopyWithImpl<$Res, $Val extends TransactionHistory>
     Object? transaction = null,
     Object? transactionStatus = null,
     Object? transactionType = null,
+    Object? transactionId = null,
   }) {
     return _then(_value.copyWith(
       datetime: freezed == datetime
@@ -838,6 +864,10 @@ class _$TransactionHistoryCopyWithImpl<$Res, $Val extends TransactionHistory>
           ? _value.transactionType
           : transactionType // ignore: cast_nullable_to_non_nullable
               as String,
+      transactionId: null == transactionId
+          ? _value.transactionId
+          : transactionId // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -855,7 +885,8 @@ abstract class _$$TransactionHistoryImplCopyWith<$Res>
       DateTime? datetime,
       int transaction,
       String transactionStatus,
-      String transactionType});
+      String transactionType,
+      String transactionId});
 }
 
 /// @nodoc
@@ -873,6 +904,7 @@ class __$$TransactionHistoryImplCopyWithImpl<$Res>
     Object? transaction = null,
     Object? transactionStatus = null,
     Object? transactionType = null,
+    Object? transactionId = null,
   }) {
     return _then(_$TransactionHistoryImpl(
       datetime: freezed == datetime
@@ -891,6 +923,10 @@ class __$$TransactionHistoryImplCopyWithImpl<$Res>
           ? _value.transactionType
           : transactionType // ignore: cast_nullable_to_non_nullable
               as String,
+      transactionId: null == transactionId
+          ? _value.transactionId
+          : transactionId // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -906,7 +942,8 @@ class _$TransactionHistoryImpl
       this.datetime,
       this.transaction = 0,
       this.transactionStatus = '',
-      this.transactionType = ''});
+      this.transactionType = '',
+      this.transactionId = ''});
 
   factory _$TransactionHistoryImpl.fromJson(Map<String, dynamic> json) =>
       _$$TransactionHistoryImplFromJson(json);
@@ -923,10 +960,13 @@ class _$TransactionHistoryImpl
   @override
   @JsonKey()
   final String transactionType;
+  @override
+  @JsonKey()
+  final String transactionId;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'TransactionHistory(datetime: $datetime, transaction: $transaction, transactionStatus: $transactionStatus, transactionType: $transactionType)';
+    return 'TransactionHistory(datetime: $datetime, transaction: $transaction, transactionStatus: $transactionStatus, transactionType: $transactionType, transactionId: $transactionId)';
   }
 
   @override
@@ -937,7 +977,8 @@ class _$TransactionHistoryImpl
       ..add(DiagnosticsProperty('datetime', datetime))
       ..add(DiagnosticsProperty('transaction', transaction))
       ..add(DiagnosticsProperty('transactionStatus', transactionStatus))
-      ..add(DiagnosticsProperty('transactionType', transactionType));
+      ..add(DiagnosticsProperty('transactionType', transactionType))
+      ..add(DiagnosticsProperty('transactionId', transactionId));
   }
 
   @override
@@ -952,13 +993,15 @@ class _$TransactionHistoryImpl
             (identical(other.transactionStatus, transactionStatus) ||
                 other.transactionStatus == transactionStatus) &&
             (identical(other.transactionType, transactionType) ||
-                other.transactionType == transactionType));
+                other.transactionType == transactionType) &&
+            (identical(other.transactionId, transactionId) ||
+                other.transactionId == transactionId));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, datetime, transaction, transactionStatus, transactionType);
+  int get hashCode => Object.hash(runtimeType, datetime, transaction,
+      transactionStatus, transactionType, transactionId);
 
   @JsonKey(ignore: true)
   @override
@@ -981,7 +1024,8 @@ abstract class _TransactionHistory implements TransactionHistory {
       final DateTime? datetime,
       final int transaction,
       final String transactionStatus,
-      final String transactionType}) = _$TransactionHistoryImpl;
+      final String transactionType,
+      final String transactionId}) = _$TransactionHistoryImpl;
 
   factory _TransactionHistory.fromJson(Map<String, dynamic> json) =
       _$TransactionHistoryImpl.fromJson;
@@ -995,6 +1039,8 @@ abstract class _TransactionHistory implements TransactionHistory {
   String get transactionStatus;
   @override
   String get transactionType;
+  @override
+  String get transactionId;
   @override
   @JsonKey(ignore: true)
   _$$TransactionHistoryImplCopyWith<_$TransactionHistoryImpl> get copyWith =>

@@ -105,12 +105,52 @@ class WalletNotifier extends StateNotifier<UserWalletState> {
     }
   }
 
+   Future<bool> isTransactionIdUnique(String transactionId) async {
+    UserModel user = state.user!;
+    return user.wallet.history.every((transaction) => transaction.transactionId != transactionId);
+  }
+
+  Future<bool> hasPendingDeposits() async {
+    UserModel user = state.user!;
+    return user.wallet.history.any((transaction) =>
+        transaction.transactionType == 'deposit' &&
+        transaction.transactionStatus == 'requested');
+  }
+
   Future<void> requestDeposit(
     BuildContext context, {
     required String transactionId,
     required double amount,
   }) async {
     state = state.copyWith(isLoading: true);
+    bool transactionIdUnique = await isTransactionIdUnique(transactionId);
+    if (!transactionIdUnique) {
+      state = state.copyWith(isLoading: false);
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Transaction ID is not unique, please try a different ID.'),
+            duration: Duration(seconds: 3),
+          ),
+        );
+        return;
+      }
+    }
+
+    bool pendingDeposits = await hasPendingDeposits();
+    if (pendingDeposits) {
+      state = state.copyWith(isLoading: false);
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('You already have a pending deposit.'),
+            duration: Duration(seconds: 3),
+          ),
+        );
+        return;
+      }
+    }
+
     Map<String, dynamic> newTransaction = {
       'datetime': Timestamp.now(),
       'transaction': amount,
@@ -146,7 +186,6 @@ class WalletNotifier extends StateNotifier<UserWalletState> {
 
   Future<void> fetchUserDetails() async {
     if (!mounted) {
-      // Check if the widget is still mounted before proceeding
       return;
     }
     state = state.copyWith(isLoading: true);

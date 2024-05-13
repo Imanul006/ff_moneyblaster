@@ -1,5 +1,7 @@
 // firebase_auth_repository.dart
 
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ff_moneyblaster/core/constants.dart';
 import 'package:ff_moneyblaster/feautres/auth/domain/i_auth_repository.dart';
@@ -15,6 +17,43 @@ class FirebaseAuthRepository implements IAuthRepository {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  String _generateUniqueCode() {
+    var now = DateTime.now().millisecondsSinceEpoch;
+
+    var base36Encoded = now.toRadixString(36).toUpperCase();
+
+    if (base36Encoded.length > 8) {
+      base36Encoded = base36Encoded.substring(base36Encoded.length - 8);
+    } else if (base36Encoded.length < 8) {
+      int neededPadding = 8 - base36Encoded.length;
+      var rng = Random();
+      String padding = List.generate(neededPadding,
+          (_) => rng.nextInt(36).toRadixString(36).toUpperCase()).join('');
+      base36Encoded = padding + base36Encoded;
+    }
+
+    return base36Encoded;
+  }
+
+  Future<String> _generateUniqueReferralCode() async {
+    String newCode = '';
+    bool isUnique = false;
+
+    while (!isUnique) {
+      newCode = _generateUniqueCode();
+      var existingCode = await _firestore
+          .collection('usernames')
+          .where('referralCode', isEqualTo: newCode)
+          .get();
+
+      if (existingCode.docs.isEmpty) {
+        isUnique = true;
+      }
+    }
+
+    return newCode;
+  }
+
   @override
   Future<bool> signUpWithUsernameAndPassword({
     required String username,
@@ -22,6 +61,7 @@ class FirebaseAuthRepository implements IAuthRepository {
     required String phoneNumber,
     required String password,
     required String gameOptionSelected,
+    required String refferedBy,
   }) async {
     try {
       var existingEmail =
@@ -39,6 +79,8 @@ class FirebaseAuthRepository implements IAuthRepository {
         password: password,
       );
 
+      final String referralCode = await _generateUniqueReferralCode();
+
       final UserModel user = UserModel(
         username: username,
         gameId: gameId,
@@ -46,6 +88,7 @@ class FirebaseAuthRepository implements IAuthRepository {
         gameStats: GameStats(game: gameOptionSelected),
         wallet: const WalletModel(),
         id: userCredential.user!.uid,
+        referralCode: referralCode,
       );
 
       Map<String, dynamic> data = {
@@ -57,6 +100,8 @@ class FirebaseAuthRepository implements IAuthRepository {
         'gameStats': user.gameStats.toJson(),
         'wallet': user.wallet.toJson(),
         'id': user.id,
+        'referralCode': referralCode,
+        'referredBy': refferedBy,
         'createdAt': DateTime.timestamp()
       };
       print(data);
@@ -68,9 +113,8 @@ class FirebaseAuthRepository implements IAuthRepository {
 
       await _firestore.collection('usernames').doc(username).set({
         'userId': userCredential.user!.uid,
+        'referralCode': referralCode,
       });
-
-      // await _firestore.collection('test').doc('testDoc').set({'testField': 'testValue'});
 
       return true;
     } on FirebaseAuthException catch (e) {

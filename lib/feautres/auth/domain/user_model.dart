@@ -20,6 +20,7 @@ class UserModel with _$UserModel {
     required String phoneNumber,
     @Default(false) bool isVerified,
     @Default([]) List<String> tournamentIds,
+    required String referralCode,
     required GameStats gameStats,
     required WalletModel wallet,
   }) = _UserModel;
@@ -60,6 +61,7 @@ class TransactionHistory with _$TransactionHistory {
     @Default(0) int transaction,
     @Default('') String transactionStatus,
     @Default('') String transactionType,
+    @Default('') String transactionId,
   }) = _TransactionHistory;
 
   factory TransactionHistory.fromJson(Map<String, dynamic> json) => _$TransactionHistoryFromJson(json);

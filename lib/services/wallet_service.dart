@@ -56,6 +56,7 @@ class WalletRepository implements IWalletRepository {
         username: userData?['username'],
         gameId: userData?['gameId'],
         phoneNumber: userData?['phoneNumber'],
+        referralCode: userData?['referralCode'],
         isVerified: userData?['isVerified'] ?? false,
         gameStats: GameStats(
           game: userData?['gameStats']['game'],

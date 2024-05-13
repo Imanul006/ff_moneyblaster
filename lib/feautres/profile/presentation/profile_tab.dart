@@ -1,10 +1,13 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:ff_moneyblaster/core/assets.dart';
 import 'package:ff_moneyblaster/core/constants.dart';
+import 'package:ff_moneyblaster/feautres/profile/presentation/important_rules_page.dart';
 import 'package:ff_moneyblaster/feautres/profile/presentation/profile_screen.dart';
+import 'package:ff_moneyblaster/feautres/profile/presentation/terms_conditions_page.dart';
 import 'package:ff_moneyblaster/routes/app_router.gr.dart';
 import 'package:ff_moneyblaster/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:sizer/sizer.dart';
@@ -209,6 +212,18 @@ class _ProfileTabState extends ConsumerState<ProfileTab> {
               title: 'MoneyBlaster Support',
               value: 'officialmoneyblaster@gmail.com',
             ),
+            const SizedBox(
+              height: 16,
+            ),
+             SizedBox(width: double.infinity, child: InkWell(onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context)=> TermsConditionsPage()));
+            }, child: CustomButton(text: "Terms & Conditions", icon: Icons.assignment,))),
+            const SizedBox(
+              height: 16,
+            ),
+             SizedBox(width: double.infinity, child: InkWell(onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ImportantRulesPage()));
+            },child: CustomButton(text: "Important Rules", icon: Icons.gavel))),
             const SizedBox(
               height: 16,
             ),

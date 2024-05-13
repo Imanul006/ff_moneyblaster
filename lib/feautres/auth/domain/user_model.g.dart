@@ -17,6 +17,7 @@ _$UserModelImpl _$$UserModelImplFromJson(Map<String, dynamic> json) =>
               ?.map((e) => e as String)
               .toList() ??
           const [],
+      referralCode: json['referralCode'] as String,
       gameStats: GameStats.fromJson(json['gameStats'] as Map<String, dynamic>),
       wallet: WalletModel.fromJson(json['wallet'] as Map<String, dynamic>),
     );
@@ -29,6 +30,7 @@ Map<String, dynamic> _$$UserModelImplToJson(_$UserModelImpl instance) =>
       'phoneNumber': instance.phoneNumber,
       'isVerified': instance.isVerified,
       'tournamentIds': instance.tournamentIds,
+      'referralCode': instance.referralCode,
       'gameStats': instance.gameStats.toJson(),
       'wallet': instance.wallet.toJson(),
     };
@@ -74,6 +76,7 @@ _$TransactionHistoryImpl _$$TransactionHistoryImplFromJson(
       transaction: (json['transaction'] as num?)?.toInt() ?? 0,
       transactionStatus: json['transactionStatus'] as String? ?? '',
       transactionType: json['transactionType'] as String? ?? '',
+      transactionId: json['transactionId'] as String? ?? '',
     );
 
 Map<String, dynamic> _$$TransactionHistoryImplToJson(
@@ -83,4 +86,5 @@ Map<String, dynamic> _$$TransactionHistoryImplToJson(
       'transaction': instance.transaction,
       'transactionStatus': instance.transactionStatus,
       'transactionType': instance.transactionType,
+      'transactionId': instance.transactionId,
     };

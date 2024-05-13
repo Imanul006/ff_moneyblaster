@@ -1,5 +1,7 @@
 // auth_repository.dart
 
+import 'dart:async';
+
 import 'package:ff_moneyblaster/feautres/auth/domain/user_model.dart';
 import 'package:flutter/material.dart';
 
@@ -12,6 +14,7 @@ abstract class IAuthRepository {
     required String phoneNumber,
     required String password,
     required String gameOptionSelected,
+    required String refferedBy,
   });
 
   Future<void> logout();
