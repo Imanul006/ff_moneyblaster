@@ -6,7 +6,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:ff_moneyblaster/core/assets.dart';
 import 'package:ff_moneyblaster/core/constants.dart';
-import 'package:ff_moneyblaster/feautres/auth/shared/provider.dart';
 import 'package:ff_moneyblaster/feautres/base/shared/providers.dart';
 import 'package:ff_moneyblaster/feautres/home/domain/tournament.dart';
 import 'package:ff_moneyblaster/feautres/home/shared/provider.dart';
@@ -15,7 +14,6 @@ import 'package:ff_moneyblaster/routes/app_router.gr.dart';
 import 'package:ff_moneyblaster/theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
@@ -337,40 +335,54 @@ class _TournamentCardState extends ConsumerState<TournamentCard> {
                                   Expanded(
                                     child: GestureDetector(
                                       onTap: () async {
-                                        await notifier.selectTournament(
-                                            widget.tournament);
-                                        final notifierWallet =
-                                            ref.read(walletProvider.notifier);
-                                        await notifierWallet.fetchUserDetails();
-                                        walletState.isLoading == false
-                                            ? showModalBottomSheet<void>(
-                                                backgroundColor:
-                                                    AppColors.glassColor,
-                                                barrierColor:
-                                                    const Color.fromRGBO(
-                                                        7, 7, 7, 0.7),
-                                                context: context,
-                                                builder:
-                                                    (BuildContext context) {
-                                                  return (walletState.user!
-                                                              .wallet.balance >=
-                                                          widget.tournament
-                                                              .entryFee!)
-                                                      ? JoinTournamamentWidget(
-                                                          bal: widget.bal,
-                                                          tournament:
-                                                              widget.tournament,
-                                                        )
-                                                      : DepositBeforeJoining(
-                                                          balance: walletState
-                                                              .user!
-                                                              .wallet
-                                                              .balance,
-                                                          tournament: widget
-                                                              .tournament);
-                                                },
-                                              )
-                                            : CircularProgressIndicator();
+                                        if (walletState.user?.gameStats.game ==
+                                            widget.tournament.gameOption) {
+                                          await notifier.selectTournament(
+                                              widget.tournament);
+                                          final notifierWallet =
+                                              ref.read(walletProvider.notifier);
+                                          await notifierWallet
+                                              .fetchUserDetails();
+                                          walletState.isLoading == false
+                                              ? showModalBottomSheet<void>(
+                                                  backgroundColor:
+                                                      AppColors.glassColor,
+                                                  barrierColor:
+                                                      const Color.fromRGBO(
+                                                          7, 7, 7, 0.7),
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return (walletState
+                                                                .user!
+                                                                .wallet
+                                                                .balance >
+                                                            widget.tournament
+                                                                .entryFee!)
+                                                        ? JoinTournamamentWidget(
+                                                            bal: widget.bal,
+                                                            tournament: widget
+                                                                .tournament,
+                                                          )
+                                                        : DepositBeforeJoining(
+                                                            balance: walletState
+                                                                .user!
+                                                                .wallet
+                                                                .balance,
+                                                            tournament: widget
+                                                                .tournament);
+                                                  },
+                                                )
+                                              : const CircularProgressIndicator();
+                                        } else {
+                                          Fluttertoast.showToast(
+                                                  msg:
+                                                      'You can Join ${walletState.user?.gameStats.game} games only')
+                                              .then((value) =>
+                                                  Fluttertoast.showToast(
+                                                      msg:
+                                                          'Register new account with ${widget.tournament.gameOption} Game'));
+                                        }
                                       },
                                       child: Padding(
                                         padding: const EdgeInsets.symmetric(

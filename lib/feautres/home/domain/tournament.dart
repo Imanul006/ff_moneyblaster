@@ -41,8 +41,11 @@ class Tournament with _$Tournament {
     @JsonKey(name: 'registeredPlayersId')
     List<String> registeredPlayersId,
     @JsonKey(name: 'lobby') String? lobby,
+    @JsonKey(name: 'lobbyPassword') String? lobbyPassword,
     @JsonKey(name: 'liveLink') String? liveLink,
     @JsonKey(name: 'result') List<ResultModel?>? result,
+    @Default(0) @JsonKey(name: 'teamsRegistered') int teamsRegistered,
+    @Default([]) @JsonKey(name: 'teams') List<TeamModel?>? teams,
   }) = _Tournament;
 
   factory Tournament.fromJson(Map<String, dynamic> json) =>
@@ -55,6 +58,18 @@ DateTime? _dateTimeFromTimestamp(Timestamp? timestamp) {
 
 Timestamp? _dateTimeToTimestamp(DateTime? dateTime) {
   return dateTime != null ? Timestamp.fromDate(dateTime) : null;
+}
+
+@freezed
+class TeamModel with _$TeamModel {
+  factory TeamModel({
+    @JsonKey(name: 'registeredBy') String? registeredBy,
+    @Default([]) @JsonKey(name: 'gameIds') List<String> gameIds,
+    @JsonKey(name: 'teamNumber') int? teamNumber,
+  }) = _TeamModel;
+
+  factory TeamModel.fromJson(Map<String, dynamic> json) =>
+      _$TeamModelFromJson(json);
 }
 
 @freezed
