@@ -49,6 +49,11 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
     final state = ref.watch(walletProvider);
     final provider = ref.read(walletProvider.notifier);
 
+    // Calculate remaining available height after subtracting bottom view inset
+    final screenHeight = MediaQuery.of(context).size.height;
+    final bottomInset = MediaQuery.of(context).viewInsets.bottom;
+    final remainingHeight = screenHeight - bottomInset;
+
     return isLoading
         ? Container(
             width: double.infinity,
@@ -209,7 +214,6 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
                                         // await notifier.selectTournament(
                                         //     widget.tournament);
                                         showModalBottomSheet<void>(
-                                         
                                           // isDismissible: false,
                                           backgroundColor: AppColors.glassColor,
                                           barrierColor: const Color.fromRGBO(

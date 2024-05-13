@@ -353,7 +353,7 @@ class _TournamentCardState extends ConsumerState<TournamentCard> {
                                                 builder:
                                                     (BuildContext context) {
                                                   return (walletState.user!
-                                                              .wallet.balance >
+                                                              .wallet.balance >=
                                                           widget.tournament
                                                               .entryFee!)
                                                       ? JoinTournamamentWidget(
@@ -362,6 +362,10 @@ class _TournamentCardState extends ConsumerState<TournamentCard> {
                                                               widget.tournament,
                                                         )
                                                       : DepositBeforeJoining(
+                                                          balance: walletState
+                                                              .user!
+                                                              .wallet
+                                                              .balance,
                                                           tournament: widget
                                                               .tournament);
                                                 },
@@ -484,30 +488,41 @@ class _TournamentCardState extends ConsumerState<TournamentCard> {
                   alignment: const AlignmentDirectional(1, -1),
                   child: Padding(
                     padding: const EdgeInsetsDirectional.fromSTEB(0, 8, 8, 0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
+                    child: Column(
                       children: [
-                        Text(
-                          'Date: ',
-                          style:
-                              Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              'Date: ',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(
                                     fontFamily: 'Readex Pro',
                                     color: Colors.white,
                                     fontSize: 10,
                                     letterSpacing: 0,
                                   ),
-                        ),
-                        Text(
-                          DateFormat('dd/MM/yy')
-                              .format(widget.tournament.dateTime!),
-                          style:
-                              Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            ),
+                            Text(
+                              DateFormat('dd/MM/yy')
+                                  .format(widget.tournament.dateTime!),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(
                                     fontFamily: 'Readex Pro',
                                     color: Colors.white,
                                     fontSize: 10,
                                     letterSpacing: 0,
                                   ),
+                            ),
+                          ],
                         ),
+                        Text(
+                          DateFormat('jm').format(widget.tournament.dateTime!),
+                        )
                       ],
                     ),
                   ),
@@ -913,7 +928,7 @@ class _JoinTournamamentWidgetState
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            'Lobby ID',
+                            'Room ID',
                             style: Theme.of(context).textTheme.headlineSmall,
                           ),
                           const SizedBox(
@@ -942,7 +957,70 @@ class _JoinTournamamentWidgetState
                 const SizedBox(
                   height: 32,
                 ),
-                // wallet details
+                // // player Id list details
+                // if (widget.tournament.gameType?.teamOption == 'SQUAD' &&
+                //     !widget.tournament.registeredPlayersId.contains(uid))
+                //   Column(
+                //     children: [
+                //       Container(
+                //         width: double.infinity,
+                //         height: 50,
+                //         padding: const EdgeInsets.symmetric(
+                //             vertical: 6, horizontal: 12),
+                //         margin: const EdgeInsets.only(bottom: 10),
+                //         decoration: customDecoration.copyWith(
+                //             borderRadius: BorderRadius.circular(8)),
+                //         child: TextFormField(
+                //           decoration: InputDecoration(
+                //               border: InputBorder.none,
+                //               hintText: 'Enter Player 2 Game ID',
+                //               hintStyle: Theme.of(context)
+                //                   .textTheme
+                //                   .labelSmall
+                //                   ?.copyWith(
+                //                       color: Colors.white.withOpacity(0.3))),
+                //         ),
+                //       ),
+                //       Container(
+                //         width: double.infinity,
+                //         height: 50,
+                //         padding: const EdgeInsets.symmetric(
+                //             vertical: 6, horizontal: 12),
+                //         margin: const EdgeInsets.only(bottom: 10),
+                //         decoration: customDecoration.copyWith(
+                //             borderRadius: BorderRadius.circular(8)),
+                //         child: TextFormField(
+                //           decoration: InputDecoration(
+                //               border: InputBorder.none,
+                //               hintText: 'Enter Player 2 Game ID',
+                //               hintStyle: Theme.of(context)
+                //                   .textTheme
+                //                   .labelSmall
+                //                   ?.copyWith(
+                //                       color: Colors.white.withOpacity(0.3))),
+                //         ),
+                //       ),
+                //       Container(
+                //         width: double.infinity,
+                //         height: 50,
+                //         padding: const EdgeInsets.symmetric(
+                //             vertical: 6, horizontal: 12),
+                //         margin: const EdgeInsets.only(bottom: 10),
+                //         decoration: customDecoration.copyWith(
+                //             borderRadius: BorderRadius.circular(8)),
+                //         child: TextFormField(
+                //           decoration: InputDecoration(
+                //               border: InputBorder.none,
+                //               hintText: 'Enter Player 2 Game ID',
+                //               hintStyle: Theme.of(context)
+                //                   .textTheme
+                //                   .labelSmall
+                //                   ?.copyWith(
+                //                       color: Colors.white.withOpacity(0.3))),
+                //         ),
+                //       )
+                //     ],
+                //   ),
                 // proceed
                 Column(
                   mainAxisSize: MainAxisSize.min,
@@ -1026,8 +1104,10 @@ class _JoinTournamamentWidgetState
 
 class DepositBeforeJoining extends ConsumerStatefulWidget {
   final Tournament tournament;
+  final dynamic balance;
   const DepositBeforeJoining({
     required this.tournament,
+    required this.balance,
     super.key,
   });
 
@@ -1100,7 +1180,8 @@ class _DepositBeforeJoiningState extends ConsumerState<DepositBeforeJoining> {
                               // color: AppColors.blue,
                             ),
                       ),
-                      Text('₹${widget.tournament.entryFee}',
+                      Text(
+                          '₹${widget.tournament.entryFee ?? 0 - widget.balance}',
                           style:
                               Theme.of(context).textTheme.bodyMedium?.copyWith(
                                     fontWeight: FontWeight.w700,

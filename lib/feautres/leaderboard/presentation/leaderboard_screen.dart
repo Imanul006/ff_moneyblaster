@@ -96,64 +96,64 @@ class LeaderbaordScreen extends ConsumerWidget {
                                   .headlineMedium
                                   ?.copyWith(fontWeight: FontWeight.w500),
                             ),
-                            Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Container(
-                                  width: 66,
-                                  height: 22,
-                                  decoration: BoxDecoration(
-                                    color: const Color(0x68FFFFFF),
-                                    borderRadius: BorderRadius.circular(35),
-                                    shape: BoxShape.rectangle,
-                                  ),
-                                  alignment: const AlignmentDirectional(0, 0),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text(
-                                        'BGMI',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodySmall,
-                                      ),
-                                      const Icon(
-                                        Icons.keyboard_arrow_down,
-                                        color: Colors.white,
-                                        size: 14,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsetsDirectional.fromSTEB(
-                                      12, 0, 0, 0),
-                                  child: Container(
-                                    width: 66,
-                                    height: 22,
-                                    decoration: BoxDecoration(
-                                      color: const Color(0x68FFFFFF),
-                                      borderRadius: BorderRadius.circular(35),
-                                      shape: BoxShape.rectangle,
-                                    ),
-                                    alignment: const AlignmentDirectional(0, 0),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Text(
-                                          'Solo',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodySmall,
-                                        ),
-                                        const Icon(Icons.keyboard_arrow_down,
-                                            color: Colors.white, size: 14),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
+                            // Row(
+                            //   mainAxisSize: MainAxisSize.min,
+                            //   children: [
+                            //     Container(
+                            //       width: 66,
+                            //       height: 22,
+                            //       decoration: BoxDecoration(
+                            //         color: const Color(0x68FFFFFF),
+                            //         borderRadius: BorderRadius.circular(35),
+                            //         shape: BoxShape.rectangle,
+                            //       ),
+                            //       alignment: const AlignmentDirectional(0, 0),
+                            //       child: Row(
+                            //         mainAxisSize: MainAxisSize.min,
+                            //         children: [
+                            //           Text(
+                            //             'BGMI',
+                            //             style: Theme.of(context)
+                            //                 .textTheme
+                            //                 .bodySmall,
+                            //           ),
+                            //           const Icon(
+                            //             Icons.keyboard_arrow_down,
+                            //             color: Colors.white,
+                            //             size: 14,
+                            //           ),
+                            //         ],
+                            //       ),
+                            //     ),
+                            //     Padding(
+                            //       padding: const EdgeInsetsDirectional.fromSTEB(
+                            //           12, 0, 0, 0),
+                            //       child: Container(
+                            //         width: 66,
+                            //         height: 22,
+                            //         decoration: BoxDecoration(
+                            //           color: const Color(0x68FFFFFF),
+                            //           borderRadius: BorderRadius.circular(35),
+                            //           shape: BoxShape.rectangle,
+                            //         ),
+                            //         alignment: const AlignmentDirectional(0, 0),
+                            //         child: Row(
+                            //           mainAxisSize: MainAxisSize.min,
+                            //           children: [
+                            //             Text(
+                            //               'Solo',
+                            //               style: Theme.of(context)
+                            //                   .textTheme
+                            //                   .bodySmall,
+                            //             ),
+                            //             const Icon(Icons.keyboard_arrow_down,
+                            //                 color: Colors.white, size: 14),
+                            //           ],
+                            //         ),
+                            //       ),
+                            //     ),
+                            //   ],
+                            // ),
                           ],
                         ),
                       ),
@@ -206,7 +206,9 @@ class LeaderbaordScreen extends ConsumerWidget {
                                         const EdgeInsetsDirectional.fromSTEB(
                                             0, 6, 0, 0),
                                     child: Text(
-                                      state.topUsers.isNotEmpty ? state.topUsers[1].username : "",
+                                      state.topUsers.isNotEmpty
+                                          ? state.topUsers[1].username
+                                          : "",
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodySmall
@@ -273,7 +275,9 @@ class LeaderbaordScreen extends ConsumerWidget {
                                   padding: const EdgeInsetsDirectional.fromSTEB(
                                       0, 6, 0, 0),
                                   child: Text(
-                                    state.topUsers.isNotEmpty ? state.topUsers[0].username : "",
+                                    state.topUsers.isNotEmpty
+                                        ? state.topUsers[0].username
+                                        : "",
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodySmall
@@ -345,7 +349,9 @@ class LeaderbaordScreen extends ConsumerWidget {
                                         const EdgeInsetsDirectional.fromSTEB(
                                             0, 6, 0, 0),
                                     child: Text(
-                                      state.topUsers.isNotEmpty ? state.topUsers[2].username : "",
+                                      state.topUsers.isNotEmpty
+                                          ? state.topUsers[2].username
+                                          : "",
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodyMedium
@@ -419,7 +425,8 @@ class LeaderbaordScreen extends ConsumerWidget {
                                     const SizedBox(height: 12),
                             itemBuilder: (context, index) {
                               return LeaderboardItem(
-                                  count: index + 1, user: snapshot.data![index]);
+                                  count: index + 1,
+                                  user: snapshot.data![index]);
                             },
                           );
                         }

@@ -80,8 +80,6 @@ class FCMService {
 
   Future<void> handleBackgroundMessage(RemoteMessage? message) async {
     print(
-      
-      
         "Background Message: Title: ${message?.notification?.title}, Body: ${message?.notification?.body}, Data: ${message?.data}");
   }
 }

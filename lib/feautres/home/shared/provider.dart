@@ -8,4 +8,4 @@ import 'package:ff_moneyblaster/services/home_service.dart';
 import 'package:riverpod/riverpod.dart';
 
 final homeProvider = StateNotifierProvider.autoDispose<HomeNotifier, HomeState>(
-  (ref) => HomeNotifier(HomeRepository()));
+    (ref) => HomeNotifier(HomeRepository()));

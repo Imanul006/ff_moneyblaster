@@ -4,8 +4,8 @@ import 'package:ff_moneyblaster/feautres/auth/application/auth_state.dart';
 import 'package:ff_moneyblaster/services/auth_service.dart';
 import 'package:riverpod/riverpod.dart';
 
-final authProvider = StateNotifierProvider.autoDispose<AuthNotifier, AuthState>(
-  (ref) => AuthNotifier(FirebaseAuthRepository()));
+final authProvider = StateNotifierProvider<AuthNotifier, AuthState>(
+    (ref) => AuthNotifier(FirebaseAuthRepository()));
 
 // final userStreamProvider = StreamProvider.autoDispose<Map<String, dynamic>>((ref) {
 //   final currentUser = FirebaseAuth.instance.currentUser;

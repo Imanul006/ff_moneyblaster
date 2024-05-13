@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$HomeState {
   bool get isLoading => throw _privateConstructorUsedError;
   GameState get selectedHomeTab => throw _privateConstructorUsedError;
+  ProfileTabState get selectedProfileTab => throw _privateConstructorUsedError;
   List<Tournament> get tournaments => throw _privateConstructorUsedError;
   String get errorMessage => throw _privateConstructorUsedError;
   Tournament? get selectedTournament => throw _privateConstructorUsedError;
@@ -36,6 +37,7 @@ abstract class $HomeStateCopyWith<$Res> {
   $Res call(
       {bool isLoading,
       GameState selectedHomeTab,
+      ProfileTabState selectedProfileTab,
       List<Tournament> tournaments,
       String errorMessage,
       Tournament? selectedTournament,
@@ -59,6 +61,7 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
   $Res call({
     Object? isLoading = null,
     Object? selectedHomeTab = null,
+    Object? selectedProfileTab = null,
     Object? tournaments = null,
     Object? errorMessage = null,
     Object? selectedTournament = freezed,
@@ -73,6 +76,10 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
           ? _value.selectedHomeTab
           : selectedHomeTab // ignore: cast_nullable_to_non_nullable
               as GameState,
+      selectedProfileTab: null == selectedProfileTab
+          ? _value.selectedProfileTab
+          : selectedProfileTab // ignore: cast_nullable_to_non_nullable
+              as ProfileTabState,
       tournaments: null == tournaments
           ? _value.tournaments
           : tournaments // ignore: cast_nullable_to_non_nullable
@@ -116,6 +123,7 @@ abstract class _$$HomeStateImplCopyWith<$Res>
   $Res call(
       {bool isLoading,
       GameState selectedHomeTab,
+      ProfileTabState selectedProfileTab,
       List<Tournament> tournaments,
       String errorMessage,
       Tournament? selectedTournament,
@@ -138,6 +146,7 @@ class __$$HomeStateImplCopyWithImpl<$Res>
   $Res call({
     Object? isLoading = null,
     Object? selectedHomeTab = null,
+    Object? selectedProfileTab = null,
     Object? tournaments = null,
     Object? errorMessage = null,
     Object? selectedTournament = freezed,
@@ -152,6 +161,10 @@ class __$$HomeStateImplCopyWithImpl<$Res>
           ? _value.selectedHomeTab
           : selectedHomeTab // ignore: cast_nullable_to_non_nullable
               as GameState,
+      selectedProfileTab: null == selectedProfileTab
+          ? _value.selectedProfileTab
+          : selectedProfileTab // ignore: cast_nullable_to_non_nullable
+              as ProfileTabState,
       tournaments: null == tournaments
           ? _value._tournaments
           : tournaments // ignore: cast_nullable_to_non_nullable
@@ -178,6 +191,7 @@ class _$HomeStateImpl extends _HomeState {
   const _$HomeStateImpl(
       {this.isLoading = false,
       this.selectedHomeTab = GameState.ongoing,
+      this.selectedProfileTab = ProfileTabState.profile,
       final List<Tournament> tournaments = const [],
       this.errorMessage = '',
       this.selectedTournament,
@@ -192,6 +206,9 @@ class _$HomeStateImpl extends _HomeState {
   @override
   @JsonKey()
   final GameState selectedHomeTab;
+  @override
+  @JsonKey()
+  final ProfileTabState selectedProfileTab;
   final List<Tournament> _tournaments;
   @override
   @JsonKey()
@@ -217,7 +234,7 @@ class _$HomeStateImpl extends _HomeState {
 
   @override
   String toString() {
-    return 'HomeState(isLoading: $isLoading, selectedHomeTab: $selectedHomeTab, tournaments: $tournaments, errorMessage: $errorMessage, selectedTournament: $selectedTournament, topUsers: $topUsers)';
+    return 'HomeState(isLoading: $isLoading, selectedHomeTab: $selectedHomeTab, selectedProfileTab: $selectedProfileTab, tournaments: $tournaments, errorMessage: $errorMessage, selectedTournament: $selectedTournament, topUsers: $topUsers)';
   }
 
   @override
@@ -229,6 +246,8 @@ class _$HomeStateImpl extends _HomeState {
                 other.isLoading == isLoading) &&
             (identical(other.selectedHomeTab, selectedHomeTab) ||
                 other.selectedHomeTab == selectedHomeTab) &&
+            (identical(other.selectedProfileTab, selectedProfileTab) ||
+                other.selectedProfileTab == selectedProfileTab) &&
             const DeepCollectionEquality()
                 .equals(other._tournaments, _tournaments) &&
             (identical(other.errorMessage, errorMessage) ||
@@ -243,6 +262,7 @@ class _$HomeStateImpl extends _HomeState {
       runtimeType,
       isLoading,
       selectedHomeTab,
+      selectedProfileTab,
       const DeepCollectionEquality().hash(_tournaments),
       errorMessage,
       selectedTournament,
@@ -259,6 +279,7 @@ abstract class _HomeState extends HomeState {
   const factory _HomeState(
       {final bool isLoading,
       final GameState selectedHomeTab,
+      final ProfileTabState selectedProfileTab,
       final List<Tournament> tournaments,
       final String errorMessage,
       final Tournament? selectedTournament,
@@ -269,6 +290,8 @@ abstract class _HomeState extends HomeState {
   bool get isLoading;
   @override
   GameState get selectedHomeTab;
+  @override
+  ProfileTabState get selectedProfileTab;
   @override
   List<Tournament> get tournaments;
   @override

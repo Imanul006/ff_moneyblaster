@@ -154,10 +154,12 @@ class WalletNotifier extends StateNotifier<UserWalletState> {
       UserModel user = await _walletRepository.getUserModel();
       state = state.copyWith(user: user, isLoading: false);
       withdrawalTransactions = state.user!.wallet.history
-          .where((history) => history.transaction < 0)
+          .where((history) =>
+              history.transaction > 0 && history.transactionType == 'withdraw')
           .toList();
       depositTransactions = state.user!.wallet.history
-          .where((history) => history.transaction > 0)
+          .where((history) =>
+              history.transaction > 0 && history.transactionType == 'deposit')
           .toList();
     } catch (e) {
       state = state.copyWith(errorMessage: e.toString(), isLoading: false);
