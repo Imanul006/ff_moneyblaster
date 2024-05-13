@@ -980,6 +980,45 @@ class _JoinTournamamentWidgetState
                                 )),
                           ],
                         ),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        // match starts in
+                        Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  'Room Password',
+                                  style:
+                                      Theme.of(context).textTheme.headlineSmall,
+                                ),
+                                const SizedBox(
+                                  width: 16,
+                                ),
+                                Text(
+                                  widget.tournament.lobbyPassword ?? '',
+                                  style:
+                                      Theme.of(context).textTheme.headlineSmall,
+                                ),
+                              ],
+                            ),
+                            GestureDetector(
+                                onTap: () {
+                                  FlutterClipboard.copy(
+                                          widget.tournament.lobby ?? '')
+                                      .then((value) => Fluttertoast.showToast(
+                                          msg: 'Room Password Copied.'));
+                                },
+                                child: const Icon(
+                                  Icons.copy,
+                                  color: Colors.white,
+                                )),
+                          ],
+                        ),
                       ],
                       //const Spacer(),
                       const SizedBox(
