@@ -14,9 +14,11 @@ import 'package:ff_moneyblaster/routes/app_router.gr.dart';
 import 'package:ff_moneyblaster/theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:sizer/sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 enum GameState {
@@ -354,24 +356,34 @@ class _TournamentCardState extends ConsumerState<TournamentCard> {
                                                   context: context,
                                                   builder:
                                                       (BuildContext context) {
-                                                    return (walletState
-                                                                .user!
-                                                                .wallet
-                                                                .balance >
-                                                            widget.tournament
-                                                                .entryFee!)
-                                                        ? JoinTournamamentWidget(
-                                                            bal: widget.bal,
-                                                            tournament: widget
-                                                                .tournament,
-                                                          )
-                                                        : DepositBeforeJoining(
-                                                            balance: walletState
-                                                                .user!
-                                                                .wallet
-                                                                .balance,
-                                                            tournament: widget
-                                                                .tournament);
+                                                    return FractionallySizedBox(
+                                                      heightFactor: widget
+                                                                  .tournament
+                                                                  .gameType
+                                                                  ?.teamOption ==
+                                                              "SQUAD"
+                                                          ? 1.15
+                                                          : 0.82,
+                                                      child: (walletState
+                                                                  .user!
+                                                                  .wallet
+                                                                  .balance >
+                                                              widget.tournament
+                                                                  .entryFee!)
+                                                          ? JoinTournamamentWidget(
+                                                              bal: widget.bal,
+                                                              tournament: widget
+                                                                  .tournament,
+                                                            )
+                                                          : DepositBeforeJoining(
+                                                              balance:
+                                                                  walletState
+                                                                      .user!
+                                                                      .wallet
+                                                                      .balance,
+                                                              tournament: widget
+                                                                  .tournament),
+                                                    );
                                                   },
                                                 )
                                               : const CircularProgressIndicator();
@@ -750,9 +762,12 @@ class _JoinTournamamentWidgetState
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            widget.tournament.tournamentName ?? "",
-                            style: Theme.of(context).textTheme.labelLarge,
+                          SizedBox(
+                            width: 80.w,
+                            child: Text(
+                              widget.tournament.tournamentName ?? "",
+                              style: Theme.of(context).textTheme.labelLarge,
+                            ),
                           ),
                           GestureDetector(
                             onTap: () {
