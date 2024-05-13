@@ -455,7 +455,7 @@ class LeaderboardItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 70,
+      // height: 70,
       width: double.infinity,
       // margin: const EdgeInsets.all(4),
       decoration:

@@ -44,15 +44,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             provider.getDifferenceInMilliseconds(tournament.dateTime!) > 0 &&
             (tournament.result == null && tournament.lobby != null))
         .toList();
+    ongoingTournaments.sort((a, b) => a.dateTime!.compareTo(b.dateTime!));
+
     List<Tournament> upcomingTournaments = homeState.tournaments
         .where((tournament) =>
             provider.getDifferenceInMilliseconds(tournament.dateTime!) <= 0)
         .toList();
+
+    upcomingTournaments.sort((a, b) => a.dateTime!.compareTo(b.dateTime!));
+
     List<Tournament> pastTournaments = homeState.tournaments
         .where((tournament) =>
             provider.getDifferenceInMilliseconds(tournament.dateTime!) > 0 &&
             tournament.result != null)
         .toList();
+    pastTournaments.sort((a, b) => a.dateTime!.compareTo(b.dateTime!));
 
     return SafeArea(
       child: Container(
@@ -129,7 +135,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           padding:
                               const EdgeInsetsDirectional.fromSTEB(0, 6, 0, 0),
                           child: Text(
-                            homeState.topUsers.isNotEmpty ? homeState.topUsers[1].username : "",
+                            homeState.topUsers.isNotEmpty
+                                ? homeState.topUsers[1].username
+                                : "",
                             style:
                                 Theme.of(context).textTheme.bodySmall?.copyWith(
                                       fontFamily: 'Readex Pro',
@@ -191,7 +199,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         padding:
                             const EdgeInsetsDirectional.fromSTEB(0, 6, 0, 0),
                         child: Text(
-                          homeState.topUsers.isNotEmpty ? homeState.topUsers[0].username : "",
+                          homeState.topUsers.isNotEmpty
+                              ? homeState.topUsers[0].username
+                              : "",
                           style:
                               Theme.of(context).textTheme.bodySmall?.copyWith(
                                     fontFamily: 'Readex Pro',
@@ -254,7 +264,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           padding:
                               const EdgeInsetsDirectional.fromSTEB(0, 6, 0, 0),
                           child: Text(
-                            homeState.topUsers.isNotEmpty ? homeState.topUsers[2].username : "",
+                            homeState.topUsers.isNotEmpty
+                                ? homeState.topUsers[2].username
+                                : "",
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyMedium

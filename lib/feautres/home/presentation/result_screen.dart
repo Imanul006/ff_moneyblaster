@@ -104,7 +104,7 @@ class ResultdScreen extends ConsumerWidget {
                 ),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  height: 80.h,
+                  height: 79.h,
                   child: (result != null && result!.isNotEmpty)
                       ? MediaQuery.removePadding(
                           context: context,
@@ -119,7 +119,7 @@ class ResultdScreen extends ConsumerWidget {
                                       const SizedBox(height: 12),
                               itemBuilder: (context, index) {
                                 return Container(
-                                  height: 75,
+                                  // height: 75,
                                   width: double.infinity,
                                   // margin: const EdgeInsets.all(4),
                                   decoration: customDecoration.copyWith(
