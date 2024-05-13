@@ -40,18 +40,21 @@ class AppTextField extends StatelessWidget {
                 width: double.infinity,
                 fit: BoxFit.cover,
               ),
-              Positioned.fill(child: Container(  decoration: BoxDecoration(
-    color: Colors.white.withOpacity(0.5), 
-    borderRadius: BorderRadius.circular(10),
-    boxShadow: [
-      BoxShadow(
-        color: Colors.black.withOpacity(0.1),
-        spreadRadius: 2,
-        blurRadius: 4,
-        offset: const Offset(0, 2),
-      ),
-    ],
-  ),)),
+              Positioned.fill(
+                  child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.5),
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      spreadRadius: 2,
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+              )),
               Positioned.fill(
                 child: Padding(
                   padding:
@@ -60,7 +63,6 @@ class AppTextField extends StatelessWidget {
                     controller: controller,
                     keyboardType: keyboardType,
                     decoration: InputDecoration(
-                    
                       border: InputBorder.none,
                       hintText: hintText,
                       hintStyle: const TextStyle(

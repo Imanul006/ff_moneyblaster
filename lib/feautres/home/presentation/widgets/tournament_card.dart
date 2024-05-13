@@ -44,6 +44,7 @@ class TournamentCard extends ConsumerStatefulWidget {
 
 class _TournamentCardState extends ConsumerState<TournamentCard> {
   Duration _duration = Duration.zero;
+
   @override
   void initState() {
     if (widget.isLessThan24Hours) {
@@ -683,6 +684,9 @@ class JoinTournamamentWidget extends ConsumerStatefulWidget {
 
 class _JoinTournamamentWidgetState
     extends ConsumerState<JoinTournamamentWidget> {
+  final playerOneId = TextEditingController();
+  final playerTwoId = TextEditingController();
+  final playerThreeId = TextEditingController();
   Duration _duration = Duration.zero;
 
   @override
@@ -715,401 +719,448 @@ class _JoinTournamamentWidgetState
     final state = ref.read(homeProvider);
     final FirebaseAuth auth = FirebaseAuth.instance;
     final uid = auth.currentUser!.uid;
-    return Stack(
-      children: [
-        Positioned(
-            top: 0,
-            right: 0,
-            child: Image.asset(
-              Assets.tournamentJoining,
-              scale: 2,
-            )),
-        BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
-          child: Container(
-            // height: MediaQuery.of(context).size.height * 0.5,
-            padding: const EdgeInsets.all(20),
-            decoration: customDecoration.copyWith(
-                color: AppColors.popUpColor,
-                borderRadius: BorderRadius.circular(20)),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
+      backgroundColor: Colors.transparent,
+      body: Stack(
+        children: [
+          Positioned(
+              top: 0,
+              right: 0,
+              child: Image.asset(
+                Assets.tournamentJoining,
+                scale: 2,
+              )),
+          BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
+            child: ListView(
               children: [
-                // 1 title and x
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      widget.tournament.tournamentName ?? "",
-                      style: Theme.of(context).textTheme.labelLarge,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        context.maybePop();
-                      },
-                      child: Image.asset(
-                        Assets.close,
-                        scale: 2,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 12,
-                ),
-                // prize pool | per kill | entry fee
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Prize Pool',
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                        Text(
-                          '₹${widget.tournament.prizePool?[0] ?? ""}',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge
-                              ?.copyWith(color: AppColors.blue),
-                        ),
-                      ],
-                    ),
-                    Container(
-                      width: 1,
-                      height: 50,
-                      color: AppColors.glassColor,
-                    ),
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Per Kill',
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                        Text(
-                          '₹${widget.tournament.perKill}',
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                      ],
-                    ),
-                    Container(
-                      width: 1,
-                      height: 50,
-                      color: AppColors.glassColor,
-                    ),
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Entry Fee',
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                        Text(
-                          '₹${widget.tournament.entryFee}',
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                // map details
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      // width: 66,
-                      // height: 22,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 4),
-                      margin: const EdgeInsets.only(
-                        right: 8,
-                      ),
-                      decoration: BoxDecoration(
-                        color: const Color(0x68FFFFFF),
-                        borderRadius: BorderRadius.circular(35),
-                        shape: BoxShape.rectangle,
-                      ),
-                      alignment: const AlignmentDirectional(0, 0),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            widget.tournament.gameType?.gameMap ?? "",
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodySmall
-                                ?.copyWith(
-                                    fontSize: 12, fontWeight: FontWeight.w700),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      // width: 66,
-                      // height: 22,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 4),
-                      margin: const EdgeInsets.only(
-                        right: 8,
-                      ),
-                      decoration: BoxDecoration(
-                        color: const Color(0x68FFFFFF),
-                        borderRadius: BorderRadius.circular(35),
-                        shape: BoxShape.rectangle,
-                      ),
-                      alignment: const AlignmentDirectional(0, 0),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            widget.tournament.gameType?.gameCamera ?? "",
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodySmall
-                                ?.copyWith(
-                                    fontSize: 12, fontWeight: FontWeight.w700),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      // width: 66,
-                      // height: 22,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 4),
-                      margin: const EdgeInsets.only(
-                        right: 8,
-                      ),
-                      decoration: BoxDecoration(
-                        color: const Color(0x68FFFFFF),
-                        borderRadius: BorderRadius.circular(35),
-                        shape: BoxShape.rectangle,
-                      ),
-                      alignment: const AlignmentDirectional(0, 0),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            widget.tournament.gameType?.teamOption ?? "",
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodySmall
-                                ?.copyWith(
-                                    fontSize: 12, fontWeight: FontWeight.w700),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                // match starts in
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Text(
-                      formatDuration(_duration),
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    )
-                  ],
-                ),
-                if (widget.tournament.registeredPlayersId.contains(uid)) ...[
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  // match starts in
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Container(
+                  // height: MediaQuery.of(context).size.height * 0.5,
+                  padding: const EdgeInsets.all(20),
+                  decoration: customDecoration.copyWith(
+                      color: AppColors.popUpColor,
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      // 1 title and x
+                      Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            widget.tournament.tournamentName ?? "",
+                            style: Theme.of(context).textTheme.labelLarge,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              context.maybePop();
+                            },
+                            child: Image.asset(
+                              Assets.close,
+                              scale: 2,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      // prize pool | per kill | entry fee
+                      Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Prize Pool',
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                              Text(
+                                '₹${widget.tournament.prizePool?[0] ?? ""}',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge
+                                    ?.copyWith(color: AppColors.blue),
+                              ),
+                            ],
+                          ),
+                          Container(
+                            width: 1,
+                            height: 50,
+                            color: AppColors.glassColor,
+                          ),
+                          Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Per Kill',
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                              Text(
+                                '₹${widget.tournament.perKill}',
+                                style: Theme.of(context).textTheme.bodyLarge,
+                              ),
+                            ],
+                          ),
+                          Container(
+                            width: 1,
+                            height: 50,
+                            color: AppColors.glassColor,
+                          ),
+                          Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Entry Fee',
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                              Text(
+                                '₹${widget.tournament.entryFee}',
+                                style: Theme.of(context).textTheme.bodyLarge,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      // map details
                       Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text(
-                            'Room ID',
-                            style: Theme.of(context).textTheme.headlineSmall,
+                          Container(
+                            // width: 66,
+                            // height: 22,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 4),
+                            margin: const EdgeInsets.only(
+                              right: 8,
+                            ),
+                            decoration: BoxDecoration(
+                              color: const Color(0x68FFFFFF),
+                              borderRadius: BorderRadius.circular(35),
+                              shape: BoxShape.rectangle,
+                            ),
+                            alignment: const AlignmentDirectional(0, 0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  widget.tournament.gameType?.gameMap ?? "",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall
+                                      ?.copyWith(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w700),
+                                ),
+                              ],
+                            ),
                           ),
-                          const SizedBox(
-                            width: 16,
+                          Container(
+                            // width: 66,
+                            // height: 22,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 4),
+                            margin: const EdgeInsets.only(
+                              right: 8,
+                            ),
+                            decoration: BoxDecoration(
+                              color: const Color(0x68FFFFFF),
+                              borderRadius: BorderRadius.circular(35),
+                              shape: BoxShape.rectangle,
+                            ),
+                            alignment: const AlignmentDirectional(0, 0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  widget.tournament.gameType?.gameCamera ?? "",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall
+                                      ?.copyWith(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w700),
+                                ),
+                              ],
+                            ),
                           ),
-                          Text(
-                            widget.tournament.lobby ?? '',
-                            style: Theme.of(context).textTheme.headlineSmall,
+                          Container(
+                            // width: 66,
+                            // height: 22,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 4),
+                            margin: const EdgeInsets.only(
+                              right: 8,
+                            ),
+                            decoration: BoxDecoration(
+                              color: const Color(0x68FFFFFF),
+                              borderRadius: BorderRadius.circular(35),
+                              shape: BoxShape.rectangle,
+                            ),
+                            alignment: const AlignmentDirectional(0, 0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  widget.tournament.gameType?.teamOption ?? "",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall
+                                      ?.copyWith(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w700),
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
-                      GestureDetector(
-                          onTap: () {
-                            FlutterClipboard.copy(widget.tournament.lobby ?? '')
-                                .then((value) => Fluttertoast.showToast(
-                                    msg: 'Lobby ID Copied.'));
-                          },
-                          child: const Icon(
-                            Icons.copy,
-                            color: Colors.white,
-                          )),
-                    ],
-                  ),
-                ],
-                //const Spacer(),
-                const SizedBox(
-                  height: 32,
-                ),
-                // // player Id list details
-                // if (widget.tournament.gameType?.teamOption == 'SQUAD' &&
-                //     !widget.tournament.registeredPlayersId.contains(uid))
-                //   Column(
-                //     children: [
-                //       Container(
-                //         width: double.infinity,
-                //         height: 50,
-                //         padding: const EdgeInsets.symmetric(
-                //             vertical: 6, horizontal: 12),
-                //         margin: const EdgeInsets.only(bottom: 10),
-                //         decoration: customDecoration.copyWith(
-                //             borderRadius: BorderRadius.circular(8)),
-                //         child: TextFormField(
-                //           decoration: InputDecoration(
-                //               border: InputBorder.none,
-                //               hintText: 'Enter Player 2 Game ID',
-                //               hintStyle: Theme.of(context)
-                //                   .textTheme
-                //                   .labelSmall
-                //                   ?.copyWith(
-                //                       color: Colors.white.withOpacity(0.3))),
-                //         ),
-                //       ),
-                //       Container(
-                //         width: double.infinity,
-                //         height: 50,
-                //         padding: const EdgeInsets.symmetric(
-                //             vertical: 6, horizontal: 12),
-                //         margin: const EdgeInsets.only(bottom: 10),
-                //         decoration: customDecoration.copyWith(
-                //             borderRadius: BorderRadius.circular(8)),
-                //         child: TextFormField(
-                //           decoration: InputDecoration(
-                //               border: InputBorder.none,
-                //               hintText: 'Enter Player 2 Game ID',
-                //               hintStyle: Theme.of(context)
-                //                   .textTheme
-                //                   .labelSmall
-                //                   ?.copyWith(
-                //                       color: Colors.white.withOpacity(0.3))),
-                //         ),
-                //       ),
-                //       Container(
-                //         width: double.infinity,
-                //         height: 50,
-                //         padding: const EdgeInsets.symmetric(
-                //             vertical: 6, horizontal: 12),
-                //         margin: const EdgeInsets.only(bottom: 10),
-                //         decoration: customDecoration.copyWith(
-                //             borderRadius: BorderRadius.circular(8)),
-                //         child: TextFormField(
-                //           decoration: InputDecoration(
-                //               border: InputBorder.none,
-                //               hintText: 'Enter Player 2 Game ID',
-                //               hintStyle: Theme.of(context)
-                //                   .textTheme
-                //                   .labelSmall
-                //                   ?.copyWith(
-                //                       color: Colors.white.withOpacity(0.3))),
-                //         ),
-                //       )
-                //     ],
-                //   ),
-                // proceed
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'You have ',
-                          style: Theme.of(context).textTheme.bodySmall,
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      // match starts in
+                      Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Text(
+                            formatDuration(_duration),
+                            style: Theme.of(context).textTheme.headlineSmall,
+                          )
+                        ],
+                      ),
+                      if (widget.tournament.registeredPlayersId
+                          .contains(uid)) ...[
+                        const SizedBox(
+                          height: 20,
                         ),
-                        Text('₹${widget.bal}',
-                            style:
-                                Theme.of(context).textTheme.bodySmall?.copyWith(
-                                      fontWeight: FontWeight.w700,
-                                      color: AppColors.blue,
-                                    )),
-                        Text(
-                          ' in your wallet',
-                          style: Theme.of(context).textTheme.bodySmall,
+                        // match starts in
+                        Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  'Room ID',
+                                  style:
+                                      Theme.of(context).textTheme.headlineSmall,
+                                ),
+                                const SizedBox(
+                                  width: 16,
+                                ),
+                                Text(
+                                  widget.tournament.lobby ?? '',
+                                  style:
+                                      Theme.of(context).textTheme.headlineSmall,
+                                ),
+                              ],
+                            ),
+                            GestureDetector(
+                                onTap: () {
+                                  FlutterClipboard.copy(
+                                          widget.tournament.lobby ?? '')
+                                      .then((value) => Fluttertoast.showToast(
+                                          msg: 'Lobby ID Copied.'));
+                                },
+                                child: const Icon(
+                                  Icons.copy,
+                                  color: Colors.white,
+                                )),
+                          ],
                         ),
                       ],
-                    ),
-                    const SizedBox(
-                      height: 12,
-                    ),
-                    if (!widget.tournament.registeredPlayersId
-                        .contains(FirebaseAuth.instance.currentUser!.uid))
-                      GestureDetector(
-                        onTap: () async {
-                          await notifier
-                              .drawWallet(widget.tournament.entryFee!);
-                          await notifier
-                              .registerForTournament(state.selectedTournament!)
-                              .then((value) {
-                            context.maybePop();
-                          });
-                        },
-                        child: Container(
-                          width: double.infinity,
-                          height: 45,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            gradient: const LinearGradient(
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                                colors: [
-                                  Color.fromRGBO(206, 59, 59, 1),
-                                  Color.fromRGBO(95, 18, 55, 1),
-                                ]),
-                          ),
-                          child: Center(
-                            child: Text(
-                              'Pay ₹${widget.tournament.entryFee}',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall
-                                  ?.copyWith(fontWeight: FontWeight.w700),
-                            ),
-                          ),
-                        ),
+                      //const Spacer(),
+                      const SizedBox(
+                        height: 32,
                       ),
-                  ],
-                )
+                      // // player Id list details
+                      if (widget.tournament.gameType?.teamOption == 'SQUAD' &&
+                          !widget.tournament.registeredPlayersId.contains(uid))
+                        Column(
+                          children: [
+                            Container(
+                              width: double.infinity,
+                              height: 50,
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 6, horizontal: 12),
+                              margin: const EdgeInsets.only(bottom: 10),
+                              decoration: customDecoration.copyWith(
+                                  borderRadius: BorderRadius.circular(8)),
+                              child: TextFormField(
+                                controller: playerOneId,
+                                decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: 'Enter Player 2 Game ID',
+                                    hintStyle: Theme.of(context)
+                                        .textTheme
+                                        .labelSmall
+                                        ?.copyWith(
+                                            color:
+                                                Colors.white.withOpacity(0.3))),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelMedium
+                                    ?.copyWith(color: Colors.white),
+                              ),
+                            ),
+                            Container(
+                              width: double.infinity,
+                              height: 50,
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 6, horizontal: 12),
+                              margin: const EdgeInsets.only(bottom: 10),
+                              decoration: customDecoration.copyWith(
+                                  borderRadius: BorderRadius.circular(8)),
+                              child: TextFormField(
+                                controller: playerTwoId,
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: 'Enter Player 3 Game ID',
+                                  hintStyle: Theme.of(context)
+                                      .textTheme
+                                      .labelSmall
+                                      ?.copyWith(
+                                          color: Colors.white.withOpacity(0.3)),
+                                ),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelMedium
+                                    ?.copyWith(color: Colors.white),
+                              ),
+                            ),
+                            Container(
+                              width: double.infinity,
+                              height: 50,
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 6, horizontal: 12),
+                              margin: const EdgeInsets.only(bottom: 10),
+                              decoration: customDecoration.copyWith(
+                                  borderRadius: BorderRadius.circular(8)),
+                              child: TextFormField(
+                                controller: playerThreeId,
+                                decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: 'Enter Player 4 Game ID',
+                                    hintStyle: Theme.of(context)
+                                        .textTheme
+                                        .labelSmall
+                                        ?.copyWith(
+                                            color:
+                                                Colors.white.withOpacity(0.3))),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelMedium
+                                    ?.copyWith(color: Colors.white),
+                              ),
+                            )
+                          ],
+                        ),
+                      // proceed
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'You have ',
+                                style: Theme.of(context).textTheme.bodySmall,
+                              ),
+                              Text('₹${widget.bal}',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall
+                                      ?.copyWith(
+                                        fontWeight: FontWeight.w700,
+                                        color: AppColors.blue,
+                                      )),
+                              Text(
+                                ' in your wallet',
+                                style: Theme.of(context).textTheme.bodySmall,
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 12,
+                          ),
+                          if (!widget.tournament.registeredPlayersId
+                              .contains(FirebaseAuth.instance.currentUser!.uid))
+                            GestureDetector(
+                              onTap: () async {
+                                await notifier
+                                    .drawWallet(widget.tournament.entryFee!);
+                                widget.tournament.gameType?.teamOption ==
+                                        "SQUAD"
+                                    ? await notifier.registerForTournament(
+                                        t: state.selectedTournament!,
+                                        squadPlayerIds: [
+                                            playerOneId.text,
+                                            playerTwoId.text,
+                                            playerThreeId.text,
+                                          ]).then((value) {
+                                        context.maybePop();
+                                      })
+                                    : await notifier
+                                        .registerForTournament(
+                                            t: state.selectedTournament!)
+                                        .then((value) {
+                                        context.maybePop();
+                                      });
+                              },
+                              child: Container(
+                                width: double.infinity,
+                                height: 45,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  gradient: const LinearGradient(
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                      colors: [
+                                        Color.fromRGBO(206, 59, 59, 1),
+                                        Color.fromRGBO(95, 18, 55, 1),
+                                      ]),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    'Pay ₹${widget.tournament.entryFee}',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall
+                                        ?.copyWith(fontWeight: FontWeight.w700),
+                                  ),
+                                ),
+                              ),
+                            ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
-        ),
-        // Positioned(
-        //     top: 100,
-        //     child: Image.asset(
-        //       Assets.tournamentJoining,
-        //       scale: 2,
-        //     )),
-      ],
+          // Positioned(
+          //     top: 100,
+          //     child: Image.asset(
+          //       Assets.tournamentJoining,
+          //       scale: 2,
+          //     )),
+        ],
+      ),
     );
   }
 }

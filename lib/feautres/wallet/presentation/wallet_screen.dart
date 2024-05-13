@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:ff_moneyblaster/core/assets.dart';
 import 'package:ff_moneyblaster/core/constants.dart';
@@ -198,9 +200,10 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
                                           context: context,
                                           builder: (BuildContext context) {
                                             return const FractionallySizedBox(
-                                              heightFactor: 1.55,
+                                              heightFactor: 1.6,
                                               child: DepositBottomSheet(),
                                             );
+                                            // return const DepositBottomSheet();
                                           },
                                         );
                                       },
@@ -215,15 +218,28 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
                                         //     widget.tournament);
                                         showModalBottomSheet<void>(
                                           // isDismissible: false,
+                                          // isScrollControlled: true,
+                                          // constraints: ,
                                           backgroundColor: AppColors.glassColor,
                                           barrierColor: const Color.fromRGBO(
                                               7, 7, 7, 0.7),
                                           context: context,
                                           builder: (BuildContext context) {
-                                            return const FractionallySizedBox(
-                                              heightFactor: 1.6,
-                                              child: WithdrawBottomSheet(),
+                                            return FractionallySizedBox(
+                                              heightFactor: 1.32,
+                                              child: BackdropFilter(
+                                                filter: ImageFilter.blur(
+                                                    sigmaX: 2, sigmaY: 2),
+                                                child:
+                                                    const WithdrawBottomSheet(),
+                                              ),
                                             );
+                                            // return BackdropFilter(
+                                            //   filter: ImageFilter.blur(
+                                            //       sigmaX: 2, sigmaY: 2),
+                                            //   child:
+                                            //       const WithdrawBottomSheet(),
+                                            // );
                                           },
                                         );
                                       },

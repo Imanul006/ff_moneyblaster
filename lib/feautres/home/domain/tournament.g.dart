@@ -44,12 +44,20 @@ _$TournamentImpl _$$TournamentImplFromJson(Map<String, dynamic> json) =>
               .toList() ??
           const [],
       lobby: json['lobby'] as String?,
+      lobbyPassword: json['lobbyPassword'] as String?,
       liveLink: json['liveLink'] as String?,
       result: (json['result'] as List<dynamic>?)
           ?.map((e) => e == null
               ? null
               : ResultModel.fromJson(e as Map<String, dynamic>))
           .toList(),
+      teamsRegistered: (json['teamsRegistered'] as num?)?.toInt() ?? 0,
+      teams: (json['teams'] as List<dynamic>?)
+              ?.map((e) => e == null
+                  ? null
+                  : TeamModel.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
     );
 
 Map<String, dynamic> _$$TournamentImplToJson(_$TournamentImpl instance) =>
@@ -68,8 +76,28 @@ Map<String, dynamic> _$$TournamentImplToJson(_$TournamentImpl instance) =>
       'tournamentName': instance.tournamentName,
       'registeredPlayersId': instance.registeredPlayersId,
       'lobby': instance.lobby,
+      'lobbyPassword': instance.lobbyPassword,
       'liveLink': instance.liveLink,
       'result': instance.result,
+      'teamsRegistered': instance.teamsRegistered,
+      'teams': instance.teams,
+    };
+
+_$TeamModelImpl _$$TeamModelImplFromJson(Map<String, dynamic> json) =>
+    _$TeamModelImpl(
+      registeredBy: json['registeredBy'] as String?,
+      gameIds: (json['gameIds'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
+      teamNumber: (json['teamNumber'] as num?)?.toInt(),
+    );
+
+Map<String, dynamic> _$$TeamModelImplToJson(_$TeamModelImpl instance) =>
+    <String, dynamic>{
+      'registeredBy': instance.registeredBy,
+      'gameIds': instance.gameIds,
+      'teamNumber': instance.teamNumber,
     };
 
 _$ResultModelImpl _$$ResultModelImplFromJson(Map<String, dynamic> json) =>

@@ -109,11 +109,13 @@ class HomeNotifier extends StateNotifier<HomeState> {
     debugPrint(t.uid);
   }
 
-  Future<void> registerForTournament(Tournament t) async {
+  Future<void> registerForTournament(
+      {required Tournament t, List<String>? squadPlayerIds}) async {
     state = state.copyWith(isLoading: true);
     try {
       final tournament = await _homeRepository.registerForTournament(
-          tournamentId: state.selectedTournament!.uid!);
+          tournamentId: state.selectedTournament!.uid!,
+          squadPlayerIds: squadPlayerIds);
       await fetchTournaments();
       // state = state.copyWith(selectedTournament: t);
     } catch (e) {

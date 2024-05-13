@@ -46,22 +46,21 @@ class _DepositBottomSheetState extends ConsumerState<DepositBottomSheet> {
     final uid = auth.currentUser!.uid;
     return BackdropFilter(
       filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
-      child: ConstrainedBox(
-        constraints: BoxConstraints(
-          minHeight: MediaQuery.of(context).size.height * 0.6,
-        ),
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          padding: const EdgeInsets.all(20),
-          decoration: customDecoration.copyWith(
-              color: AppColors.popUpColor,
-              borderRadius: BorderRadius.circular(20)),
-          child: _isForm
-              ? depositForm(
-                  context,
-                )
-              : depositQR(context),
-        ),
+      child: ListView(
+        children: [
+          Container(
+            width: MediaQuery.of(context).size.width,
+            padding: const EdgeInsets.all(20),
+            decoration: customDecoration.copyWith(
+                color: AppColors.popUpColor,
+                borderRadius: BorderRadius.circular(20)),
+            child: _isForm
+                ? depositForm(
+                    context,
+                  )
+                : depositQR(context),
+          ),
+        ],
       ),
     );
   }
@@ -193,6 +192,9 @@ class _DepositBottomSheetState extends ConsumerState<DepositBottomSheet> {
               ),
             ),
           ),
+        ),
+        const SizedBox(
+          height: 40,
         ),
       ],
     );

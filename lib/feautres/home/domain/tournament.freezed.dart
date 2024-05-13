@@ -240,10 +240,16 @@ mixin _$Tournament {
   List<String> get registeredPlayersId => throw _privateConstructorUsedError;
   @JsonKey(name: 'lobby')
   String? get lobby => throw _privateConstructorUsedError;
+  @JsonKey(name: 'lobbyPassword')
+  String? get lobbyPassword => throw _privateConstructorUsedError;
   @JsonKey(name: 'liveLink')
   String? get liveLink => throw _privateConstructorUsedError;
   @JsonKey(name: 'result')
   List<ResultModel?>? get result => throw _privateConstructorUsedError;
+  @JsonKey(name: 'teamsRegistered')
+  int get teamsRegistered => throw _privateConstructorUsedError;
+  @JsonKey(name: 'teams')
+  List<TeamModel?>? get teams => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -276,8 +282,11 @@ abstract class $TournamentCopyWith<$Res> {
       @JsonKey(name: 'tournamentName') String? tournamentName,
       @JsonKey(name: 'registeredPlayersId') List<String> registeredPlayersId,
       @JsonKey(name: 'lobby') String? lobby,
+      @JsonKey(name: 'lobbyPassword') String? lobbyPassword,
       @JsonKey(name: 'liveLink') String? liveLink,
-      @JsonKey(name: 'result') List<ResultModel?>? result});
+      @JsonKey(name: 'result') List<ResultModel?>? result,
+      @JsonKey(name: 'teamsRegistered') int teamsRegistered,
+      @JsonKey(name: 'teams') List<TeamModel?>? teams});
 
   $GameTypeCopyWith<$Res>? get gameType;
 }
@@ -309,8 +318,11 @@ class _$TournamentCopyWithImpl<$Res, $Val extends Tournament>
     Object? tournamentName = freezed,
     Object? registeredPlayersId = null,
     Object? lobby = freezed,
+    Object? lobbyPassword = freezed,
     Object? liveLink = freezed,
     Object? result = freezed,
+    Object? teamsRegistered = null,
+    Object? teams = freezed,
   }) {
     return _then(_value.copyWith(
       createdAt: freezed == createdAt
@@ -369,6 +381,10 @@ class _$TournamentCopyWithImpl<$Res, $Val extends Tournament>
           ? _value.lobby
           : lobby // ignore: cast_nullable_to_non_nullable
               as String?,
+      lobbyPassword: freezed == lobbyPassword
+          ? _value.lobbyPassword
+          : lobbyPassword // ignore: cast_nullable_to_non_nullable
+              as String?,
       liveLink: freezed == liveLink
           ? _value.liveLink
           : liveLink // ignore: cast_nullable_to_non_nullable
@@ -377,6 +393,14 @@ class _$TournamentCopyWithImpl<$Res, $Val extends Tournament>
           ? _value.result
           : result // ignore: cast_nullable_to_non_nullable
               as List<ResultModel?>?,
+      teamsRegistered: null == teamsRegistered
+          ? _value.teamsRegistered
+          : teamsRegistered // ignore: cast_nullable_to_non_nullable
+              as int,
+      teams: freezed == teams
+          ? _value.teams
+          : teams // ignore: cast_nullable_to_non_nullable
+              as List<TeamModel?>?,
     ) as $Val);
   }
 
@@ -420,8 +444,11 @@ abstract class _$$TournamentImplCopyWith<$Res>
       @JsonKey(name: 'tournamentName') String? tournamentName,
       @JsonKey(name: 'registeredPlayersId') List<String> registeredPlayersId,
       @JsonKey(name: 'lobby') String? lobby,
+      @JsonKey(name: 'lobbyPassword') String? lobbyPassword,
       @JsonKey(name: 'liveLink') String? liveLink,
-      @JsonKey(name: 'result') List<ResultModel?>? result});
+      @JsonKey(name: 'result') List<ResultModel?>? result,
+      @JsonKey(name: 'teamsRegistered') int teamsRegistered,
+      @JsonKey(name: 'teams') List<TeamModel?>? teams});
 
   @override
   $GameTypeCopyWith<$Res>? get gameType;
@@ -452,8 +479,11 @@ class __$$TournamentImplCopyWithImpl<$Res>
     Object? tournamentName = freezed,
     Object? registeredPlayersId = null,
     Object? lobby = freezed,
+    Object? lobbyPassword = freezed,
     Object? liveLink = freezed,
     Object? result = freezed,
+    Object? teamsRegistered = null,
+    Object? teams = freezed,
   }) {
     return _then(_$TournamentImpl(
       createdAt: freezed == createdAt
@@ -512,6 +542,10 @@ class __$$TournamentImplCopyWithImpl<$Res>
           ? _value.lobby
           : lobby // ignore: cast_nullable_to_non_nullable
               as String?,
+      lobbyPassword: freezed == lobbyPassword
+          ? _value.lobbyPassword
+          : lobbyPassword // ignore: cast_nullable_to_non_nullable
+              as String?,
       liveLink: freezed == liveLink
           ? _value.liveLink
           : liveLink // ignore: cast_nullable_to_non_nullable
@@ -520,6 +554,14 @@ class __$$TournamentImplCopyWithImpl<$Res>
           ? _value._result
           : result // ignore: cast_nullable_to_non_nullable
               as List<ResultModel?>?,
+      teamsRegistered: null == teamsRegistered
+          ? _value.teamsRegistered
+          : teamsRegistered // ignore: cast_nullable_to_non_nullable
+              as int,
+      teams: freezed == teams
+          ? _value._teams
+          : teams // ignore: cast_nullable_to_non_nullable
+              as List<TeamModel?>?,
     ));
   }
 }
@@ -547,12 +589,16 @@ class _$TournamentImpl implements _Tournament {
       @JsonKey(name: 'registeredPlayersId')
       final List<String> registeredPlayersId = const [],
       @JsonKey(name: 'lobby') this.lobby,
+      @JsonKey(name: 'lobbyPassword') this.lobbyPassword,
       @JsonKey(name: 'liveLink') this.liveLink,
-      @JsonKey(name: 'result') final List<ResultModel?>? result})
+      @JsonKey(name: 'result') final List<ResultModel?>? result,
+      @JsonKey(name: 'teamsRegistered') this.teamsRegistered = 0,
+      @JsonKey(name: 'teams') final List<TeamModel?>? teams = const []})
       : _prizePool = prizePool,
         _status = status,
         _registeredPlayersId = registeredPlayersId,
-        _result = result;
+        _result = result,
+        _teams = teams;
 
   factory _$TournamentImpl.fromJson(Map<String, dynamic> json) =>
       _$$TournamentImplFromJson(json);
@@ -625,6 +671,9 @@ class _$TournamentImpl implements _Tournament {
   @JsonKey(name: 'lobby')
   final String? lobby;
   @override
+  @JsonKey(name: 'lobbyPassword')
+  final String? lobbyPassword;
+  @override
   @JsonKey(name: 'liveLink')
   final String? liveLink;
   final List<ResultModel?>? _result;
@@ -639,8 +688,22 @@ class _$TournamentImpl implements _Tournament {
   }
 
   @override
+  @JsonKey(name: 'teamsRegistered')
+  final int teamsRegistered;
+  final List<TeamModel?>? _teams;
+  @override
+  @JsonKey(name: 'teams')
+  List<TeamModel?>? get teams {
+    final value = _teams;
+    if (value == null) return null;
+    if (_teams is EqualUnmodifiableListView) return _teams;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  @override
   String toString() {
-    return 'Tournament(createdAt: $createdAt, dateTime: $dateTime, uid: $uid, entryFee: $entryFee, gameType: $gameType, gameOption: $gameOption, lastUpdatedAt: $lastUpdatedAt, perKill: $perKill, prizePool: $prizePool, status: $status, totalPlayersAllowed: $totalPlayersAllowed, tournamentName: $tournamentName, registeredPlayersId: $registeredPlayersId, lobby: $lobby, liveLink: $liveLink, result: $result)';
+    return 'Tournament(createdAt: $createdAt, dateTime: $dateTime, uid: $uid, entryFee: $entryFee, gameType: $gameType, gameOption: $gameOption, lastUpdatedAt: $lastUpdatedAt, perKill: $perKill, prizePool: $prizePool, status: $status, totalPlayersAllowed: $totalPlayersAllowed, tournamentName: $tournamentName, registeredPlayersId: $registeredPlayersId, lobby: $lobby, lobbyPassword: $lobbyPassword, liveLink: $liveLink, result: $result, teamsRegistered: $teamsRegistered, teams: $teams)';
   }
 
   @override
@@ -672,31 +735,40 @@ class _$TournamentImpl implements _Tournament {
             const DeepCollectionEquality()
                 .equals(other._registeredPlayersId, _registeredPlayersId) &&
             (identical(other.lobby, lobby) || other.lobby == lobby) &&
+            (identical(other.lobbyPassword, lobbyPassword) ||
+                other.lobbyPassword == lobbyPassword) &&
             (identical(other.liveLink, liveLink) ||
                 other.liveLink == liveLink) &&
-            const DeepCollectionEquality().equals(other._result, _result));
+            const DeepCollectionEquality().equals(other._result, _result) &&
+            (identical(other.teamsRegistered, teamsRegistered) ||
+                other.teamsRegistered == teamsRegistered) &&
+            const DeepCollectionEquality().equals(other._teams, _teams));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      createdAt,
-      dateTime,
-      uid,
-      entryFee,
-      gameType,
-      gameOption,
-      lastUpdatedAt,
-      perKill,
-      const DeepCollectionEquality().hash(_prizePool),
-      const DeepCollectionEquality().hash(_status),
-      totalPlayersAllowed,
-      tournamentName,
-      const DeepCollectionEquality().hash(_registeredPlayersId),
-      lobby,
-      liveLink,
-      const DeepCollectionEquality().hash(_result));
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        createdAt,
+        dateTime,
+        uid,
+        entryFee,
+        gameType,
+        gameOption,
+        lastUpdatedAt,
+        perKill,
+        const DeepCollectionEquality().hash(_prizePool),
+        const DeepCollectionEquality().hash(_status),
+        totalPlayersAllowed,
+        tournamentName,
+        const DeepCollectionEquality().hash(_registeredPlayersId),
+        lobby,
+        lobbyPassword,
+        liveLink,
+        const DeepCollectionEquality().hash(_result),
+        teamsRegistered,
+        const DeepCollectionEquality().hash(_teams)
+      ]);
 
   @JsonKey(ignore: true)
   @override
@@ -733,8 +805,11 @@ abstract class _Tournament implements Tournament {
           @JsonKey(name: 'registeredPlayersId')
           final List<String> registeredPlayersId,
           @JsonKey(name: 'lobby') final String? lobby,
+          @JsonKey(name: 'lobbyPassword') final String? lobbyPassword,
           @JsonKey(name: 'liveLink') final String? liveLink,
-          @JsonKey(name: 'result') final List<ResultModel?>? result}) =
+          @JsonKey(name: 'result') final List<ResultModel?>? result,
+          @JsonKey(name: 'teamsRegistered') final int teamsRegistered,
+          @JsonKey(name: 'teams') final List<TeamModel?>? teams}) =
       _$TournamentImpl;
 
   factory _Tournament.fromJson(Map<String, dynamic> json) =
@@ -785,14 +860,221 @@ abstract class _Tournament implements Tournament {
   @JsonKey(name: 'lobby')
   String? get lobby;
   @override
+  @JsonKey(name: 'lobbyPassword')
+  String? get lobbyPassword;
+  @override
   @JsonKey(name: 'liveLink')
   String? get liveLink;
   @override
   @JsonKey(name: 'result')
   List<ResultModel?>? get result;
   @override
+  @JsonKey(name: 'teamsRegistered')
+  int get teamsRegistered;
+  @override
+  @JsonKey(name: 'teams')
+  List<TeamModel?>? get teams;
+  @override
   @JsonKey(ignore: true)
   _$$TournamentImplCopyWith<_$TournamentImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+TeamModel _$TeamModelFromJson(Map<String, dynamic> json) {
+  return _TeamModel.fromJson(json);
+}
+
+/// @nodoc
+mixin _$TeamModel {
+  @JsonKey(name: 'registeredBy')
+  String? get registeredBy => throw _privateConstructorUsedError;
+  @JsonKey(name: 'gameIds')
+  List<String> get gameIds => throw _privateConstructorUsedError;
+  @JsonKey(name: 'teamNumber')
+  int? get teamNumber => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $TeamModelCopyWith<TeamModel> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $TeamModelCopyWith<$Res> {
+  factory $TeamModelCopyWith(TeamModel value, $Res Function(TeamModel) then) =
+      _$TeamModelCopyWithImpl<$Res, TeamModel>;
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'registeredBy') String? registeredBy,
+      @JsonKey(name: 'gameIds') List<String> gameIds,
+      @JsonKey(name: 'teamNumber') int? teamNumber});
+}
+
+/// @nodoc
+class _$TeamModelCopyWithImpl<$Res, $Val extends TeamModel>
+    implements $TeamModelCopyWith<$Res> {
+  _$TeamModelCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? registeredBy = freezed,
+    Object? gameIds = null,
+    Object? teamNumber = freezed,
+  }) {
+    return _then(_value.copyWith(
+      registeredBy: freezed == registeredBy
+          ? _value.registeredBy
+          : registeredBy // ignore: cast_nullable_to_non_nullable
+              as String?,
+      gameIds: null == gameIds
+          ? _value.gameIds
+          : gameIds // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      teamNumber: freezed == teamNumber
+          ? _value.teamNumber
+          : teamNumber // ignore: cast_nullable_to_non_nullable
+              as int?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$TeamModelImplCopyWith<$Res>
+    implements $TeamModelCopyWith<$Res> {
+  factory _$$TeamModelImplCopyWith(
+          _$TeamModelImpl value, $Res Function(_$TeamModelImpl) then) =
+      __$$TeamModelImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'registeredBy') String? registeredBy,
+      @JsonKey(name: 'gameIds') List<String> gameIds,
+      @JsonKey(name: 'teamNumber') int? teamNumber});
+}
+
+/// @nodoc
+class __$$TeamModelImplCopyWithImpl<$Res>
+    extends _$TeamModelCopyWithImpl<$Res, _$TeamModelImpl>
+    implements _$$TeamModelImplCopyWith<$Res> {
+  __$$TeamModelImplCopyWithImpl(
+      _$TeamModelImpl _value, $Res Function(_$TeamModelImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? registeredBy = freezed,
+    Object? gameIds = null,
+    Object? teamNumber = freezed,
+  }) {
+    return _then(_$TeamModelImpl(
+      registeredBy: freezed == registeredBy
+          ? _value.registeredBy
+          : registeredBy // ignore: cast_nullable_to_non_nullable
+              as String?,
+      gameIds: null == gameIds
+          ? _value._gameIds
+          : gameIds // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      teamNumber: freezed == teamNumber
+          ? _value.teamNumber
+          : teamNumber // ignore: cast_nullable_to_non_nullable
+              as int?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$TeamModelImpl implements _TeamModel {
+  _$TeamModelImpl(
+      {@JsonKey(name: 'registeredBy') this.registeredBy,
+      @JsonKey(name: 'gameIds') final List<String> gameIds = const [],
+      @JsonKey(name: 'teamNumber') this.teamNumber})
+      : _gameIds = gameIds;
+
+  factory _$TeamModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$TeamModelImplFromJson(json);
+
+  @override
+  @JsonKey(name: 'registeredBy')
+  final String? registeredBy;
+  final List<String> _gameIds;
+  @override
+  @JsonKey(name: 'gameIds')
+  List<String> get gameIds {
+    if (_gameIds is EqualUnmodifiableListView) return _gameIds;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_gameIds);
+  }
+
+  @override
+  @JsonKey(name: 'teamNumber')
+  final int? teamNumber;
+
+  @override
+  String toString() {
+    return 'TeamModel(registeredBy: $registeredBy, gameIds: $gameIds, teamNumber: $teamNumber)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$TeamModelImpl &&
+            (identical(other.registeredBy, registeredBy) ||
+                other.registeredBy == registeredBy) &&
+            const DeepCollectionEquality().equals(other._gameIds, _gameIds) &&
+            (identical(other.teamNumber, teamNumber) ||
+                other.teamNumber == teamNumber));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, registeredBy,
+      const DeepCollectionEquality().hash(_gameIds), teamNumber);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$TeamModelImplCopyWith<_$TeamModelImpl> get copyWith =>
+      __$$TeamModelImplCopyWithImpl<_$TeamModelImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$TeamModelImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _TeamModel implements TeamModel {
+  factory _TeamModel(
+      {@JsonKey(name: 'registeredBy') final String? registeredBy,
+      @JsonKey(name: 'gameIds') final List<String> gameIds,
+      @JsonKey(name: 'teamNumber') final int? teamNumber}) = _$TeamModelImpl;
+
+  factory _TeamModel.fromJson(Map<String, dynamic> json) =
+      _$TeamModelImpl.fromJson;
+
+  @override
+  @JsonKey(name: 'registeredBy')
+  String? get registeredBy;
+  @override
+  @JsonKey(name: 'gameIds')
+  List<String> get gameIds;
+  @override
+  @JsonKey(name: 'teamNumber')
+  int? get teamNumber;
+  @override
+  @JsonKey(ignore: true)
+  _$$TeamModelImplCopyWith<_$TeamModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
