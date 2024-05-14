@@ -8,6 +8,7 @@ import 'package:ff_moneyblaster/feautres/home/shared/provider.dart';
 import 'package:ff_moneyblaster/feautres/profile/presentation/profile_tab.dart';
 import 'package:ff_moneyblaster/feautres/profile/presentation/promode_tab.dart';
 import 'package:ff_moneyblaster/feautres/wallet/presentation/widgets/tabbar.dart';
+import 'package:ff_moneyblaster/feautres/wallet/shared/provider.dart';
 import 'package:ff_moneyblaster/routes/app_router.gr.dart';
 import 'package:ff_moneyblaster/theme.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +37,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
   _initial() async {
     await ref.read(authProvider.notifier).fetchCurrentUserData();
+    await ref.read(walletProvider.notifier).getReferredList();
   }
 
   @override
@@ -165,7 +167,8 @@ class PlayerDetailInfo extends StatelessWidget {
                 GestureDetector(
                   onTap: () {
                     FlutterClipboard.copy(value).then((value) =>
-                        Fluttertoast.showToast(msg: copyMsg ?? 'UPI ID Copied.'));
+                        Fluttertoast.showToast(
+                            msg: copyMsg ?? 'UPI ID Copied.'));
                   },
                   child: SizedBox(
                     height: 50,

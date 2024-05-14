@@ -17,9 +17,10 @@ _$UserModelImpl _$$UserModelImplFromJson(Map<String, dynamic> json) =>
               ?.map((e) => e as String)
               .toList() ??
           const [],
-      referralCode: json['referralCode'] as String,
+      referralCode: json['referralCode'] as String?,
       gameStats: GameStats.fromJson(json['gameStats'] as Map<String, dynamic>),
       wallet: WalletModel.fromJson(json['wallet'] as Map<String, dynamic>),
+      referredBy: json['referredBy'] as String?,
     );
 
 Map<String, dynamic> _$$UserModelImplToJson(_$UserModelImpl instance) =>
@@ -33,6 +34,7 @@ Map<String, dynamic> _$$UserModelImplToJson(_$UserModelImpl instance) =>
       'referralCode': instance.referralCode,
       'gameStats': instance.gameStats.toJson(),
       'wallet': instance.wallet.toJson(),
+      'referredBy': instance.referredBy,
     };
 
 _$GameStatsImpl _$$GameStatsImplFromJson(Map<String, dynamic> json) =>

@@ -20,6 +20,7 @@ mixin _$UserWalletState {
   bool get isLoading => throw _privateConstructorUsedError;
   UserModel? get user => throw _privateConstructorUsedError;
   String get errorMessage => throw _privateConstructorUsedError;
+  List<UserModel> get referredList => throw _privateConstructorUsedError;
   QrModel? get qr => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -38,6 +39,7 @@ abstract class $UserWalletStateCopyWith<$Res> {
       bool isLoading,
       UserModel? user,
       String errorMessage,
+      List<UserModel> referredList,
       QrModel? qr});
 
   $UserModelCopyWith<$Res>? get user;
@@ -61,6 +63,7 @@ class _$UserWalletStateCopyWithImpl<$Res, $Val extends UserWalletState>
     Object? isLoading = null,
     Object? user = freezed,
     Object? errorMessage = null,
+    Object? referredList = null,
     Object? qr = freezed,
   }) {
     return _then(_value.copyWith(
@@ -80,6 +83,10 @@ class _$UserWalletStateCopyWithImpl<$Res, $Val extends UserWalletState>
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
               as String,
+      referredList: null == referredList
+          ? _value.referredList
+          : referredList // ignore: cast_nullable_to_non_nullable
+              as List<UserModel>,
       qr: freezed == qr
           ? _value.qr
           : qr // ignore: cast_nullable_to_non_nullable
@@ -125,6 +132,7 @@ abstract class _$$UserWalletStateImplCopyWith<$Res>
       bool isLoading,
       UserModel? user,
       String errorMessage,
+      List<UserModel> referredList,
       QrModel? qr});
 
   @override
@@ -148,6 +156,7 @@ class __$$UserWalletStateImplCopyWithImpl<$Res>
     Object? isLoading = null,
     Object? user = freezed,
     Object? errorMessage = null,
+    Object? referredList = null,
     Object? qr = freezed,
   }) {
     return _then(_$UserWalletStateImpl(
@@ -167,6 +176,10 @@ class __$$UserWalletStateImplCopyWithImpl<$Res>
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
               as String,
+      referredList: null == referredList
+          ? _value._referredList
+          : referredList // ignore: cast_nullable_to_non_nullable
+              as List<UserModel>,
       qr: freezed == qr
           ? _value.qr
           : qr // ignore: cast_nullable_to_non_nullable
@@ -183,8 +196,10 @@ class _$UserWalletStateImpl extends _UserWalletState {
       this.isLoading = false,
       this.user,
       this.errorMessage = '',
+      final List<UserModel> referredList = const [],
       this.qr})
-      : super._();
+      : _referredList = referredList,
+        super._();
 
   @override
   @JsonKey()
@@ -197,12 +212,21 @@ class _$UserWalletStateImpl extends _UserWalletState {
   @override
   @JsonKey()
   final String errorMessage;
+  final List<UserModel> _referredList;
+  @override
+  @JsonKey()
+  List<UserModel> get referredList {
+    if (_referredList is EqualUnmodifiableListView) return _referredList;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_referredList);
+  }
+
   @override
   final QrModel? qr;
 
   @override
   String toString() {
-    return 'UserWalletState(selectedWalletTab: $selectedWalletTab, isLoading: $isLoading, user: $user, errorMessage: $errorMessage, qr: $qr)';
+    return 'UserWalletState(selectedWalletTab: $selectedWalletTab, isLoading: $isLoading, user: $user, errorMessage: $errorMessage, referredList: $referredList, qr: $qr)';
   }
 
   @override
@@ -217,12 +241,20 @@ class _$UserWalletStateImpl extends _UserWalletState {
             (identical(other.user, user) || other.user == user) &&
             (identical(other.errorMessage, errorMessage) ||
                 other.errorMessage == errorMessage) &&
+            const DeepCollectionEquality()
+                .equals(other._referredList, _referredList) &&
             (identical(other.qr, qr) || other.qr == qr));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, selectedWalletTab, isLoading, user, errorMessage, qr);
+      runtimeType,
+      selectedWalletTab,
+      isLoading,
+      user,
+      errorMessage,
+      const DeepCollectionEquality().hash(_referredList),
+      qr);
 
   @JsonKey(ignore: true)
   @override
@@ -238,6 +270,7 @@ abstract class _UserWalletState extends UserWalletState {
       final bool isLoading,
       final UserModel? user,
       final String errorMessage,
+      final List<UserModel> referredList,
       final QrModel? qr}) = _$UserWalletStateImpl;
   const _UserWalletState._() : super._();
 
@@ -249,6 +282,8 @@ abstract class _UserWalletState extends UserWalletState {
   UserModel? get user;
   @override
   String get errorMessage;
+  @override
+  List<UserModel> get referredList;
   @override
   QrModel? get qr;
   @override

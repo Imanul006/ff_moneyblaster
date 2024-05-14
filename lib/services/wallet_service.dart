@@ -38,6 +38,19 @@ class WalletRepository implements IWalletRepository {
   }
 
   @override
+  Future<List<UserModel>> getReferredUserList() async {
+    final id = _firebaseAuth.currentUser?.uid;
+    var collection = FirebaseFirestore.instance.collection('appusers');
+    var snapshot = await collection.get();
+
+    final users =
+        snapshot.docs.map((doc) => UserModel.fromJson(doc.data())).toList();
+    final filteredUser =
+        users.where((element) => element.referredBy == id).toList();
+    return filteredUser;
+  }
+
+  @override
   Future<UserModel> getUserModel() async {
     try {
       var userDoc = await _firestore

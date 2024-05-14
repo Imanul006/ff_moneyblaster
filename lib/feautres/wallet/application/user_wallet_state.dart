@@ -12,6 +12,7 @@ class UserWalletState with _$UserWalletState {
     @Default(false) bool isLoading,
     UserModel? user,
     @Default('') String errorMessage,
+    @Default([]) List<UserModel> referredList,
     QrModel? qr,
   }) = _UserWalletState;
 

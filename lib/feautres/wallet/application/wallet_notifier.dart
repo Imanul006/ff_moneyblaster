@@ -105,9 +105,10 @@ class WalletNotifier extends StateNotifier<UserWalletState> {
     }
   }
 
-   Future<bool> isTransactionIdUnique(String transactionId) async {
+  Future<bool> isTransactionIdUnique(String transactionId) async {
     UserModel user = state.user!;
-    return user.wallet.history.every((transaction) => transaction.transactionId != transactionId);
+    return user.wallet.history
+        .every((transaction) => transaction.transactionId != transactionId);
   }
 
   Future<bool> hasPendingDeposits() async {
@@ -129,7 +130,8 @@ class WalletNotifier extends StateNotifier<UserWalletState> {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Transaction ID is not unique, please try a different ID.'),
+            content: Text(
+                'Transaction ID is not unique, please try a different ID.'),
             duration: Duration(seconds: 3),
           ),
         );
@@ -262,5 +264,11 @@ class WalletNotifier extends StateNotifier<UserWalletState> {
     );
 
     return totalAmount;
+  }
+
+  Future<void> getReferredList() async {
+    state = state.copyWith(isLoading: true);
+    final list = await _walletRepository.getReferredUserList();
+    state = state.copyWith(isLoading: false, referredList: list);
   }
 }

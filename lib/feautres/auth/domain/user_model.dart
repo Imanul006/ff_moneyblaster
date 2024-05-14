@@ -7,9 +7,6 @@ import 'package:flutter/foundation.dart';
 part 'user_model.freezed.dart';
 part 'user_model.g.dart';
 
-
-
-
 @freezed
 class UserModel with _$UserModel {
   @JsonSerializable(explicitToJson: true)
@@ -20,12 +17,14 @@ class UserModel with _$UserModel {
     required String phoneNumber,
     @Default(false) bool isVerified,
     @Default([]) List<String> tournamentIds,
-    required String referralCode,
+    String? referralCode,
     required GameStats gameStats,
     required WalletModel wallet,
+    String? referredBy,
   }) = _UserModel;
 
-  factory UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);
+  factory UserModel.fromJson(Map<String, dynamic> json) =>
+      _$UserModelFromJson(json);
 }
 
 @freezed
@@ -39,7 +38,8 @@ class GameStats with _$GameStats {
     @Default(0) int totalWinAmount,
   }) = _GameStats;
 
-  factory GameStats.fromJson(Map<String, dynamic> json) => _$GameStatsFromJson(json);
+  factory GameStats.fromJson(Map<String, dynamic> json) =>
+      _$GameStatsFromJson(json);
 }
 
 @freezed
@@ -50,27 +50,30 @@ class WalletModel with _$WalletModel {
     @Default([]) List<TransactionHistory> history,
   }) = _WalletModel;
 
-  factory WalletModel.fromJson(Map<String, dynamic> json) => _$WalletModelFromJson(json);
+  factory WalletModel.fromJson(Map<String, dynamic> json) =>
+      _$WalletModelFromJson(json);
 }
 
 @freezed
 class TransactionHistory with _$TransactionHistory {
   @JsonSerializable()
   const factory TransactionHistory({
-    @JsonKey(fromJson: _dateTimeFromTimestamp, toJson: _dateTimeToTimestamp) DateTime? datetime,
+    @JsonKey(fromJson: _dateTimeFromTimestamp, toJson: _dateTimeToTimestamp)
+    DateTime? datetime,
     @Default(0) int transaction,
     @Default('') String transactionStatus,
     @Default('') String transactionType,
     @Default('') String transactionId,
   }) = _TransactionHistory;
 
-  factory TransactionHistory.fromJson(Map<String, dynamic> json) => _$TransactionHistoryFromJson(json);
+  factory TransactionHistory.fromJson(Map<String, dynamic> json) =>
+      _$TransactionHistoryFromJson(json);
 }
 
 DateTime? _dateTimeFromTimestamp(Timestamp? timestamp) {
-    return timestamp?.toDate();
+  return timestamp?.toDate();
 }
 
 Timestamp? _dateTimeToTimestamp(DateTime? dateTime) {
-    return dateTime != null ? Timestamp.fromDate(dateTime) : null;
+  return dateTime != null ? Timestamp.fromDate(dateTime) : null;
 }

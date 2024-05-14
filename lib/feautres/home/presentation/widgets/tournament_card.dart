@@ -84,9 +84,11 @@ class _TournamentCardState extends ConsumerState<TournamentCard> {
     final now = DateTime.now();
     final remaining = widget.tournament.dateTime!.difference(now);
     _duration = remaining.isNegative ? Duration.zero : remaining;
-    setState(() {
-      // widget.tournament.registeredPlayersId.contains(authState)
-    });
+    if (mounted) {
+      setState(() {
+        // widget.tournament.registeredPlayersId.contains(authState)
+      });
+    }
   }
 
   String formatDuration(Duration duration) {
@@ -987,7 +989,7 @@ class _JoinTournamamentWidgetState
                                   FlutterClipboard.copy(
                                           widget.tournament.lobby ?? '')
                                       .then((value) => Fluttertoast.showToast(
-                                          msg: 'Lobby ID Copied.'));
+                                          msg: 'Room ID Copied.'));
                                 },
                                 child: const Icon(
                                   Icons.copy,

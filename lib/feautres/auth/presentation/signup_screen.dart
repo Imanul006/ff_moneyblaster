@@ -151,51 +151,52 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                               hintText: "Enter referral code (if any)",
                               controller: _referralCodeController,
                             ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 4.0, vertical: 6),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 8.0),
-                                    child: Text(
-                                      AppConstants.uploadGameIdDesc,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium
-                                          ?.copyWith(
-                                              fontWeight: FontWeight.w600),
-                                    ),
-                                  ),
-                                  Stack(
-                                    children: [
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.circular(8),
-                                        child: Image.asset(
-                                          "assets/images/textfield.png",
-                                          width: 28.w,
-                                          height: 45,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                      const Positioned.fill(
-                                        child: Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 10.0, vertical: 6),
-                                          child: Center(
-                                            child: Icon(Icons
-                                                .add_photo_alternate_rounded),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
+                            //   Padding(
+                            //     padding: const EdgeInsets.symmetric(
+                            //         horizontal: 4.0, vertical: 6),
+                            //     child: Row(
+                            //       mainAxisSize: MainAxisSize.max,
+                            //       mainAxisAlignment:
+                            //           MainAxisAlignment.spaceBetween,
+                            //       children: [
+                            //         Padding(
+                            //           padding: const EdgeInsets.only(right: 8.0),
+                            //           child: Text(
+                            //             AppConstants.uploadGameIdDesc,
+                            //             style: Theme.of(context)
+                            //                 .textTheme
+                            //                 .bodyMedium
+                            //                 ?.copyWith(
+                            //                     fontWeight: FontWeight.w600),
+                            //           ),
+                            //         ),
+                            //         Stack(
+                            //           children: [
+                            //             ClipRRect(
+                            //               borderRadius: BorderRadius.circular(8),
+                            //               child: Image.asset(
+                            //                 "assets/images/textfield.png",
+                            //                 width: 28.w,
+                            //                 height: 45,
+                            //                 fit: BoxFit.cover,
+                            //               ),
+                            //             ),
+                            //             const Positioned.fill(
+                            //               child: Padding(
+                            //                 padding: EdgeInsets.symmetric(
+                            //                     horizontal: 10.0, vertical: 6),
+                            //                 child: Center(
+                            //                   child: Icon(Icons
+                            //                       .add_photo_alternate_rounded),
+                            //                 ),
+                            //               ),
+                            //             ),
+                            //           ],
+                            //         )
+                            //       ],
+                            //     ),
+                            //   ),
+                            // ],
                           ],
                         ),
                       ),
@@ -263,7 +264,8 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
   void _handleSignup(BuildContext context) async {
     try {
       final notifier = ref.read(authProvider.notifier);
-      await notifier.signUp(context,
+      await notifier.signUp(
+        context,
         username: _usernameController.text,
         gameId: _gameIdController.text,
         phoneNumber: _phoneNumberController.text,

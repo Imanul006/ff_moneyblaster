@@ -26,9 +26,10 @@ mixin _$UserModel {
   String get phoneNumber => throw _privateConstructorUsedError;
   bool get isVerified => throw _privateConstructorUsedError;
   List<String> get tournamentIds => throw _privateConstructorUsedError;
-  String get referralCode => throw _privateConstructorUsedError;
+  String? get referralCode => throw _privateConstructorUsedError;
   GameStats get gameStats => throw _privateConstructorUsedError;
   WalletModel get wallet => throw _privateConstructorUsedError;
+  String? get referredBy => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -48,9 +49,10 @@ abstract class $UserModelCopyWith<$Res> {
       String phoneNumber,
       bool isVerified,
       List<String> tournamentIds,
-      String referralCode,
+      String? referralCode,
       GameStats gameStats,
-      WalletModel wallet});
+      WalletModel wallet,
+      String? referredBy});
 
   $GameStatsCopyWith<$Res> get gameStats;
   $WalletModelCopyWith<$Res> get wallet;
@@ -75,9 +77,10 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
     Object? phoneNumber = null,
     Object? isVerified = null,
     Object? tournamentIds = null,
-    Object? referralCode = null,
+    Object? referralCode = freezed,
     Object? gameStats = null,
     Object? wallet = null,
+    Object? referredBy = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -104,10 +107,10 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
           ? _value.tournamentIds
           : tournamentIds // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      referralCode: null == referralCode
+      referralCode: freezed == referralCode
           ? _value.referralCode
           : referralCode // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       gameStats: null == gameStats
           ? _value.gameStats
           : gameStats // ignore: cast_nullable_to_non_nullable
@@ -116,6 +119,10 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
           ? _value.wallet
           : wallet // ignore: cast_nullable_to_non_nullable
               as WalletModel,
+      referredBy: freezed == referredBy
+          ? _value.referredBy
+          : referredBy // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 
@@ -151,9 +158,10 @@ abstract class _$$UserModelImplCopyWith<$Res>
       String phoneNumber,
       bool isVerified,
       List<String> tournamentIds,
-      String referralCode,
+      String? referralCode,
       GameStats gameStats,
-      WalletModel wallet});
+      WalletModel wallet,
+      String? referredBy});
 
   @override
   $GameStatsCopyWith<$Res> get gameStats;
@@ -178,9 +186,10 @@ class __$$UserModelImplCopyWithImpl<$Res>
     Object? phoneNumber = null,
     Object? isVerified = null,
     Object? tournamentIds = null,
-    Object? referralCode = null,
+    Object? referralCode = freezed,
     Object? gameStats = null,
     Object? wallet = null,
+    Object? referredBy = freezed,
   }) {
     return _then(_$UserModelImpl(
       id: null == id
@@ -207,10 +216,10 @@ class __$$UserModelImplCopyWithImpl<$Res>
           ? _value._tournamentIds
           : tournamentIds // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      referralCode: null == referralCode
+      referralCode: freezed == referralCode
           ? _value.referralCode
           : referralCode // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       gameStats: null == gameStats
           ? _value.gameStats
           : gameStats // ignore: cast_nullable_to_non_nullable
@@ -219,6 +228,10 @@ class __$$UserModelImplCopyWithImpl<$Res>
           ? _value.wallet
           : wallet // ignore: cast_nullable_to_non_nullable
               as WalletModel,
+      referredBy: freezed == referredBy
+          ? _value.referredBy
+          : referredBy // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -234,9 +247,10 @@ class _$UserModelImpl with DiagnosticableTreeMixin implements _UserModel {
       required this.phoneNumber,
       this.isVerified = false,
       final List<String> tournamentIds = const [],
-      required this.referralCode,
+      this.referralCode,
       required this.gameStats,
-      required this.wallet})
+      required this.wallet,
+      this.referredBy})
       : _tournamentIds = tournamentIds;
 
   factory _$UserModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -263,15 +277,17 @@ class _$UserModelImpl with DiagnosticableTreeMixin implements _UserModel {
   }
 
   @override
-  final String referralCode;
+  final String? referralCode;
   @override
   final GameStats gameStats;
   @override
   final WalletModel wallet;
+  @override
+  final String? referredBy;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserModel(id: $id, username: $username, gameId: $gameId, phoneNumber: $phoneNumber, isVerified: $isVerified, tournamentIds: $tournamentIds, referralCode: $referralCode, gameStats: $gameStats, wallet: $wallet)';
+    return 'UserModel(id: $id, username: $username, gameId: $gameId, phoneNumber: $phoneNumber, isVerified: $isVerified, tournamentIds: $tournamentIds, referralCode: $referralCode, gameStats: $gameStats, wallet: $wallet, referredBy: $referredBy)';
   }
 
   @override
@@ -287,7 +303,8 @@ class _$UserModelImpl with DiagnosticableTreeMixin implements _UserModel {
       ..add(DiagnosticsProperty('tournamentIds', tournamentIds))
       ..add(DiagnosticsProperty('referralCode', referralCode))
       ..add(DiagnosticsProperty('gameStats', gameStats))
-      ..add(DiagnosticsProperty('wallet', wallet));
+      ..add(DiagnosticsProperty('wallet', wallet))
+      ..add(DiagnosticsProperty('referredBy', referredBy));
   }
 
   @override
@@ -309,7 +326,9 @@ class _$UserModelImpl with DiagnosticableTreeMixin implements _UserModel {
                 other.referralCode == referralCode) &&
             (identical(other.gameStats, gameStats) ||
                 other.gameStats == gameStats) &&
-            (identical(other.wallet, wallet) || other.wallet == wallet));
+            (identical(other.wallet, wallet) || other.wallet == wallet) &&
+            (identical(other.referredBy, referredBy) ||
+                other.referredBy == referredBy));
   }
 
   @JsonKey(ignore: true)
@@ -324,7 +343,8 @@ class _$UserModelImpl with DiagnosticableTreeMixin implements _UserModel {
       const DeepCollectionEquality().hash(_tournamentIds),
       referralCode,
       gameStats,
-      wallet);
+      wallet,
+      referredBy);
 
   @JsonKey(ignore: true)
   @override
@@ -348,9 +368,10 @@ abstract class _UserModel implements UserModel {
       required final String phoneNumber,
       final bool isVerified,
       final List<String> tournamentIds,
-      required final String referralCode,
+      final String? referralCode,
       required final GameStats gameStats,
-      required final WalletModel wallet}) = _$UserModelImpl;
+      required final WalletModel wallet,
+      final String? referredBy}) = _$UserModelImpl;
 
   factory _UserModel.fromJson(Map<String, dynamic> json) =
       _$UserModelImpl.fromJson;
@@ -368,11 +389,13 @@ abstract class _UserModel implements UserModel {
   @override
   List<String> get tournamentIds;
   @override
-  String get referralCode;
+  String? get referralCode;
   @override
   GameStats get gameStats;
   @override
   WalletModel get wallet;
+  @override
+  String? get referredBy;
   @override
   @JsonKey(ignore: true)
   _$$UserModelImplCopyWith<_$UserModelImpl> get copyWith =>
