@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ff_moneyblaster/feautres/auth/domain/user_model.dart';
 import 'package:ff_moneyblaster/feautres/home/application/home_state.dart';
+import 'package:ff_moneyblaster/feautres/home/domain/ad.dart';
 import 'package:ff_moneyblaster/feautres/home/domain/i_home_repository.dart';
 import 'package:ff_moneyblaster/feautres/home/domain/tournament.dart';
 import 'package:ff_moneyblaster/feautres/home/presentation/widgets/tournament_card.dart';
@@ -19,6 +20,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
   ) : super(const HomeState()) {
     fetchTournaments();
     updateStateTopUsers();
+    fetchAds();
   }
   RefreshController refreshController =
       RefreshController(initialRefresh: false);
@@ -52,6 +54,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
     if (mounted) await fetchTournaments();
     // if failed,use refreshFailed()
     refreshController.refreshCompleted();
+    // await fetchAds();
     // scrollController.jumpTo(_scrollPosition);
   }
 
@@ -129,6 +132,23 @@ class HomeNotifier extends StateNotifier<HomeState> {
       final tournament = await _homeRepository.drawWallet(val: val);
     } catch (e) {
       state = state.copyWith(errorMessage: e.toString(), isLoading: false);
+    }
+  }
+
+  Future<void> fetchAds() async {
+    state = state.copyWith(isLoading: true);
+    try {
+      var collection = FirebaseFirestore.instance.collection('ads');
+      var snapshot = await collection.get();
+      // var docs = snapshot.docs;
+      // var data = docs.first.data();
+      final adsList =
+          snapshot.docs.map((doc) => Ad.fromJson(doc.data())).toList();
+      state = state.copyWith(adsList: adsList, isLoading: false);
+      // print(data);
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
     }
   }
 }

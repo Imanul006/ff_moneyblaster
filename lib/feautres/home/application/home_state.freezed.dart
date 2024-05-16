@@ -23,6 +23,7 @@ mixin _$HomeState {
   String get errorMessage => throw _privateConstructorUsedError;
   Tournament? get selectedTournament => throw _privateConstructorUsedError;
   List<UserModel> get topUsers => throw _privateConstructorUsedError;
+  List<Ad> get adsList => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $HomeStateCopyWith<HomeState> get copyWith =>
@@ -41,7 +42,8 @@ abstract class $HomeStateCopyWith<$Res> {
       List<Tournament> tournaments,
       String errorMessage,
       Tournament? selectedTournament,
-      List<UserModel> topUsers});
+      List<UserModel> topUsers,
+      List<Ad> adsList});
 
   $TournamentCopyWith<$Res>? get selectedTournament;
 }
@@ -66,6 +68,7 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
     Object? errorMessage = null,
     Object? selectedTournament = freezed,
     Object? topUsers = null,
+    Object? adsList = null,
   }) {
     return _then(_value.copyWith(
       isLoading: null == isLoading
@@ -96,6 +99,10 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
           ? _value.topUsers
           : topUsers // ignore: cast_nullable_to_non_nullable
               as List<UserModel>,
+      adsList: null == adsList
+          ? _value.adsList
+          : adsList // ignore: cast_nullable_to_non_nullable
+              as List<Ad>,
     ) as $Val);
   }
 
@@ -127,7 +134,8 @@ abstract class _$$HomeStateImplCopyWith<$Res>
       List<Tournament> tournaments,
       String errorMessage,
       Tournament? selectedTournament,
-      List<UserModel> topUsers});
+      List<UserModel> topUsers,
+      List<Ad> adsList});
 
   @override
   $TournamentCopyWith<$Res>? get selectedTournament;
@@ -151,6 +159,7 @@ class __$$HomeStateImplCopyWithImpl<$Res>
     Object? errorMessage = null,
     Object? selectedTournament = freezed,
     Object? topUsers = null,
+    Object? adsList = null,
   }) {
     return _then(_$HomeStateImpl(
       isLoading: null == isLoading
@@ -181,6 +190,10 @@ class __$$HomeStateImplCopyWithImpl<$Res>
           ? _value._topUsers
           : topUsers // ignore: cast_nullable_to_non_nullable
               as List<UserModel>,
+      adsList: null == adsList
+          ? _value._adsList
+          : adsList // ignore: cast_nullable_to_non_nullable
+              as List<Ad>,
     ));
   }
 }
@@ -195,9 +208,11 @@ class _$HomeStateImpl extends _HomeState {
       final List<Tournament> tournaments = const [],
       this.errorMessage = '',
       this.selectedTournament,
-      final List<UserModel> topUsers = const []})
+      final List<UserModel> topUsers = const [],
+      final List<Ad> adsList = const []})
       : _tournaments = tournaments,
         _topUsers = topUsers,
+        _adsList = adsList,
         super._();
 
   @override
@@ -232,9 +247,18 @@ class _$HomeStateImpl extends _HomeState {
     return EqualUnmodifiableListView(_topUsers);
   }
 
+  final List<Ad> _adsList;
+  @override
+  @JsonKey()
+  List<Ad> get adsList {
+    if (_adsList is EqualUnmodifiableListView) return _adsList;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_adsList);
+  }
+
   @override
   String toString() {
-    return 'HomeState(isLoading: $isLoading, selectedHomeTab: $selectedHomeTab, selectedProfileTab: $selectedProfileTab, tournaments: $tournaments, errorMessage: $errorMessage, selectedTournament: $selectedTournament, topUsers: $topUsers)';
+    return 'HomeState(isLoading: $isLoading, selectedHomeTab: $selectedHomeTab, selectedProfileTab: $selectedProfileTab, tournaments: $tournaments, errorMessage: $errorMessage, selectedTournament: $selectedTournament, topUsers: $topUsers, adsList: $adsList)';
   }
 
   @override
@@ -254,7 +278,8 @@ class _$HomeStateImpl extends _HomeState {
                 other.errorMessage == errorMessage) &&
             (identical(other.selectedTournament, selectedTournament) ||
                 other.selectedTournament == selectedTournament) &&
-            const DeepCollectionEquality().equals(other._topUsers, _topUsers));
+            const DeepCollectionEquality().equals(other._topUsers, _topUsers) &&
+            const DeepCollectionEquality().equals(other._adsList, _adsList));
   }
 
   @override
@@ -266,7 +291,8 @@ class _$HomeStateImpl extends _HomeState {
       const DeepCollectionEquality().hash(_tournaments),
       errorMessage,
       selectedTournament,
-      const DeepCollectionEquality().hash(_topUsers));
+      const DeepCollectionEquality().hash(_topUsers),
+      const DeepCollectionEquality().hash(_adsList));
 
   @JsonKey(ignore: true)
   @override
@@ -283,7 +309,8 @@ abstract class _HomeState extends HomeState {
       final List<Tournament> tournaments,
       final String errorMessage,
       final Tournament? selectedTournament,
-      final List<UserModel> topUsers}) = _$HomeStateImpl;
+      final List<UserModel> topUsers,
+      final List<Ad> adsList}) = _$HomeStateImpl;
   const _HomeState._() : super._();
 
   @override
@@ -300,6 +327,8 @@ abstract class _HomeState extends HomeState {
   Tournament? get selectedTournament;
   @override
   List<UserModel> get topUsers;
+  @override
+  List<Ad> get adsList;
   @override
   @JsonKey(ignore: true)
   _$$HomeStateImplCopyWith<_$HomeStateImpl> get copyWith =>
