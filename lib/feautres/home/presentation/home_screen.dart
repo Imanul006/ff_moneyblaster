@@ -63,48 +63,58 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     List<Widget> adsList = List.generate(
       homeState.adsList.length,
-      (index) => SizedBox(
-        width: MediaQuery.sizeOf(context).width,
-        child: Stack(
-          children: [
-            SizedBox(
-              width: MediaQuery.sizeOf(context).width,
-              child: Card(
-                // margin: const EdgeInsets.all(10),
-                // decoration: const BoxDecoration(color: Colors.white),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: Image.network(
-                    homeState.adsList[index].imagePath,
-                    fit: BoxFit.fitWidth,
+      (index) => GestureDetector(
+        onTap: () {
+          provider.sendAdInteractionInfo(homeState.adsList[index].uid);
+          // provider.launchInWebView(
+          //   Uri.parse(homeState.adsList[index].url),
+          // );
+        },
+        child: SizedBox(
+          width: MediaQuery.sizeOf(context).width,
+          child: Stack(
+            children: [
+              SizedBox(
+                width: MediaQuery.sizeOf(context).width,
+                child: Card(
+                  // margin: const EdgeInsets.all(10),
+                  // decoration: const BoxDecoration(color: Colors.white),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.network(
+                      homeState.adsList[index].imagePath,
+                      height: MediaQuery.sizeOf(context).height * 0.18,
+                      width: MediaQuery.sizeOf(context).width,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ),
-            ),
-            Positioned(
-              left: 20,
-              top: 20,
-              child: Text(
-                homeState.adsList[index].title ?? '',
-                style: Theme.of(context).textTheme.labelLarge,
+              Positioned(
+                left: 20,
+                top: 20,
+                child: Text(
+                  homeState.adsList[index].title ?? '',
+                  style: Theme.of(context).textTheme.labelLarge,
+                ),
               ),
-            ),
-            Align(
-              // left: 20,
-              // top: 54,
-              alignment: Alignment.bottomLeft,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 20.0, left: 20),
-                child: SizedBox(
-                  width: MediaQuery.sizeOf(context).width * 0.8,
-                  child: Text(
-                    homeState.adsList[index].description ?? '',
-                    style: Theme.of(context).textTheme.labelSmall,
+              Align(
+                // left: 20,
+                // top: 54,
+                alignment: Alignment.bottomLeft,
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 20.0, left: 20),
+                  child: SizedBox(
+                    width: MediaQuery.sizeOf(context).width * 0.8,
+                    child: Text(
+                      homeState.adsList[index].description ?? '',
+                      style: Theme.of(context).textTheme.labelSmall,
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -124,227 +134,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ),
         child: Column(
           children: [
-            // Container(
-            //   width: double.infinity,
-            //   height: MediaQuery.sizeOf(context).height * 0.22,
-            //   decoration: BoxDecoration(
-            //     image: DecorationImage(
-            //       scale: 2.1,
-            //       image: Image.asset(
-            //         Assets.backgroundLeaderboard,
-            //         fit: BoxFit.contain,
-            //       ).image,
-            //     ),
-            //     gradient: const LinearGradient(
-            //       colors: [Color(0xFFCE3B3B), Color(0xFF5F1237)],
-            //       stops: [0, 1],
-            //       begin: AlignmentDirectional(-1, 0),
-            //       end: AlignmentDirectional(1, 0),
-            //     ),
-            //   ),
-            //   child: Row(
-            //     mainAxisSize: MainAxisSize.max,
-            //     mainAxisAlignment: MainAxisAlignment.center,
-            //     children: [
-            //       // silver
-            //       Padding(
-            //         padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 32, 0),
-            //         child: Column(
-            //           mainAxisSize: MainAxisSize.min,
-            //           children: [
-            //             ClipRRect(
-            //               borderRadius: BorderRadius.circular(8),
-            //               child: Image.asset(
-            //                 'assets/icons/silver.png',
-            //                 width: 20,
-            //                 height: 24,
-            //                 fit: BoxFit.cover,
-            //               ),
-            //             ),
-            //             const SizedBox(
-            //               width: 58,
-            //               height: 58,
-            //               child: Padding(
-            //                 padding: EdgeInsetsDirectional.fromSTEB(0, 6, 0, 0),
-            //                 child: SizedBox(
-            //                   width: double.infinity,
-            //                   height: double.infinity,
-            //                   child: GradientBorderContainer(
-            //                     width: double.infinity,
-            //                     height: double.infinity,
-            //                     radius: 8.0,
-            //                     colors: AppColors.silverGradientBorder,
-            //                     child:
-            //                         'https://media.wired.com/photos/5b17381815b2c744cb650b5f/master/w_2560%2Cc_limit/GettyImages-134367495.jpg',
-            //                   ),
-            //                 ),
-            //               ),
-            //             ),
-            //             Padding(
-            //               padding:
-            //                   const EdgeInsetsDirectional.fromSTEB(0, 6, 0, 0),
-            //               child: Text(
-            //                 homeState.topUsers.isNotEmpty
-            //                     ? homeState.topUsers[1].username
-            //                     : "",
-            //                 style:
-            //                     Theme.of(context).textTheme.bodySmall?.copyWith(
-            //                           fontFamily: 'Readex Pro',
-            //                           color: Colors.white,
-            //                           fontSize: 9,
-            //                           letterSpacing: 0,
-            //                           fontWeight: FontWeight.normal,
-            //                         ),
-            //               ),
-            //             ),
-            //             Text(
-            //               '₹${homeState.topUsers.isNotEmpty ? homeState.topUsers[1].gameStats.totalWinAmount : ""}',
-            //               style:
-            //                   Theme.of(context).textTheme.bodySmall?.copyWith(
-            //                         fontFamily: 'Readex Pro',
-            //                         color: Colors.white,
-            //                         fontSize: 8,
-            //                         letterSpacing: 0,
-            //                         fontWeight: FontWeight.bold,
-            //                       ),
-            //             ),
-            //           ],
-            //         ),
-            //       ),
-            //       // gold
-            //       Column(
-            //         mainAxisSize: MainAxisSize.min,
-            //         children: [
-            //           ClipRRect(
-            //             borderRadius: BorderRadius.circular(8),
-            //             child: Image.asset(
-            //               'assets/icons/gold.png',
-            //               width: 31,
-            //               height: 36,
-            //               fit: BoxFit.cover,
-            //             ),
-            //           ),
-            //           Container(
-            //             width: 74,
-            //             height: 74,
-            //             decoration: const BoxDecoration(),
-            //             child: const Padding(
-            //               padding: EdgeInsetsDirectional.fromSTEB(0, 6, 0, 0),
-            //               child: SizedBox(
-            //                 width: double.infinity,
-            //                 height: double.infinity,
-            //                 child: GradientBorderContainer(
-            //                   width: double.infinity,
-            //                   height: double.infinity,
-            //                   radius: 8.0,
-            //                   colors: AppColors.goldGradientBorder,
-            //                   child:
-            //                       'https://media.wired.com/photos/5b17381815b2c744cb650b5f/master/w_2560%2Cc_limit/GettyImages-134367495.jpg',
-            //                 ),
-            //               ),
-            //             ),
-            //           ),
-            //           Padding(
-            //             padding:
-            //                 const EdgeInsetsDirectional.fromSTEB(0, 6, 0, 0),
-            //             child: Text(
-            //               homeState.topUsers.isNotEmpty
-            //                   ? homeState.topUsers[0].username
-            //                   : "",
-            //               style:
-            //                   Theme.of(context).textTheme.bodySmall?.copyWith(
-            //                         fontFamily: 'Readex Pro',
-            //                         color: Colors.white,
-            //                         fontSize: 12,
-            //                         letterSpacing: 0,
-            //                         fontWeight: FontWeight.normal,
-            //                       ),
-            //             ),
-            //           ),
-            //           Text(
-            //             '₹${homeState.topUsers.isNotEmpty ? homeState.topUsers[0].gameStats.totalWinAmount : ""}',
-            //             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-            //                   fontFamily: 'Readex Pro',
-            //                   color: Colors.white,
-            //                   fontSize: 12,
-            //                   letterSpacing: 0,
-            //                   fontWeight: FontWeight.bold,
-            //                 ),
-            //           ),
-            //         ],
-            //       ),
-            //       //silver
-            //       // Generated code for this Column Widget...
-            //       Padding(
-            //         padding: const EdgeInsetsDirectional.fromSTEB(32, 0, 0, 0),
-            //         child: Column(
-            //           mainAxisSize: MainAxisSize.min,
-            //           children: [
-            //             ClipRRect(
-            //               borderRadius: BorderRadius.circular(8),
-            //               child: Image.asset(
-            //                 'assets/icons/bronze.png',
-            //                 width: 20,
-            //                 height: 24,
-            //                 fit: BoxFit.cover,
-            //               ),
-            //             ),
-            //             Container(
-            //               width: 58,
-            //               height: 58,
-            //               decoration: const BoxDecoration(),
-            //               child: const Padding(
-            //                 padding: EdgeInsetsDirectional.fromSTEB(0, 6, 0, 0),
-            //                 child: SizedBox(
-            //                   width: double.infinity,
-            //                   height: double.infinity,
-            //                   child: GradientBorderContainer(
-            //                     width: double.infinity,
-            //                     height: double.infinity,
-            //                     radius: 8.0,
-            //                     colors: AppColors.bronzeGradientBorder,
-            //                     child:
-            //                         'https://media.wired.com/photos/5b17381815b2c744cb650b5f/master/w_2560%2Cc_limit/GettyImages-134367495.jpg',
-            //                   ),
-            //                 ),
-            //               ),
-            //             ),
-            //             Padding(
-            //               padding:
-            //                   const EdgeInsetsDirectional.fromSTEB(0, 6, 0, 0),
-            //               child: Text(
-            //                 homeState.topUsers.isNotEmpty
-            //                     ? homeState.topUsers[2].username
-            //                     : "",
-            //                 style: Theme.of(context)
-            //                     .textTheme
-            //                     .bodyMedium
-            //                     ?.copyWith(
-            //                       fontFamily: 'Readex Pro',
-            //                       color: Colors.white,
-            //                       fontSize: 9,
-            //                       letterSpacing: 0,
-            //                       fontWeight: FontWeight.normal,
-            //                     ),
-            //               ),
-            //             ),
-            //             Text(
-            //               '₹${homeState.topUsers.isNotEmpty ? homeState.topUsers[2].gameStats.totalWinAmount : ""}',
-            //               style:
-            //                   Theme.of(context).textTheme.bodyMedium?.copyWith(
-            //                         fontFamily: 'Readex Pro',
-            //                         color: Colors.white,
-            //                         fontSize: 8,
-            //                         letterSpacing: 0,
-            //                         fontWeight: FontWeight.bold,
-            //                       ),
-            //             ),
-            //           ],
-            //         ),
-            //       )
-            //     ],
-            //   ),
-            // ),
             Container(
               width: double.infinity,
               height: MediaQuery.sizeOf(context).height * 0.22,
@@ -357,23 +146,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   end: AlignmentDirectional(1, 0),
                 ),
               ),
-              // child: ListView.builder(
-              //   itemCount: 3,
-              //   scrollDirection: Axis.horizontal,
-              //   itemBuilder: (context, index) => SizedBox(
-              //     width: MediaQuery.sizeOf(context).width * 0.95,
-              //     child: Card(
-              //       // margin: const EdgeInsets.all(10),
-              //       // decoration: const BoxDecoration(color: Colors.white),
-              //       child: Center(
-              //         child: Text(
-              //           'index: ${index.toString()}',
-              //           style: const TextStyle(color: Colors.black),
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // ),
               child: CarouselSlider(
                 items: adsList,
                 options: CarouselOptions(

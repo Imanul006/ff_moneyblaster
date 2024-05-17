@@ -24,7 +24,10 @@ mixin _$Ad {
   String? get title => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   String get imagePath => throw _privateConstructorUsedError;
-  String get url => throw _privateConstructorUsedError;
+  String get url =>
+      throw _privateConstructorUsedError; // ignore: invalid_annotation_target
+  @JsonKey(name: 'adDetails')
+  List<AdDetails> get adDetails => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -41,7 +44,8 @@ abstract class $AdCopyWith<$Res> {
       String? title,
       String? description,
       String imagePath,
-      String url});
+      String url,
+      @JsonKey(name: 'adDetails') List<AdDetails> adDetails});
 }
 
 /// @nodoc
@@ -61,6 +65,7 @@ class _$AdCopyWithImpl<$Res, $Val extends Ad> implements $AdCopyWith<$Res> {
     Object? description = freezed,
     Object? imagePath = null,
     Object? url = null,
+    Object? adDetails = null,
   }) {
     return _then(_value.copyWith(
       uid: null == uid
@@ -83,6 +88,10 @@ class _$AdCopyWithImpl<$Res, $Val extends Ad> implements $AdCopyWith<$Res> {
           ? _value.url
           : url // ignore: cast_nullable_to_non_nullable
               as String,
+      adDetails: null == adDetails
+          ? _value.adDetails
+          : adDetails // ignore: cast_nullable_to_non_nullable
+              as List<AdDetails>,
     ) as $Val);
   }
 }
@@ -98,7 +107,8 @@ abstract class _$$AdImplCopyWith<$Res> implements $AdCopyWith<$Res> {
       String? title,
       String? description,
       String imagePath,
-      String url});
+      String url,
+      @JsonKey(name: 'adDetails') List<AdDetails> adDetails});
 }
 
 /// @nodoc
@@ -115,6 +125,7 @@ class __$$AdImplCopyWithImpl<$Res> extends _$AdCopyWithImpl<$Res, _$AdImpl>
     Object? description = freezed,
     Object? imagePath = null,
     Object? url = null,
+    Object? adDetails = null,
   }) {
     return _then(_$AdImpl(
       uid: null == uid
@@ -137,6 +148,10 @@ class __$$AdImplCopyWithImpl<$Res> extends _$AdCopyWithImpl<$Res, _$AdImpl>
           ? _value.url
           : url // ignore: cast_nullable_to_non_nullable
               as String,
+      adDetails: null == adDetails
+          ? _value._adDetails
+          : adDetails // ignore: cast_nullable_to_non_nullable
+              as List<AdDetails>,
     ));
   }
 }
@@ -149,7 +164,9 @@ class _$AdImpl implements _Ad {
       required this.title,
       required this.description,
       required this.imagePath,
-      required this.url});
+      required this.url,
+      @JsonKey(name: 'adDetails') final List<AdDetails> adDetails = const []})
+      : _adDetails = adDetails;
 
   factory _$AdImpl.fromJson(Map<String, dynamic> json) =>
       _$$AdImplFromJson(json);
@@ -164,10 +181,20 @@ class _$AdImpl implements _Ad {
   final String imagePath;
   @override
   final String url;
+// ignore: invalid_annotation_target
+  final List<AdDetails> _adDetails;
+// ignore: invalid_annotation_target
+  @override
+  @JsonKey(name: 'adDetails')
+  List<AdDetails> get adDetails {
+    if (_adDetails is EqualUnmodifiableListView) return _adDetails;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_adDetails);
+  }
 
   @override
   String toString() {
-    return 'Ad(uid: $uid, title: $title, description: $description, imagePath: $imagePath, url: $url)';
+    return 'Ad(uid: $uid, title: $title, description: $description, imagePath: $imagePath, url: $url, adDetails: $adDetails)';
   }
 
   @override
@@ -181,13 +208,15 @@ class _$AdImpl implements _Ad {
                 other.description == description) &&
             (identical(other.imagePath, imagePath) ||
                 other.imagePath == imagePath) &&
-            (identical(other.url, url) || other.url == url));
+            (identical(other.url, url) || other.url == url) &&
+            const DeepCollectionEquality()
+                .equals(other._adDetails, _adDetails));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, uid, title, description, imagePath, url);
+  int get hashCode => Object.hash(runtimeType, uid, title, description,
+      imagePath, url, const DeepCollectionEquality().hash(_adDetails));
 
   @JsonKey(ignore: true)
   @override
@@ -209,7 +238,8 @@ abstract class _Ad implements Ad {
       required final String? title,
       required final String? description,
       required final String imagePath,
-      required final String url}) = _$AdImpl;
+      required final String url,
+      @JsonKey(name: 'adDetails') final List<AdDetails> adDetails}) = _$AdImpl;
 
   factory _Ad.fromJson(Map<String, dynamic> json) = _$AdImpl.fromJson;
 
@@ -223,8 +253,165 @@ abstract class _Ad implements Ad {
   String get imagePath;
   @override
   String get url;
+  @override // ignore: invalid_annotation_target
+  @JsonKey(name: 'adDetails')
+  List<AdDetails> get adDetails;
   @override
   @JsonKey(ignore: true)
   _$$AdImplCopyWith<_$AdImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+AdDetails _$AdDetailsFromJson(Map<String, dynamic> json) {
+  return _AdDetails.fromJson(json);
+}
+
+/// @nodoc
+mixin _$AdDetails {
+  int get timesClicked => throw _privateConstructorUsedError;
+  String? get userId => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $AdDetailsCopyWith<AdDetails> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $AdDetailsCopyWith<$Res> {
+  factory $AdDetailsCopyWith(AdDetails value, $Res Function(AdDetails) then) =
+      _$AdDetailsCopyWithImpl<$Res, AdDetails>;
+  @useResult
+  $Res call({int timesClicked, String? userId});
+}
+
+/// @nodoc
+class _$AdDetailsCopyWithImpl<$Res, $Val extends AdDetails>
+    implements $AdDetailsCopyWith<$Res> {
+  _$AdDetailsCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? timesClicked = null,
+    Object? userId = freezed,
+  }) {
+    return _then(_value.copyWith(
+      timesClicked: null == timesClicked
+          ? _value.timesClicked
+          : timesClicked // ignore: cast_nullable_to_non_nullable
+              as int,
+      userId: freezed == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$AdDetailsImplCopyWith<$Res>
+    implements $AdDetailsCopyWith<$Res> {
+  factory _$$AdDetailsImplCopyWith(
+          _$AdDetailsImpl value, $Res Function(_$AdDetailsImpl) then) =
+      __$$AdDetailsImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({int timesClicked, String? userId});
+}
+
+/// @nodoc
+class __$$AdDetailsImplCopyWithImpl<$Res>
+    extends _$AdDetailsCopyWithImpl<$Res, _$AdDetailsImpl>
+    implements _$$AdDetailsImplCopyWith<$Res> {
+  __$$AdDetailsImplCopyWithImpl(
+      _$AdDetailsImpl _value, $Res Function(_$AdDetailsImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? timesClicked = null,
+    Object? userId = freezed,
+  }) {
+    return _then(_$AdDetailsImpl(
+      timesClicked: null == timesClicked
+          ? _value.timesClicked
+          : timesClicked // ignore: cast_nullable_to_non_nullable
+              as int,
+      userId: freezed == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$AdDetailsImpl implements _AdDetails {
+  const _$AdDetailsImpl({required this.timesClicked, required this.userId});
+
+  factory _$AdDetailsImpl.fromJson(Map<String, dynamic> json) =>
+      _$$AdDetailsImplFromJson(json);
+
+  @override
+  final int timesClicked;
+  @override
+  final String? userId;
+
+  @override
+  String toString() {
+    return 'AdDetails(timesClicked: $timesClicked, userId: $userId)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$AdDetailsImpl &&
+            (identical(other.timesClicked, timesClicked) ||
+                other.timesClicked == timesClicked) &&
+            (identical(other.userId, userId) || other.userId == userId));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, timesClicked, userId);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$AdDetailsImplCopyWith<_$AdDetailsImpl> get copyWith =>
+      __$$AdDetailsImplCopyWithImpl<_$AdDetailsImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$AdDetailsImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _AdDetails implements AdDetails {
+  const factory _AdDetails(
+      {required final int timesClicked,
+      required final String? userId}) = _$AdDetailsImpl;
+
+  factory _AdDetails.fromJson(Map<String, dynamic> json) =
+      _$AdDetailsImpl.fromJson;
+
+  @override
+  int get timesClicked;
+  @override
+  String? get userId;
+  @override
+  @JsonKey(ignore: true)
+  _$$AdDetailsImplCopyWith<_$AdDetailsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

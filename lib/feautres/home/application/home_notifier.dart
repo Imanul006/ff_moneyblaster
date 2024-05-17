@@ -7,10 +7,12 @@ import 'package:ff_moneyblaster/feautres/home/domain/ad.dart';
 import 'package:ff_moneyblaster/feautres/home/domain/i_home_repository.dart';
 import 'package:ff_moneyblaster/feautres/home/domain/tournament.dart';
 import 'package:ff_moneyblaster/feautres/home/presentation/widgets/tournament_card.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:riverpod/riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeNotifier extends StateNotifier<HomeState> {
   final IHomeRepository _homeRepository;
@@ -22,6 +24,8 @@ class HomeNotifier extends StateNotifier<HomeState> {
     updateStateTopUsers();
     fetchAds();
   }
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   RefreshController refreshController =
       RefreshController(initialRefresh: false);
 
@@ -146,6 +150,63 @@ class HomeNotifier extends StateNotifier<HomeState> {
           snapshot.docs.map((doc) => Ad.fromJson(doc.data())).toList();
       state = state.copyWith(adsList: adsList, isLoading: false);
       // print(data);
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
+  }
+
+  Future<void> launchInWebView(Uri url) async {
+    if (!await launchUrl(url, mode: LaunchMode.inAppWebView)) {
+      throw Exception('Could not launch $url');
+    }
+  }
+
+  // Add or update user's interactions with an ad
+  Future<void> sendAdInteractionInfo(String adId) async {
+    // state = state.copyWith(isLoading: true);
+    int timesClicked = 0;
+    String currentUserId = _auth.currentUser!.uid;
+    try {
+      var collection = FirebaseFirestore.instance.collection('ads');
+      var snapshot = await collection.get();
+
+      final adClickedFromQuery =
+          snapshot.docs.firstWhere((doc) => doc["uid"] == adId).data();
+
+      final adClicked = Ad.fromJson(adClickedFromQuery);
+
+      final adClickedIndex = state.adsList.indexOf(adClicked);
+
+      if (state.adsList[adClickedIndex].adDetails.isNotEmpty) {
+        final myAdInfo = state.adsList[adClickedIndex].adDetails
+            .firstWhere((doc) => doc.userId == currentUserId);
+        if (myAdInfo.userId != null) {
+          final myAdIndex =
+              state.adsList[adClickedIndex].adDetails.indexOf(myAdInfo);
+          if (state.adsList[adClickedIndex].adDetails[myAdIndex].userId ==
+              currentUserId) {
+            timesClicked =
+                state.adsList[adClickedIndex].adDetails[myAdIndex].timesClicked;
+            timesClicked += 1;
+          }
+        } else {
+          timesClicked = 1;
+        }
+      } else {
+        timesClicked = 1;
+      }
+
+      final adUpdateData = {
+        "adsinfo": {
+          "userId": currentUserId,
+          "timesClicked": "$timesClicked",
+        }
+      };
+
+      FirebaseFirestore.instance.collection('ads').doc(adClicked.uid).update({
+        'adDetails': FieldValue.arrayUnion([adUpdateData])
+      });
     } catch (e) {
       debugPrint(e.toString());
       rethrow;

@@ -11,7 +11,20 @@ class Ad with _$Ad {
     required String? description,
     required String imagePath,
     required String url,
+    // ignore: invalid_annotation_target
+    @JsonKey(name: 'adDetails') @Default([]) List<AdDetails> adDetails,
   }) = _Ad;
 
   factory Ad.fromJson(Map<String, dynamic> json) => _$AdFromJson(json);
+}
+
+@freezed
+class AdDetails with _$AdDetails {
+  const factory AdDetails({
+    required int timesClicked,
+    required String? userId,
+  }) = _AdDetails;
+
+  factory AdDetails.fromJson(Map<String, dynamic> json) =>
+      _$AdDetailsFromJson(json);
 }
