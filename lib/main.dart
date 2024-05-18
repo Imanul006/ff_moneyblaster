@@ -13,7 +13,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  // await FCMService().initNotification();
+  await FCMService().initNotification();
   runApp(
     ProviderScope(child: MyApp()),
   );

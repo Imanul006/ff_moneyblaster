@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class FCMService {
   final _firebaseMessaging = FirebaseMessaging.instance;
+  final _firestore = FirebaseFirestore.instance;
 
   final AndroidNotificationDetails _androidNotificationDetails =
       const AndroidNotificationDetails(
@@ -29,10 +32,18 @@ class FCMService {
     _firebaseMessaging.requestPermission();
     final fcmToken = await _firebaseMessaging.getToken();
     print('Token : $fcmToken');
+
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      await _firestore
+          .collection('users')
+          .doc(user.uid)
+          .set({'fcmToken': fcmToken}, SetOptions(merge: true));
+    }
+
     FirebaseMessaging.onBackgroundMessage(handleBackgroundMessage);
     initForeground();
   }
-
   Future<void> handleMessage(RemoteMessage? message) async {
     if (message == null) return;
 
