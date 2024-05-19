@@ -268,8 +268,8 @@ AdDetails _$AdDetailsFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$AdDetails {
-  int get timesClicked => throw _privateConstructorUsedError;
   String? get userId => throw _privateConstructorUsedError;
+  int get timesClicked => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -282,7 +282,7 @@ abstract class $AdDetailsCopyWith<$Res> {
   factory $AdDetailsCopyWith(AdDetails value, $Res Function(AdDetails) then) =
       _$AdDetailsCopyWithImpl<$Res, AdDetails>;
   @useResult
-  $Res call({int timesClicked, String? userId});
+  $Res call({String? userId, int timesClicked});
 }
 
 /// @nodoc
@@ -298,18 +298,18 @@ class _$AdDetailsCopyWithImpl<$Res, $Val extends AdDetails>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? timesClicked = null,
     Object? userId = freezed,
+    Object? timesClicked = null,
   }) {
     return _then(_value.copyWith(
-      timesClicked: null == timesClicked
-          ? _value.timesClicked
-          : timesClicked // ignore: cast_nullable_to_non_nullable
-              as int,
       userId: freezed == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
               as String?,
+      timesClicked: null == timesClicked
+          ? _value.timesClicked
+          : timesClicked // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -322,7 +322,7 @@ abstract class _$$AdDetailsImplCopyWith<$Res>
       __$$AdDetailsImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int timesClicked, String? userId});
+  $Res call({String? userId, int timesClicked});
 }
 
 /// @nodoc
@@ -336,18 +336,18 @@ class __$$AdDetailsImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? timesClicked = null,
     Object? userId = freezed,
+    Object? timesClicked = null,
   }) {
     return _then(_$AdDetailsImpl(
-      timesClicked: null == timesClicked
-          ? _value.timesClicked
-          : timesClicked // ignore: cast_nullable_to_non_nullable
-              as int,
       userId: freezed == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
               as String?,
+      timesClicked: null == timesClicked
+          ? _value.timesClicked
+          : timesClicked // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -355,19 +355,19 @@ class __$$AdDetailsImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$AdDetailsImpl implements _AdDetails {
-  const _$AdDetailsImpl({required this.timesClicked, required this.userId});
+  const _$AdDetailsImpl({required this.userId, required this.timesClicked});
 
   factory _$AdDetailsImpl.fromJson(Map<String, dynamic> json) =>
       _$$AdDetailsImplFromJson(json);
 
   @override
-  final int timesClicked;
-  @override
   final String? userId;
+  @override
+  final int timesClicked;
 
   @override
   String toString() {
-    return 'AdDetails(timesClicked: $timesClicked, userId: $userId)';
+    return 'AdDetails(userId: $userId, timesClicked: $timesClicked)';
   }
 
   @override
@@ -375,14 +375,14 @@ class _$AdDetailsImpl implements _AdDetails {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$AdDetailsImpl &&
+            (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.timesClicked, timesClicked) ||
-                other.timesClicked == timesClicked) &&
-            (identical(other.userId, userId) || other.userId == userId));
+                other.timesClicked == timesClicked));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, timesClicked, userId);
+  int get hashCode => Object.hash(runtimeType, userId, timesClicked);
 
   @JsonKey(ignore: true)
   @override
@@ -400,16 +400,16 @@ class _$AdDetailsImpl implements _AdDetails {
 
 abstract class _AdDetails implements AdDetails {
   const factory _AdDetails(
-      {required final int timesClicked,
-      required final String? userId}) = _$AdDetailsImpl;
+      {required final String? userId,
+      required final int timesClicked}) = _$AdDetailsImpl;
 
   factory _AdDetails.fromJson(Map<String, dynamic> json) =
       _$AdDetailsImpl.fromJson;
 
   @override
-  int get timesClicked;
-  @override
   String? get userId;
+  @override
+  int get timesClicked;
   @override
   @JsonKey(ignore: true)
   _$$AdDetailsImplCopyWith<_$AdDetailsImpl> get copyWith =>

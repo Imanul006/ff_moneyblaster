@@ -133,6 +133,7 @@ class _WithdrawBottomSheetState extends ConsumerState<WithdrawBottomSheet> {
                             ifscCode: _ifscController.text,
                             amount: double.parse(_amountController.text),
                           );
+                          await notifier.fetchUserDetails();
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(

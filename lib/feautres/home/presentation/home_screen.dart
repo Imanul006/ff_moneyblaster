@@ -66,9 +66,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       (index) => GestureDetector(
         onTap: () {
           provider.sendAdInteractionInfo(homeState.adsList[index].uid);
-          // provider.launchInWebView(
-          //   Uri.parse(homeState.adsList[index].url),
-          // );
+          if (homeState.adsList[index].url.isEmpty) {
+            return;
+          }
+          provider.launchInWebView(
+            Uri.parse(homeState.adsList[index].url),
+          );
         },
         child: SizedBox(
           width: MediaQuery.sizeOf(context).width,

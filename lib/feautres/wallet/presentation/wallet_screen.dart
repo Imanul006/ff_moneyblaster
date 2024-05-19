@@ -12,6 +12,7 @@ import 'package:ff_moneyblaster/feautres/wallet/shared/provider.dart';
 import 'package:ff_moneyblaster/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 
@@ -45,12 +46,17 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
     final isLoading =
         ref.watch(walletProvider.select((state) => state.isLoading));
     final state = ref.watch(walletProvider);
-    final provider = ref.read(walletProvider.notifier);
+    final provider = ref.watch(walletProvider.notifier);
 
     // Calculate remaining available height after subtracting bottom view inset
     final screenHeight = MediaQuery.of(context).size.height;
     final bottomInset = MediaQuery.of(context).viewInsets.bottom;
     final remainingHeight = screenHeight - bottomInset;
+
+    final lastDepositTransactionStatus =
+        provider.depositTransactions.reversed.first.transactionStatus;
+    final lastWithdrawalTransactionStatus =
+        provider.withdrawalTransactions.reversed.first.transactionStatus;
 
     return isLoading
         ? Container(
@@ -187,21 +193,29 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
                                       onTap: () async {
                                         // await notifier.selectTournament(
                                         //     widget.tournament);
-                                        showModalBottomSheet<void>(
-                                          // enableDrag: true,
-                                          // isDismissible: false,
-                                          backgroundColor: AppColors.glassColor,
-                                          barrierColor: const Color.fromRGBO(
-                                              7, 7, 7, 0.7),
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return const FractionallySizedBox(
-                                              heightFactor: 1.6,
-                                              child: DepositBottomSheet(),
-                                            );
-                                            // return const DepositBottomSheet();
-                                          },
-                                        );
+                                        lastDepositTransactionStatus ==
+                                                'requested'
+                                            ? Fluttertoast.showToast(
+                                                msg:
+                                                    'Your last deposit is still in process.')
+                                            : showModalBottomSheet<void>(
+                                                // enableDrag: true,
+                                                // isDismissible: false,
+                                                backgroundColor:
+                                                    AppColors.glassColor,
+                                                barrierColor:
+                                                    const Color.fromRGBO(
+                                                        7, 7, 7, 0.7),
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return const FractionallySizedBox(
+                                                    heightFactor: 1.6,
+                                                    child: DepositBottomSheet(),
+                                                  );
+                                                  // return const DepositBottomSheet();
+                                                },
+                                              );
                                       },
                                       child: const CustomButton(
                                         text: 'Deposit',
@@ -212,32 +226,40 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
                                       onTap: () async {
                                         // await notifier.selectTournament(
                                         //     widget.tournament);
-                                        showModalBottomSheet<void>(
-                                          // isDismissible: false,
-                                          // isScrollControlled: true,
-                                          // constraints: ,
-                                          backgroundColor: AppColors.glassColor,
-                                          barrierColor: const Color.fromRGBO(
-                                              7, 7, 7, 0.7),
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return FractionallySizedBox(
-                                              heightFactor: 1.32,
-                                              child: BackdropFilter(
-                                                filter: ImageFilter.blur(
-                                                    sigmaX: 2, sigmaY: 2),
-                                                child:
-                                                    const WithdrawBottomSheet(),
-                                              ),
-                                            );
-                                            // return BackdropFilter(
-                                            //   filter: ImageFilter.blur(
-                                            //       sigmaX: 2, sigmaY: 2),
-                                            //   child:
-                                            //       const WithdrawBottomSheet(),
-                                            // );
-                                          },
-                                        );
+                                        lastWithdrawalTransactionStatus ==
+                                                'requested'
+                                            ? Fluttertoast.showToast(
+                                                msg:
+                                                    'Your last withdrawal is still in process.')
+                                            : showModalBottomSheet<void>(
+                                                // isDismissible: false,
+                                                // isScrollControlled: true,
+                                                // constraints: ,
+                                                backgroundColor:
+                                                    AppColors.glassColor,
+                                                barrierColor:
+                                                    const Color.fromRGBO(
+                                                        7, 7, 7, 0.7),
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return FractionallySizedBox(
+                                                    heightFactor: 1.32,
+                                                    child: BackdropFilter(
+                                                      filter: ImageFilter.blur(
+                                                          sigmaX: 2, sigmaY: 2),
+                                                      child:
+                                                          const WithdrawBottomSheet(),
+                                                    ),
+                                                  );
+                                                  // return BackdropFilter(
+                                                  //   filter: ImageFilter.blur(
+                                                  //       sigmaX: 2, sigmaY: 2),
+                                                  //   child:
+                                                  //       const WithdrawBottomSheet(),
+                                                  // );
+                                                },
+                                              );
                                       },
                                       child: const CustomButton(
                                         filled: true,

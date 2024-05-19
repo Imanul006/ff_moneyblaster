@@ -264,6 +264,7 @@ class _DepositBottomSheetState extends ConsumerState<DepositBottomSheet> {
                         _transactionIdController.text.toLowerCase().trim(),
                     amount: double.parse(_amountController.text),
                   );
+                  await notifier.fetchUserDetails();
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
