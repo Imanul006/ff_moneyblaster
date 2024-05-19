@@ -21,8 +21,8 @@ class Ad with _$Ad {
 @freezed
 class AdDetails with _$AdDetails {
   const factory AdDetails({
-    required int timesClicked,
     required String? userId,
+    required int timesClicked,
   }) = _AdDetails;
 
   factory AdDetails.fromJson(Map<String, dynamic> json) =>

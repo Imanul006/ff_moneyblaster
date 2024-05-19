@@ -152,6 +152,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   autoPlay: true,
                   // aspectRatio: 1,
                   viewportFraction: 1,
+
                   initialPage: 0,
                   pauseAutoPlayOnTouch: true,
                 ),

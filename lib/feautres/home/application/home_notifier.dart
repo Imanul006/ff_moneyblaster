@@ -168,45 +168,43 @@ class HomeNotifier extends StateNotifier<HomeState> {
     int timesClicked = 0;
     String currentUserId = _auth.currentUser!.uid;
     try {
-      var collection = FirebaseFirestore.instance.collection('ads');
-      var snapshot = await collection.get();
+      var adDoc = FirebaseFirestore.instance.collection('ads').doc(adId);
+      var adSnapshot = await adDoc.get();
 
-      final adClickedFromQuery =
-          snapshot.docs.firstWhere((doc) => doc["uid"] == adId).data();
+      final adClickedData = adSnapshot.data();
 
-      final adClicked = Ad.fromJson(adClickedFromQuery);
+      if (adClickedData != null && adClickedData.containsKey("adDetails")) {
+        List<dynamic> adDetails = adClickedData["adDetails"];
 
-      final adClickedIndex = state.adsList.indexOf(adClicked);
+        var userAdDetails = adDetails.firstWhere(
+          (detail) => detail!["userId"] == currentUserId,
+          orElse: () => null,
+        );
 
-      if (state.adsList[adClickedIndex].adDetails.isNotEmpty) {
-        final myAdInfo = state.adsList[adClickedIndex].adDetails
-            .firstWhere((doc) => doc.userId == currentUserId);
-        if (myAdInfo.userId != null) {
-          final myAdIndex =
-              state.adsList[adClickedIndex].adDetails.indexOf(myAdInfo);
-          if (state.adsList[adClickedIndex].adDetails[myAdIndex].userId ==
-              currentUserId) {
-            timesClicked =
-                state.adsList[adClickedIndex].adDetails[myAdIndex].timesClicked;
-            timesClicked += 1;
-          }
+        if (userAdDetails != null) {
+          // If user's ad details exist, update timesClicked
+          timesClicked = userAdDetails["timesClicked"] + 1;
+          // Update user's ad details
+          adDetails.removeWhere((detail) => detail!["userId"] == currentUserId);
+          adDetails
+              .add({"userId": currentUserId, "timesClicked": timesClicked});
         } else {
+          // If user's ad details don't exist, create new details
           timesClicked = 1;
+          adDetails
+              .add({"userId": currentUserId, "timesClicked": timesClicked});
         }
+
+        await adDoc.update({"adDetails": adDetails});
       } else {
+        // If "adDetails" array doesn't exist, create it with user's interaction
         timesClicked = 1;
+        await adDoc.set({
+          "adDetails": [
+            {"userId": currentUserId, "timesClicked": timesClicked}
+          ]
+        }, SetOptions(merge: true));
       }
-
-      final adUpdateData = {
-        "adsinfo": {
-          "userId": currentUserId,
-          "timesClicked": "$timesClicked",
-        }
-      };
-
-      FirebaseFirestore.instance.collection('ads').doc(adClicked.uid).update({
-        'adDetails': FieldValue.arrayUnion([adUpdateData])
-      });
     } catch (e) {
       debugPrint(e.toString());
       rethrow;
