@@ -35,7 +35,7 @@
   <!--#enddocregion android-queries-->
 
     <application
-        android:label="ff_moneyblaster"
+        android:label="MoneyBlaster"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity

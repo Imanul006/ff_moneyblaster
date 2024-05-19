@@ -27,16 +27,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return
-        // providers: [
-        //   Provider<IAuthService>(
-        //     create: (_) => AuthService(FirebaseAuth.instance),
-        //   ),
-        //   StreamProvider(
-        //     create: (context) => context.read<AuthService>().authStateChanges,
-        //     initialData: null,
-        //   ),
-        // ],
-        // child:
         Sizer(builder: (context, orientation, deviceType) {
       return MaterialApp.router(
         debugShowCheckedModeBanner: false,

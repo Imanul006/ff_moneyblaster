@@ -36,7 +36,7 @@ class FCMService {
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       await _firestore
-          .collection('users')
+          .collection('appusers')
           .doc(user.uid)
           .set({'fcmToken': fcmToken}, SetOptions(merge: true));
     }
