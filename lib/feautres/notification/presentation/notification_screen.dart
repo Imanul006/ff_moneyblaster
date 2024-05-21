@@ -1,9 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:ff_moneyblaster/core/assets.dart';
 import 'package:ff_moneyblaster/core/constants.dart';
+import 'package:ff_moneyblaster/feautres/notification/shared/provider.dart';
 import 'package:ff_moneyblaster/feautres/wallet/shared/provider.dart';
 import 'package:ff_moneyblaster/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sizer/sizer.dart';
 
@@ -14,7 +16,9 @@ class NotificationScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isLoading =
-        ref.watch(walletProvider.select((state) => state.isLoading));
+        ref.watch(notificationProvider.select((state) => state.isLoading));
+    final notifications =
+        ref.watch(notificationProvider.select((state) => state.notifications));
 
     return Container(
       width: double.infinity,
@@ -75,25 +79,31 @@ class NotificationScreen extends ConsumerWidget {
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Container(
-                  // width: 66,
-                  // height: 22,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: const Color(0x68FFFFFF),
-                    borderRadius: BorderRadius.circular(35),
-                    shape: BoxShape.rectangle,
-                  ),
-                  alignment: const AlignmentDirectional(0, 0),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        'Mark as Read',
-                        style: Theme.of(context).textTheme.bodySmall,
+                Visibility(
+                  visible: notifications.isNotEmpty,
+                  child: GestureDetector(
+                    onTap: () {
+                      ref.read(notificationProvider.notifier).clearNotifications();
+                    },
+                    child: Container(
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: const Color(0x68FFFFFF),
+                        borderRadius: BorderRadius.circular(35),
+                        shape: BoxShape.rectangle,
                       ),
-                    ],
+                      alignment: const AlignmentDirectional(0, 0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            'Clear All',
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -107,15 +117,23 @@ class NotificationScreen extends ConsumerWidget {
               padding: const EdgeInsets.only(left: 16, right: 16),
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                // height: 50.h,
-                child: ListView.separated(
+                child: notifications.isEmpty
+                  ? Center(
+                      child: Text(
+                        'No notifications available',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.white),
+                      ),
+                    )
+                  : ListView.separated(
                     shrinkWrap: true,
-                    itemCount: 14,
+                    itemCount: notifications.length,
                     separatorBuilder: (BuildContext context, int index) =>
                         const SizedBox(height: 12),
                     itemBuilder: (context, index) {
-                      return const NoticationCard(
-                        msg: 'Cash cup match starts in 10 min!',
+                      final notification = notifications[index];
+                      return NoticationCard(
+                        msg: notification['msg'] ?? '',
+                        timestamp: notification['timestamp'] ?? '',
                       );
                     }),
               )),
@@ -126,17 +144,21 @@ class NotificationScreen extends ConsumerWidget {
 }
 
 class NoticationCard extends StatelessWidget {
-  const NoticationCard({super.key, required this.msg});
+  const NoticationCard({
+    Key? key,
+    required this.msg,
+    required this.timestamp,
+  }) : super(key: key);
+
   final String msg;
+  final String timestamp;
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         Container(
-          // height: 60,
           width: double.infinity,
-          // margin: const EdgeInsets.all(4),
           decoration:
               customDecoration.copyWith(borderRadius: BorderRadius.circular(8)),
           child: Padding(
@@ -145,7 +167,6 @@ class NoticationCard extends StatelessWidget {
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                //left child
                 Container(
                   height: 36,
                   width: 36,
@@ -159,7 +180,6 @@ class NoticationCard extends StatelessWidget {
                 const SizedBox(
                   width: 16,
                 ),
-                //right child
                 Expanded(
                   child: Text(
                     msg,
@@ -178,22 +198,12 @@ class NoticationCard extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  '10:00 AM',
+                  timestamp,
                   style: Theme.of(context)
                       .textTheme
                       .labelSmall
                       ?.copyWith(color: AppColors.greyLight, fontSize: 10),
                 ),
-                const SizedBox(
-                  width: 6,
-                ),
-                Text(
-                  '20/04/24',
-                  style: Theme.of(context)
-                      .textTheme
-                      .labelSmall
-                      ?.copyWith(color: AppColors.greyLight, fontSize: 10),
-                )
               ],
             ),
           ),

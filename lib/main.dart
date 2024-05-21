@@ -13,7 +13,9 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  await FCMService().initNotification();
+  final container = ProviderContainer();
+  final fcmService = FCMService(container);
+  await fcmService.initNotification();
   runApp(
     ProviderScope(child: MyApp()),
   );
