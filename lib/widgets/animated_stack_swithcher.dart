@@ -7,10 +7,10 @@ class CardSwapAnimation extends ConsumerStatefulWidget {
   const CardSwapAnimation({Key? key}) : super(key: key);
 
   @override
-  _CardSwapAnimationState createState() => _CardSwapAnimationState();
+  CardSwapAnimationState createState() => CardSwapAnimationState();
 }
 
-class _CardSwapAnimationState extends ConsumerState<CardSwapAnimation>
+class CardSwapAnimationState extends ConsumerState<CardSwapAnimation>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _frontCardScaleAnimation;

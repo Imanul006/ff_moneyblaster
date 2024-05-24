@@ -117,14 +117,14 @@ class _ProModeTabState extends ConsumerState<ProModeTab> {
                   ?.copyWith(fontSize: 18, fontWeight: FontWeight.w700),
             ),
 
-            Container(
+            SizedBox(
               height: 40.h,
               child: MediaQuery.removePadding(
                 context: context,
                 removeTop: true,
                 child: ListView.separated(
                   itemCount: referralState.length,
-                  separatorBuilder: (context, index) => SizedBox(
+                  separatorBuilder: (context, index) => const SizedBox(
                     height: 6,
                   ),
                   itemBuilder: (context, index) {
@@ -177,7 +177,7 @@ class ReferralListItem extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                SizedBox(
+                const SizedBox(
                   width: 8,
                 ),
                 Text(

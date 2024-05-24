@@ -1,16 +1,14 @@
 import 'dart:ui';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:clipboard/clipboard.dart';
 import 'package:ff_moneyblaster/core/assets.dart';
 import 'package:ff_moneyblaster/core/constants.dart';
-import 'package:ff_moneyblaster/feautres/wallet/application/wallet_notifier.dart';
 import 'package:ff_moneyblaster/feautres/wallet/shared/provider.dart';
 import 'package:ff_moneyblaster/theme.dart';
 import 'package:ff_moneyblaster/widgets/app_text_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:clipboard/clipboard.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -26,8 +24,9 @@ class DepositBottomSheet extends ConsumerStatefulWidget {
 class _DepositBottomSheetState extends ConsumerState<DepositBottomSheet> {
   bool _isForm = false;
 
-  TextEditingController _transactionIdController = TextEditingController();
-  TextEditingController _amountController = TextEditingController();
+  final TextEditingController _transactionIdController =
+      TextEditingController();
+  final TextEditingController _amountController = TextEditingController();
 
   @override
   void initState() {

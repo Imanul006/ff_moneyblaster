@@ -15,7 +15,7 @@ class LoadingScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     Timer.periodic(const Duration(seconds: 10), (timer) async {
-      print("Calling Again...");
+      debugPrint("Calling Again...");
       ref
           .read(authProvider.notifier)
           .isCurrentUserVerified(context, timer: timer);

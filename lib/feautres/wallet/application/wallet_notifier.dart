@@ -3,7 +3,6 @@ import 'package:ff_moneyblaster/core/constants.dart';
 import 'package:ff_moneyblaster/feautres/auth/domain/user_model.dart';
 import 'package:ff_moneyblaster/feautres/wallet/application/user_wallet_state.dart';
 import 'package:ff_moneyblaster/feautres/wallet/domain/i_wallet_repository.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:riverpod/riverpod.dart';
@@ -27,7 +26,9 @@ class WalletNotifier extends StateNotifier<UserWalletState> {
 
   ScrollController scrollController = ScrollController();
 
+  @override
   void dispose() async {
+    super.dispose();
     scrollController.dispose();
     refreshController.dispose();
   }
@@ -35,7 +36,7 @@ class WalletNotifier extends StateNotifier<UserWalletState> {
   void onRefresh() async {
     // monitor network fetch
     // Store current scroll position
-    double _scrollPosition = scrollController.position.pixels;
+    double scrollPosition = scrollController.position.pixels;
     if (mounted) await fetchUserDetails();
     // if failed,use refreshFailed()
     refreshController.refreshCompleted();
@@ -44,7 +45,7 @@ class WalletNotifier extends StateNotifier<UserWalletState> {
 
   void onLoading() async {
     // monitor network fetch
-    double _scrollPosition = scrollController.position.pixels;
+    double scrollPosition = scrollController.position.pixels;
 
     // if failed,use loadFailed(),if no data return,use LoadNodata()
 
@@ -260,7 +261,7 @@ class WalletNotifier extends StateNotifier<UserWalletState> {
 
     int totalAmount = recentTransactions.fold(
       0,
-      (sum, current) => sum + current.transaction,
+      (sumup, current) => sumup + current.transaction,
     );
 
     return totalAmount;

@@ -24,8 +24,7 @@ class CustomListTile extends StatelessWidget {
         decoration: BoxDecoration(
           image: const DecorationImage(
             image: AssetImage('assets/images/textfield.png'),
-            fit: BoxFit
-                .cover,
+            fit: BoxFit.cover,
           ),
           borderRadius: BorderRadius.circular(8),
         ),
@@ -55,34 +54,32 @@ class CustomListTile extends StatelessWidget {
                 ),
               ],
             ),
-            Container(
-              
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                      '₹10',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            fontFamily: 'Readex Pro',
-                            color: Color(0xff00dede),
-                            fontSize: 22,
-                            letterSpacing: 0,
-                            fontWeight: FontWeight.bold,
-                          
-                          ),
-                    ),
-                    SizedBox(width: 12,),
-                  Text(
-                    trailingText,
-                    style: TextStyle(
-                      fontFamily: 'Apex',
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      fontSize: 12.sp,
-                    ),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  '₹10',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontFamily: 'Readex Pro',
+                        color: const Color(0xff00dede),
+                        fontSize: 22,
+                        letterSpacing: 0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+                const SizedBox(
+                  width: 12,
+                ),
+                Text(
+                  trailingText,
+                  style: TextStyle(
+                    fontFamily: 'Apex',
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontSize: 12.sp,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ],
         ),

@@ -48,7 +48,7 @@ class ImportantRulesPage extends ConsumerWidget {
                   child: Stack(
                     children: [
                       Padding(
-                        padding: EdgeInsets.fromLTRB(20, 10, 0, 10),
+                        padding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
                         child: Text(
                           'IMPORTANT RULES',
                           style: Theme.of(context)
@@ -69,10 +69,10 @@ class ImportantRulesPage extends ConsumerWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     buildRule("RULE (1)",
                         "While joining the Tournament, please check your (BGMI) Free Fire Account Name & your ID No. is correct."),
                     buildRule("RULE (2)",
@@ -128,12 +128,12 @@ class ImportantRulesPage extends ConsumerWidget {
           style: TextStyle(
               fontSize: 16.sp, fontWeight: FontWeight.bold, color: Colors.red),
         ),
-        SizedBox(height: 5),
+        const SizedBox(height: 5),
         Text(
           description,
           style: TextStyle(fontSize: 13.sp, color: Colors.white),
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
       ],
     );
   }

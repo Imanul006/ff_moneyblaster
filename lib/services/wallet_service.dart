@@ -13,7 +13,7 @@ class WalletRepository implements IWalletRepository {
     final String uid = _firebaseAuth.currentUser?.uid ?? '';
 
     if (uid.isEmpty) {
-      print('No user logged in!');
+      // print('No user logged in!');
       return false;
     }
 
@@ -22,7 +22,7 @@ class WalletRepository implements IWalletRepository {
       var snapshot = await userRef.get();
 
       if (!snapshot.exists) {
-        print('User document does not exist!');
+        // print('User document does not exist!');
         // Optionally create the document or handle the lack of it appropriately
         return false;
       }
@@ -32,7 +32,7 @@ class WalletRepository implements IWalletRepository {
       });
       return true;
     } catch (error) {
-      print('Error adding transaction: $error');
+      // print('Error adding transaction: $error');
       return false;
     }
   }
@@ -100,7 +100,6 @@ class WalletRepository implements IWalletRepository {
 
     var some =
         snapshot.docs.map((doc) => QrModel.fromJson(doc.data())).toList();
-    print(some);
     return some;
   }
 }

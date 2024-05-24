@@ -1,6 +1,5 @@
 import 'package:ff_moneyblaster/core/assets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class LoginTextField extends StatefulWidget {
   final String hintText;

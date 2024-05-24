@@ -4,22 +4,22 @@ import 'package:ff_moneyblaster/feautres/auth/shared/provider.dart';
 import 'package:ff_moneyblaster/routes/app_router.gr.dart';
 import 'package:ff_moneyblaster/widgets/glazed_button.dart';
 import 'package:ff_moneyblaster/widgets/login_text_field.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:sizer/sizer.dart';
 import 'package:video_player/video_player.dart';
-import 'package:flutter/gestures.dart';
 
 @RoutePage(name: 'LoginScreen')
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  LoginScreenState createState() => LoginScreenState();
 }
 
-class _LoginScreenState extends ConsumerState<LoginScreen> {
+class LoginScreenState extends ConsumerState<LoginScreen> {
   final VideoPlayerController _controller =
       VideoPlayerController.asset('assets/animations/background.mp4');
   final TextEditingController _userIdController = TextEditingController();
@@ -57,7 +57,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             padding: const EdgeInsets.only(left: 30),
                             child: SvgPicture.asset(
                               "assets/images/Login.svg",
-                              color: Colors.white,
+                              colorFilter: const ColorFilter.mode(
+                                  Colors.white, BlendMode.srcIn),
+                              // color: Colors.white,
                               width: 90,
                             ),
                           ),
@@ -67,9 +69,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           Transform.translate(
                             offset: const Offset(-120, 0),
                             child: SvgPicture.asset(
-                              "assets/images/underline.svg",
-                              color: Colors.white,
-                            ),
+                                "assets/images/underline.svg",
+                                colorFilter: const ColorFilter.mode(
+                                    Colors.white, BlendMode.srcIn)
+                                // color: Colors.white,
+                                ),
                           ),
                         ],
                       ),
@@ -153,7 +157,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             ),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () async {
-                                print("Go to sign up");
+                                debugPrint("Go to sign up");
                                 await context.router.push(const SignupScreen());
                               },
                           ),

@@ -1,6 +1,13 @@
 import 'dart:io';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:ff_moneyblaster/core/constants.dart';
+import 'package:ff_moneyblaster/core/widgets/animated_background.dart';
+import 'package:ff_moneyblaster/feautres/auth/shared/provider.dart';
+import 'package:ff_moneyblaster/feautres/profile/presentation/profile_screen.dart';
+import 'package:ff_moneyblaster/routes/app_router.gr.dart';
+import 'package:ff_moneyblaster/widgets/glazed_button.dart';
+import 'package:ff_moneyblaster/widgets/login_text_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -10,23 +17,15 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:sizer/sizer.dart';
 
-import 'package:ff_moneyblaster/core/constants.dart';
-import 'package:ff_moneyblaster/core/widgets/animated_background.dart';
-import 'package:ff_moneyblaster/feautres/auth/shared/provider.dart';
-import 'package:ff_moneyblaster/feautres/profile/presentation/profile_screen.dart';
-import 'package:ff_moneyblaster/routes/app_router.gr.dart';
-import 'package:ff_moneyblaster/widgets/glazed_button.dart';
-import 'package:ff_moneyblaster/widgets/login_text_field.dart';
-
 @RoutePage(name: 'SignupScreen')
 class SignupScreen extends ConsumerStatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
 
   @override
-  _SignupScreenState createState() => _SignupScreenState();
+  SignupScreenState createState() => SignupScreenState();
 }
 
-class _SignupScreenState extends ConsumerState<SignupScreen> {
+class SignupScreenState extends ConsumerState<SignupScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _gameIdController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
@@ -101,7 +100,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
-      print(
+      debugPrint(
           'File(pickedFile.path).path.toString(): ${File(pickedFile.path).path.toString()}');
       setState(() {
         img = File(pickedFile.path);
@@ -150,9 +149,11 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                           Transform.translate(
                             offset: const Offset(-120, 0),
                             child: SvgPicture.asset(
-                              "assets/images/underline.svg",
-                              color: Colors.white,
-                            ),
+                                "assets/images/underline.svg",
+                                colorFilter: const ColorFilter.mode(
+                                    Colors.white, BlendMode.srcIn)
+                                // color: Colors.white,
+                                ),
                           ),
                         ],
                       ),

@@ -34,7 +34,7 @@ class ResultdScreen extends ConsumerWidget {
       ),
       child: Column(
         children: [
-          Container(
+          SizedBox(
               width: MediaQuery.sizeOf(context).width,
               height: MediaQuery.sizeOf(context).height * 0.15,
               child: Container(
@@ -168,7 +168,7 @@ class ResultdScreen extends ConsumerWidget {
                                                                         FontWeight
                                                                             .w600),
                                                           ),
-                                            SizedBox(width: 12),
+                                            const SizedBox(width: 12),
                                             // Container(
                                             //   height: 32,
                                             //   width: 32,

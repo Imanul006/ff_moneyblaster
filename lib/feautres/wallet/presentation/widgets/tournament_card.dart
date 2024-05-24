@@ -117,8 +117,8 @@ class _TournamentCardState extends State<TournamentCard> {
                                   ),
                             ),
                             Padding(
-                              padding:
-                                  const EdgeInsetsDirectional.fromSTEB(4, 0, 0, 0),
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  4, 0, 0, 0),
                               child: Text(
                                 'Rs. 3000',
                                 style: Theme.of(context)
@@ -136,7 +136,8 @@ class _TournamentCardState extends State<TournamentCard> {
                           ],
                         ),
                         Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                          padding:
+                              const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                           child: Text(
                             'TPP . Sanhok . Squad',
                             style: Theme.of(context)
@@ -155,49 +156,71 @@ class _TournamentCardState extends State<TournamentCard> {
                   ),
                 ),
                 Align(
-  alignment: const AlignmentDirectional(0, 1),
-  child: Padding(
-    padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 8),
-    child: widget.gameState == GameState.ongoing ? 
-      Row(
-        children: [
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4),
-              child: buildButton(context, 'Watch Live', const Color(0xFFCF3A3A), const Color(0xFF9D0000)),
-            ),
-          ),
-        ],
-      ) : widget.gameState == GameState.past ? Row(
-        children: [
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4),
-              child: buildButton(context, 'Result', const Color(0xFF0051EF), const Color(0xFF0051EF)),
-            ),
-          ),
-        ],
-      ) :
-      Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4),
-              child: buildButton(context, 'Watch Live', const Color(0xFFCF3A3A), const Color(0xFF9D0000)),
-            ),
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4),
-              child: buildButton(context, 'Join', const Color(0xFF11BDBD), const Color(0xFF006262)),
-            ),
-          ),
-        ],
-      ),
-  ),
-),
+                  alignment: const AlignmentDirectional(0, 1),
+                  child: Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 8),
+                    child: widget.gameState == GameState.ongoing
+                        ? Row(
+                            children: [
+                              Expanded(
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 4),
+                                  child: buildButton(
+                                      context,
+                                      'Watch Live',
+                                      const Color(0xFFCF3A3A),
+                                      const Color(0xFF9D0000)),
+                                ),
+                              ),
+                            ],
+                          )
+                        : widget.gameState == GameState.past
+                            ? Row(
+                                children: [
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 4),
+                                      child: buildButton(
+                                          context,
+                                          'Result',
+                                          const Color(0xFF0051EF),
+                                          const Color(0xFF0051EF)),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 4),
+                                      child: buildButton(
+                                          context,
+                                          'Watch Live',
+                                          const Color(0xFFCF3A3A),
+                                          const Color(0xFF9D0000)),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 4),
+                                      child: buildButton(
+                                          context,
+                                          'Join',
+                                          const Color(0xFF11BDBD),
+                                          const Color(0xFF006262)),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                  ),
+                ),
                 Align(
                   alignment: const AlignmentDirectional(-1, 0.2),
                   child: Column(
@@ -207,7 +230,8 @@ class _TournamentCardState extends State<TournamentCard> {
                       Container(
                         decoration: const BoxDecoration(),
                         child: Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(8, 4, 4, 4),
+                          padding:
+                              const EdgeInsetsDirectional.fromSTEB(8, 4, 4, 4),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -252,7 +276,8 @@ class _TournamentCardState extends State<TournamentCard> {
                           ),
                         ),
                         child: Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(8, 4, 4, 4),
+                          padding:
+                              const EdgeInsetsDirectional.fromSTEB(8, 4, 4, 4),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -338,7 +363,8 @@ class _TournamentCardState extends State<TournamentCard> {
                                   ),
                         ),
                         Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                          padding:
+                              const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                           child: Text(
                             '00.13.25',
                             style: Theme.of(context)
@@ -412,31 +438,31 @@ class _TournamentCardState extends State<TournamentCard> {
     );
   }
 
-  Widget buildButton(BuildContext context, String text, Color startColor, Color endColor) {
-  return Container(
-    height: 34,
-    decoration: BoxDecoration(
-      gradient: LinearGradient(
-        colors: [startColor, endColor],
-        stops: [0, 1],
-        begin: const AlignmentDirectional(-1, 0),
-        end: const AlignmentDirectional(1, 0),
+  Widget buildButton(
+      BuildContext context, String text, Color startColor, Color endColor) {
+    return Container(
+      height: 34,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [startColor, endColor],
+          stops: const [0, 1],
+          begin: const AlignmentDirectional(-1, 0),
+          end: const AlignmentDirectional(1, 0),
+        ),
+        borderRadius: BorderRadius.circular(8),
       ),
-      borderRadius: BorderRadius.circular(8),
-    ),
-    child: Align(
-      alignment: const AlignmentDirectional(0, 0),
-      child: Text(
-        text,
-        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              fontFamily: 'Readex Pro',
-              color: Colors.white,
-              letterSpacing: 0,
-              fontWeight: FontWeight.w500,
-            ),
+      child: Align(
+        alignment: const AlignmentDirectional(0, 0),
+        child: Text(
+          text,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                fontFamily: 'Readex Pro',
+                color: Colors.white,
+                letterSpacing: 0,
+                fontWeight: FontWeight.w500,
+              ),
+        ),
       ),
-    ),
-  );
-}
-
+    );
+  }
 }

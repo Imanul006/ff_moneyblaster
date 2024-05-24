@@ -7,7 +7,6 @@ import 'package:ff_moneyblaster/feautres/profile/presentation/terms_conditions_p
 import 'package:ff_moneyblaster/routes/app_router.gr.dart';
 import 'package:ff_moneyblaster/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:sizer/sizer.dart';
@@ -215,15 +214,29 @@ class _ProfileTabState extends ConsumerState<ProfileTab> {
             const SizedBox(
               height: 16,
             ),
-             SizedBox(width: double.infinity, child: InkWell(onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context)=> TermsConditionsPage()));
-            }, child: CustomButton(text: "Terms & Conditions", icon: Icons.assignment,))),
+            SizedBox(
+                width: double.infinity,
+                child: InkWell(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const TermsConditionsPage()));
+                    },
+                    child: const CustomButton(
+                      text: "Terms & Conditions",
+                      icon: Icons.assignment,
+                    ))),
             const SizedBox(
               height: 16,
             ),
-             SizedBox(width: double.infinity, child: InkWell(onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ImportantRulesPage()));
-            },child: CustomButton(text: "Important Rules", icon: Icons.gavel))),
+            SizedBox(
+                width: double.infinity,
+                child: InkWell(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const ImportantRulesPage()));
+                    },
+                    child: const CustomButton(
+                        text: "Important Rules", icon: Icons.gavel))),
             const SizedBox(
               height: 16,
             ),

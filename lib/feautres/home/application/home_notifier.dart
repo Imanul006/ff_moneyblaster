@@ -31,9 +31,11 @@ class HomeNotifier extends StateNotifier<HomeState> {
 
   ScrollController scrollController = ScrollController();
 
+  @override
   void dispose() async {
     scrollController.dispose();
     refreshController.dispose();
+    super.dispose();
   }
 
   void updateStateTopUsers() async {
@@ -54,7 +56,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
   void onRefresh() async {
     // monitor network fetch
     // Store current scroll position
-    double _scrollPosition = scrollController.position.pixels;
+    double scrollPosition = scrollController.position.pixels;
     if (mounted) await fetchTournaments();
     // if failed,use refreshFailed()
     refreshController.refreshCompleted();
@@ -64,7 +66,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
 
   void onLoading() async {
     // monitor network fetch
-    double _scrollPosition = scrollController.position.pixels;
+    double scrollPosition = scrollController.position.pixels;
 
     // if failed,use loadFailed(),if no data return,use LoadNodata()
 
@@ -95,7 +97,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
     bool isLess = differenceInMilliseconds < twentyFourHoursInMilliseconds;
     DateFormat formatter = DateFormat('yyyy-MM-dd HH:mm:ss');
     String formatted = formatter.format(dateTime);
-    print(formatted);
+    debugPrint(formatted);
 
     return isLess;
   }
@@ -105,7 +107,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
     try {
       List<Tournament> tournaments = await _homeRepository.getTournaments();
       state = state.copyWith(tournaments: tournaments, isLoading: false);
-      print('ftched tournaments successfully');
+      debugPrint('fetched tournaments successfully');
     } catch (e) {
       state = state.copyWith(errorMessage: e.toString(), isLoading: false);
     }

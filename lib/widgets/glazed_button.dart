@@ -8,10 +8,10 @@ class GlazedButtonFilled extends StatefulWidget {
       : super(key: key);
 
   @override
-  _GlazedButtonFilledState createState() => _GlazedButtonFilledState();
+  GlazedButtonFilledState createState() => GlazedButtonFilledState();
 }
 
-class _GlazedButtonFilledState extends State<GlazedButtonFilled>
+class GlazedButtonFilledState extends State<GlazedButtonFilled>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   bool _isPressed = false;
@@ -129,10 +129,10 @@ class GlazedButton extends StatefulWidget {
       : super(key: key);
 
   @override
-  _GlazedButtonState createState() => _GlazedButtonState();
+  GlazedButtonState createState() => GlazedButtonState();
 }
 
-class _GlazedButtonState extends State<GlazedButton>
+class GlazedButtonState extends State<GlazedButton>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   bool _isPressed = false;

@@ -1,8 +1,6 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ff_moneyblaster/feautres/notification/application/notification_notifier.dart';
-import 'package:ff_moneyblaster/feautres/notification/shared/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +37,8 @@ class FCMService {
     presentAlert: true,
   );
 
-  final FlutterLocalNotificationsPlugin _notificationsPlugin = FlutterLocalNotificationsPlugin();
+  final FlutterLocalNotificationsPlugin _notificationsPlugin =
+      FlutterLocalNotificationsPlugin();
 
   Future<void> initNotification() async {
     // Initialize FlutterLocalNotificationsPlugin
@@ -62,7 +61,7 @@ class FCMService {
 
     // Get FCM token
     final fcmToken = await _firebaseMessaging.getToken();
-    print('Token : $fcmToken');
+    debugPrint('Token : $fcmToken');
 
     // Store FCM token in Firestore
     final user = FirebaseAuth.instance.currentUser;
@@ -82,7 +81,7 @@ class FCMService {
 
   Future<void> storeNotificationData(String notificationBody) async {
     final DateFormat formatter = DateFormat('hh.mm a, d MMM, yyyy');
-  final String formattedTimestamp = formatter.format(DateTime.now());
+    final String formattedTimestamp = formatter.format(DateTime.now());
 
     final prefs = await SharedPreferences.getInstance();
     List<String> notifications = prefs.getStringList('notifications') ?? [];
@@ -96,7 +95,7 @@ class FCMService {
   Future<void> handleMessage(RemoteMessage? message) async {
     if (message == null) return;
 
-    print(
+    debugPrint(
         "Foreground Message: Title: ${message.notification?.title}, Body: ${message.notification?.body}, Data: ${message.data}");
 
     await storeNotificationData(message.notification?.body ?? '');
@@ -134,7 +133,7 @@ class FCMService {
   }
 
   static Future<void> handleBackgroundMessage(RemoteMessage? message) async {
-    print(
+    debugPrint(
         "Background Message: Title: ${message?.notification?.title}, Body: ${message?.notification?.body}, Data: ${message?.data}");
   }
 }

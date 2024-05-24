@@ -3,15 +3,11 @@
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ff_moneyblaster/core/constants.dart';
 import 'package:ff_moneyblaster/feautres/auth/domain/i_auth_repository.dart';
 import 'package:ff_moneyblaster/feautres/auth/domain/user_model.dart';
-import 'package:ff_moneyblaster/feautres/profile/presentation/profile_screen.dart';
-import 'package:ff_moneyblaster/theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:sizer/sizer.dart';
 
 class FirebaseAuthRepository implements IAuthRepository {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -104,7 +100,7 @@ class FirebaseAuthRepository implements IAuthRepository {
         'referredBy': refferedBy,
         'createdAt': DateTime.timestamp()
       };
-      print(data);
+      // print(data);
 
       await _firestore
           .collection('appusers')
@@ -118,7 +114,7 @@ class FirebaseAuthRepository implements IAuthRepository {
 
       return true;
     } on FirebaseAuthException catch (e) {
-      print(e);
+      debugPrint(e.message);
       rethrow;
     }
   }
@@ -137,10 +133,10 @@ class FirebaseAuthRepository implements IAuthRepository {
     try {
       await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
-      print('Sign-in successful.');
+      // print('Sign-in successful.');
       return true;
     } catch (e) {
-      print('Sign-in failed: $e');
+      // print('Sign-in failed: $e');
       return false;
     }
   }
@@ -240,14 +236,14 @@ class FirebaseAuthRepository implements IAuthRepository {
         String? smsCode = await showDialog(
           context: context!,
           builder: (context) => AlertDialog(
-            title: Text('Enter OTP'),
+            title: const Text('Enter OTP'),
             content: TextField(controller: smsCodeController),
             actions: [
               TextButton(
                 onPressed: () {
                   Navigator.pop(context, smsCodeController.text);
                 },
-                child: Text('Submit'),
+                child: const Text('Submit'),
               ),
             ],
           ),

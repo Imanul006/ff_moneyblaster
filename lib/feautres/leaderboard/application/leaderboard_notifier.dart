@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ff_moneyblaster/feautres/auth/domain/user_model.dart';
-import 'package:ff_moneyblaster/feautres/home/presentation/widgets/tournament_card.dart';
 import 'package:ff_moneyblaster/feautres/leaderboard/application/leaderboard_state.dart';
 import 'package:riverpod/riverpod.dart';
 

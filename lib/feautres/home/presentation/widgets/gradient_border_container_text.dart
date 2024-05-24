@@ -4,10 +4,7 @@ import 'package:flutter/material.dart';
 // DO NOT REMOVE OR MODIFY THE CODE ABOVE!
 
 import 'package:flutter/widgets.dart';
-
 import 'package:rive/rive.dart' as riv;
-
-import 'package:gradient_borders/gradient_borders.dart';
 
 class GradientBorderContainerText extends StatefulWidget {
   const GradientBorderContainerText({
@@ -62,7 +59,7 @@ class _GradientBorderContainerTextState
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Container(
+        SizedBox(
             height: widget.height,
             width: widget.width,
             // decoration: BoxDecoration(
