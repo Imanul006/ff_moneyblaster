@@ -1,4 +1,3 @@
-import 'package:ff_moneyblaster/core/constants.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'auth_state.freezed.dart';

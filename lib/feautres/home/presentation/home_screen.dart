@@ -3,18 +3,14 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ff_moneyblaster/core/assets.dart';
 import 'package:ff_moneyblaster/core/constants.dart';
 import 'package:ff_moneyblaster/feautres/home/domain/tournament.dart';
-
 import 'package:ff_moneyblaster/feautres/home/presentation/widgets/tabbar.dart';
 import 'package:ff_moneyblaster/feautres/home/presentation/widgets/tournament_card.dart';
 import 'package:ff_moneyblaster/feautres/home/shared/provider.dart';
 import 'package:ff_moneyblaster/feautres/wallet/shared/provider.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sizer/sizer.dart';
-
-import 'widgets/gradient_border_container.dart';
 
 @RoutePage(name: 'HomeScreen')
 class HomeScreen extends ConsumerStatefulWidget {
@@ -139,10 +135,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           children: [
             Container(
               width: double.infinity,
-              height: MediaQuery.sizeOf(context).height * 0.22,
-              padding: const EdgeInsets.all(10),
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
+              // height: MediaQuery.sizeOf(context).height * 0.22,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  scale: 2.1,
+                  image: Image.asset(
+                    Assets.backgroundLeaderboard,
+                    fit: BoxFit.contain,
+                  ).image,
+                ),
+                gradient: const LinearGradient(
                   colors: [Color(0xFFCE3B3B), Color(0xFF5F1237)],
                   stops: [0, 1],
                   begin: AlignmentDirectional(-1, 0),
@@ -163,7 +165,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ),
             // tab bar
             SizedBox(
-              height: 63.3.h,
+              height: 64.5.h,
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.start,

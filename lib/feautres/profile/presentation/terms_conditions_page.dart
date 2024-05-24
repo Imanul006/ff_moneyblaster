@@ -1,24 +1,8 @@
-import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
 // Adjust the path as necessary
 
-import 'package:auto_route/auto_route.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ff_moneyblaster/core/assets.dart';
 import 'package:ff_moneyblaster/core/constants.dart';
-
-import 'package:ff_moneyblaster/feautres/home/presentation/widgets/tabbar.dart';
-import 'package:ff_moneyblaster/feautres/home/presentation/widgets/tournament_card.dart';
-import 'package:ff_moneyblaster/feautres/leaderboard/shared/provider.dart';
-import 'package:ff_moneyblaster/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gradient_borders/gradient_borders.dart';
-import 'package:sizer/sizer.dart';
-
-import '../../auth/domain/user_model.dart';
 
 class TermsConditionsPage extends ConsumerWidget {
   const TermsConditionsPage({Key? key}) : super(key: key);
@@ -63,7 +47,7 @@ class TermsConditionsPage extends ConsumerWidget {
                   child: Stack(
                     children: [
                       Padding(
-                        padding: EdgeInsets.fromLTRB(20, 10, 0, 10),
+                        padding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
                         child: Text(
                           'TERMS & CONDITIONS',
                           style: Theme.of(context)
@@ -79,7 +63,7 @@ class TermsConditionsPage extends ConsumerWidget {
               // tab bar
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.9,
-                child: Column(
+                child: const Column(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,

@@ -33,7 +33,7 @@ import 'package:ff_moneyblaster/feautres/profile/presentation/profile_screen.dar
 import 'package:ff_moneyblaster/feautres/splash/splash.dart' as _i11;
 import 'package:ff_moneyblaster/feautres/wallet/presentation/wallet_screen.dart'
     as _i12;
-import 'package:flutter/cupertino.dart' as _i14;
+import 'package:flutter/material.dart' as _i14;
 
 abstract class $AppRouter extends _i13.RootStackRouter {
   $AppRouter({super.navigatorKey});

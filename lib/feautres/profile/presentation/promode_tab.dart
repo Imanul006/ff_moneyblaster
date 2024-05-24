@@ -1,15 +1,10 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:ff_moneyblaster/core/assets.dart';
-import 'package:ff_moneyblaster/core/constants.dart';
 import 'package:ff_moneyblaster/feautres/auth/domain/user_model.dart';
 import 'package:ff_moneyblaster/feautres/profile/presentation/profile_screen.dart';
 import 'package:ff_moneyblaster/feautres/wallet/shared/provider.dart';
-import 'package:ff_moneyblaster/routes/app_router.gr.dart';
 import 'package:ff_moneyblaster/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../auth/shared/provider.dart';

@@ -9,14 +9,10 @@ import 'package:ff_moneyblaster/feautres/profile/presentation/profile_tab.dart';
 import 'package:ff_moneyblaster/feautres/profile/presentation/promode_tab.dart';
 import 'package:ff_moneyblaster/feautres/wallet/presentation/widgets/tabbar.dart';
 import 'package:ff_moneyblaster/feautres/wallet/shared/provider.dart';
-import 'package:ff_moneyblaster/routes/app_router.gr.dart';
 import 'package:ff_moneyblaster/theme.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:gradient_borders/gradient_borders.dart';
-import 'package:sizer/sizer.dart';
 
 @RoutePage(name: 'ProfileScreen')
 class ProfileScreen extends ConsumerStatefulWidget {
@@ -80,7 +76,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.only(
-                            left: 16.0, right: 16, top: 50, bottom: 24),
+                            left: 16.0, right: 16, top: 48, bottom: 20),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.max,

@@ -23,7 +23,7 @@ class LeaderbaordScreen extends ConsumerWidget {
 
     return Container(
       width: double.infinity,
-      height: MediaQuery.sizeOf(context).height * 1,
+      height: MediaQuery.sizeOf(context).height,
       decoration: BoxDecoration(
         color: AppColors.blackBackground,
         image: DecorationImage(
@@ -37,7 +37,7 @@ class LeaderbaordScreen extends ConsumerWidget {
         children: [
           Container(
             width: double.infinity,
-            height: MediaQuery.sizeOf(context).height * 0.35,
+            height: MediaQuery.sizeOf(context).height * 0.40,
             decoration: const BoxDecoration(
               // image: DecorationImage(
               //   scale: 2.1,
@@ -55,21 +55,19 @@ class LeaderbaordScreen extends ConsumerWidget {
             ),
             child: Stack(
               children: [
-                Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      SizedBox(
-                        height: MediaQuery.sizeOf(context).height * 0.11,
-                      ),
-                      Image.asset(
-                        Assets.backgroundLeaderboard,
-                        scale: 2.1,
-                        // fit: BoxFit.contain,
-                      )
-                    ],
-                  ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    SizedBox(
+                      height: MediaQuery.sizeOf(context).height * 0.11,
+                    ),
+                    Image.asset(
+                      Assets.backgroundLeaderboard,
+                      scale: 2.1,
+                      // fit: BoxFit.contain,
+                    )
+                  ],
                 ),
                 //  Row Widget...
                 Align(
@@ -385,7 +383,7 @@ class LeaderbaordScreen extends ConsumerWidget {
           ),
           // tab bar
           SizedBox(
-            height: 63.3.h,
+            height: 60.h,
             child: Column(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.start,

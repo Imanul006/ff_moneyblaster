@@ -4,14 +4,9 @@ import 'package:ff_moneyblaster/core/constants.dart';
 import 'package:ff_moneyblaster/feautres/home/domain/tournament.dart';
 import 'package:ff_moneyblaster/feautres/leaderboard/shared/provider.dart';
 import 'package:ff_moneyblaster/theme.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sizer/sizer.dart';
-
-import 'widgets/gradient_border_container.dart';
 
 @RoutePage(name: 'ResultScreen')
 class ResultdScreen extends ConsumerWidget {

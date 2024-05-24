@@ -50,7 +50,7 @@ class NotificationScreen extends ConsumerWidget {
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(
-                      left: 16.0, right: 16, top: 50, bottom: 24),
+                      left: 16.0, right: 16, top: 48, bottom: 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.max,

@@ -8,11 +8,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ff_moneyblaster/feautres/auth/application/auth_state.dart';
 import 'package:ff_moneyblaster/feautres/auth/domain/i_auth_repository.dart';
 import 'package:ff_moneyblaster/feautres/auth/domain/user_model.dart';
-import 'package:ff_moneyblaster/feautres/auth/shared/provider.dart';
 import 'package:ff_moneyblaster/routes/app_router.gr.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:riverpod/riverpod.dart';
 
 class AuthNotifier extends StateNotifier<AuthState> {
@@ -87,7 +85,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
       }
       return false;
     } catch (e) {
-      print('Error checking if user is verified: $e');
+      debugPrint('Error checking if user is verified: $e');
       return false;
     }
   }
