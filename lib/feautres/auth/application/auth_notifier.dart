@@ -195,6 +195,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
   Future<void> verifyNumber(
       BuildContext context, VoidCallback? voidCallback) async {
+        state = state.copyWith(isOtpSent: true);
     try {
       await _authRepository.verifyNumber(
           number: state.number,

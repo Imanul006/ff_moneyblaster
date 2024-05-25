@@ -8,6 +8,7 @@ class AuthState with _$AuthState {
     @Default(false) bool isLoading,
     @Default(false) bool isUser,
     @Default(false) bool isUserVerified,
+    @Default(false) bool isOtpSent,
     @Default('') String? gameOptionSelected,
     @Default('') String number,
   }) = _AuthState;

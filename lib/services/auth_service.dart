@@ -229,6 +229,7 @@ class FirebaseAuthRepository implements IAuthRepository {
       },
       verificationFailed: (FirebaseAuthException e) {
         Fluttertoast.showToast(msg: 'Verifcation Failed');
+        print('OTP Exception: $e');
       },
       codeSent: (String verificationId, int? resendToken) async {
         // Handle code sent to the user's phone number, for manual verification

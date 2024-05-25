@@ -11,6 +11,7 @@ import 'package:ff_moneyblaster/widgets/login_text_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
@@ -30,6 +31,7 @@ class SignupScreenState extends ConsumerState<SignupScreen> {
   final TextEditingController _gameIdController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _otpController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
   final TextEditingController _referralCodeController = TextEditingController();
@@ -208,6 +210,14 @@ class SignupScreenState extends ConsumerState<SignupScreen> {
                                     ),
                                   )
                                 : const SizedBox.shrink(),
+                            Visibility(
+                              visible: state.isOtpSent,
+                              child: LoginTextField(
+                                title: "Enter OTP",
+                                hintText: "Enter OTP",
+                                controller: _otpController,
+                              ),
+                            ),    
                             LoginTextField(
                               title: "Create Password",
                               hintText: "Enter password",
