@@ -37,7 +37,7 @@ class LeaderbaordScreen extends ConsumerWidget {
         children: [
           Container(
             width: double.infinity,
-            height: MediaQuery.sizeOf(context).height * 0.40,
+            height: MediaQuery.sizeOf(context).height * 0.35,
             decoration: const BoxDecoration(
               // image: DecorationImage(
               //   scale: 2.1,

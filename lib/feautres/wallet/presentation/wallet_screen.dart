@@ -192,7 +192,7 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
                               const Spacer(),
                               Padding(
                                 padding:
-                                    const EdgeInsets.symmetric(vertical: 6.0),
+                                    const EdgeInsets.symmetric(vertical: 16.0),
                                 child: Row(
                                   mainAxisSize: MainAxisSize.max,
                                   mainAxisAlignment:

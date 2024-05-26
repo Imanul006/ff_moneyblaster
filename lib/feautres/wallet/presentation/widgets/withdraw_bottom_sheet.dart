@@ -196,9 +196,9 @@ class _WithdrawBottomSheetState extends ConsumerState<WithdrawBottomSheet> {
                         if (_nameController.text.isNotEmpty &&
                             _acNoController.text.isNotEmpty &&
                             _ifscController.text.isNotEmpty &&
-                            _amountController.text.isNotEmpty &&
+                            amountSelected != 0 &&
                             state.user!.wallet.balance >
-                                int.parse(_amountController.text)) {
+                                num.parse(amountSelected.toString())) {
                           await notifier.requestWithdraw(
                             context,
                             name: _nameController.text,
