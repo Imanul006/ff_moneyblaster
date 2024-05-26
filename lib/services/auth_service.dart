@@ -77,7 +77,7 @@ class FirebaseAuthRepository implements IAuthRepository {
           await _firebaseAuth.signInWithCredential(credential);
         },
         verificationFailed: (FirebaseAuthException e) {
-          showToastMessage("${e.message}");
+          showToastMessage(e.message ?? "");
           throw e;
         },
         codeSent: (String verificationId, int? resendToken) {
