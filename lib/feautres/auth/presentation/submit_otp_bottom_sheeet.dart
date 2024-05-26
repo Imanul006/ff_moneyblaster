@@ -222,7 +222,7 @@ void showSubmitOtpPopup(
 class BlurBackground extends StatelessWidget {
   final Widget child;
 
-  const BlurBackground({required this.child});
+  const BlurBackground({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {

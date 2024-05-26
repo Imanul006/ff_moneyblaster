@@ -166,18 +166,14 @@ class AuthNotifier extends StateNotifier<AuthState> {
     VoidCallback? voidCallback,
   }) async {
     try {
+      state = state.copyWith(isLoading: true);
       String? referredBy;
       if (referralCode.trim().isNotEmpty) {
         referredBy = await findUserIdByReferralCode(referralCode);
         if (referredBy == null) {
           if (context.mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: const Text(
-                  "Please enter a valid referral code.",
-                ),
-              ),
-            );
+            showToastMessage("Please enter a valid referral code.");
+           
             state = state.copyWith(isLoading: false);
             return;
           }

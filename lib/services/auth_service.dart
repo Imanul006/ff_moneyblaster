@@ -3,6 +3,7 @@
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ff_moneyblaster/core/utils/toast.dart';
 import 'package:ff_moneyblaster/feautres/auth/domain/i_auth_repository.dart';
 import 'package:ff_moneyblaster/feautres/auth/domain/user_model.dart';
 import 'package:ff_moneyblaster/feautres/auth/presentation/submit_otp_bottom_sheeet.dart';
@@ -76,7 +77,7 @@ class FirebaseAuthRepository implements IAuthRepository {
           await _firebaseAuth.signInWithCredential(credential);
         },
         verificationFailed: (FirebaseAuthException e) {
-          // Handle error
+          showToastMessage("${e.message}");
           throw e;
         },
         codeSent: (String verificationId, int? resendToken) {
@@ -111,7 +112,7 @@ class FirebaseAuthRepository implements IAuthRepository {
           await _firebaseAuth.signInWithCredential(credential);
         },
         verificationFailed: (FirebaseAuthException e) {
-          // Handle error
+          showToastMessage("${e.message}");
           throw e;
         },
         codeSent: (String verificationId, int? resendToken) {
@@ -128,7 +129,8 @@ class FirebaseAuthRepository implements IAuthRepository {
 
       return true;
     } on FirebaseAuthException catch (e) {
-      debugPrint(e.message);
+      print("Error: ${e.message}");
+      showToastMessage("${e.message}");
       rethrow;
     }
   }
