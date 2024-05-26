@@ -36,6 +36,7 @@ class GameStats with _$GameStats {
     @Default(0) int totalKills,
     @Default(0) int totalWins,
     @Default(0) int totalWinAmount,
+    @Default(0) int totalEarned
   }) = _GameStats;
 
   factory GameStats.fromJson(Map<String, dynamic> json) =>

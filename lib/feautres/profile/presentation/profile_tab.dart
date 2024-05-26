@@ -85,12 +85,12 @@ class _ProfileTabState extends ConsumerState<ProfileTab> {
                     )
                   ],
                 ),
-                IconButton(
-                    onPressed: () {},
-                    icon: Image.asset(
-                      Assets.edit,
-                      scale: 2,
-                    ))
+                // IconButton(
+                //     onPressed: () {},
+                //     icon: Image.asset(
+                //       Assets.edit,
+                //       scale: 2,
+                //     ))
               ],
             ),
             const SizedBox(
@@ -110,7 +110,7 @@ class _ProfileTabState extends ConsumerState<ProfileTab> {
                 children: [
                   // 1 total winning
                   Text(
-                    'TOTAL WININGS',
+                    'TOTAL EARNINGS',
                     style: Theme.of(context)
                         .textTheme
                         .headlineSmall
@@ -121,7 +121,7 @@ class _ProfileTabState extends ConsumerState<ProfileTab> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        '₹ ${provider.user?.gameStats.totalWinAmount}',
+                        '₹ ${provider.user?.gameStats.totalEarned}',
                         style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                             fontWeight: FontWeight.w700,
                             fontSize: 32,
@@ -133,6 +133,27 @@ class _ProfileTabState extends ConsumerState<ProfileTab> {
                     height: 20,
                   ),
                   // 3 matches played
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Leaderboard Score',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                      Text(
+                        provider.user?.gameStats.totalWinAmount.toString() ??
+                            '',
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium
+                            ?.copyWith(fontWeight: FontWeight.w700),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
                   Row(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
