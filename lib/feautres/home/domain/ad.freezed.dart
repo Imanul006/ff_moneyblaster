@@ -24,7 +24,8 @@ mixin _$Ad {
   String? get title => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   String get imagePath => throw _privateConstructorUsedError;
-  String get url => throw _privateConstructorUsedError;
+  String get url =>
+      throw _privateConstructorUsedError; // ignore: invalid_annotation_target
   @JsonKey(name: 'adDetails')
   List<AdDetails> get adDetails => throw _privateConstructorUsedError;
 
@@ -180,7 +181,9 @@ class _$AdImpl implements _Ad {
   final String imagePath;
   @override
   final String url;
+// ignore: invalid_annotation_target
   final List<AdDetails> _adDetails;
+// ignore: invalid_annotation_target
   @override
   @JsonKey(name: 'adDetails')
   List<AdDetails> get adDetails {
@@ -250,7 +253,7 @@ abstract class _Ad implements Ad {
   String get imagePath;
   @override
   String get url;
-  @override
+  @override // ignore: invalid_annotation_target
   @JsonKey(name: 'adDetails')
   List<AdDetails> get adDetails;
   @override

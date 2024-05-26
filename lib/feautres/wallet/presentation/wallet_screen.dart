@@ -12,6 +12,7 @@ import 'package:ff_moneyblaster/feautres/wallet/shared/provider.dart';
 import 'package:ff_moneyblaster/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 
@@ -26,8 +27,8 @@ class WalletScreen extends ConsumerStatefulWidget {
 class _WalletScreenState extends ConsumerState<WalletScreen> {
   @override
   void dispose() {
-    final provider = ref.read(walletProvider.notifier);
-    provider.dispose();
+    // final provider = ref.read(walletProvider.notifier);
+    // provider.dispose();
     super.dispose();
   }
 
@@ -52,10 +53,13 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
     final bottomInset = MediaQuery.of(context).viewInsets.bottom;
     final remainingHeight = screenHeight - bottomInset;
 
-    final lastDepositTransactionStatus =
-        provider.depositTransactions.reversed.first.transactionStatus;
+    final lastDepositTransactionStatus = provider.depositTransactions.isNotEmpty
+        ? provider.depositTransactions.reversed.first.transactionStatus
+        : [];
     final lastWithdrawalTransactionStatus =
-        provider.withdrawalTransactions.reversed.first.transactionStatus;
+        provider.withdrawalTransactions.isNotEmpty
+            ? provider.withdrawalTransactions.reversed.first.transactionStatus
+            : [];
 
     return isLoading
         ? Container(
@@ -110,145 +114,172 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
                             fit: BoxFit.cover,
                           ),
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            // wallet title
-                            Row(
-                              children: [
-                                Text(
-                                  'WALLET',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headlineMedium
-                                      ?.copyWith(fontWeight: FontWeight.bold),
-                                )
-                              ],
-                            ),
-                            // 2 current wallet balance row
-                            const SizedBox(
-                              height: 8,
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  'Current Wallet Balance',
-                                  style: Theme.of(context).textTheme.bodySmall,
-                                )
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                            // 3 ballance
-                            Row(
-                              children: [
-                                Text(
-                                  '₹ ',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyLarge
-                                      ?.copyWith(
-                                          fontSize: 32,
-                                          fontWeight: FontWeight.w700),
-                                ),
-                                Text(
-                                  state.user?.wallet.balance.toString() ?? "",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyLarge
-                                      ?.copyWith(
-                                          fontSize: 32,
-                                          fontWeight: FontWeight.w700),
-                                ),
-                              ],
-                            ),
-                            // 4 past 24 hour money
-                            Row(
-                              children: [
-                                Text(
-                                  '${provider.calculateTotalTransactionsInLast24Hours()} IN PAST 24 HOURS',
-                                  style: Theme.of(context).textTheme.labelSmall,
-                                )
-                              ],
-                            ),
-                            // buttons deposit and withdrawl
-                            const Spacer(),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 6.0),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            top: 50,
+                            left: 20,
+                            bottom: 20,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              // wallet title
+                              Row(
                                 children: [
-                                  InkWell(
-                                    onTap: () async {
-                                      // await notifier.selectTournament(
-                                      //     widget.tournament);
-                                      showModalBottomSheet<void>(
-                                        // enableDrag: true,
-                                        // isDismissible: false,
-                                        backgroundColor: AppColors.glassColor,
-                                        barrierColor:
-                                            const Color.fromRGBO(7, 7, 7, 0.7),
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return const FractionallySizedBox(
-                                            heightFactor: 1.6,
-                                            child: DepositBottomSheet(),
-                                          );
-                                          // return const DepositBottomSheet();
-                                        },
-                                      );
-                                    },
-                                    child: const CustomButton(
-                                      text: 'Deposit',
-                                      icon: Icons.upload,
-                                    ),
+                                  Text(
+                                    'WALLET',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineMedium
+                                        ?.copyWith(fontWeight: FontWeight.bold),
+                                  )
+                                ],
+                              ),
+                              // 2 current wallet balance row
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    'Current Wallet Balance',
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall,
+                                  )
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              // 3 ballance
+                              Row(
+                                children: [
+                                  Text(
+                                    '₹ ',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge
+                                        ?.copyWith(
+                                            fontSize: 32,
+                                            fontWeight: FontWeight.w700),
                                   ),
-                                  InkWell(
-                                    onTap: () async {
-                                      // await notifier.selectTournament(
-                                      //     widget.tournament);
-                                      showModalBottomSheet<void>(
-                                        // isDismissible: false,
-                                        // isScrollControlled: true,
-                                        // constraints: ,
-                                        backgroundColor: AppColors.glassColor,
-                                        barrierColor:
-                                            const Color.fromRGBO(7, 7, 7, 0.7),
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return FractionallySizedBox(
-                                            heightFactor: 1.32,
-                                            child: BackdropFilter(
-                                              filter: ImageFilter.blur(
-                                                  sigmaX: 2, sigmaY: 2),
-                                              child:
-                                                  const WithdrawBottomSheet(),
-                                            ),
-                                          );
-                                          // return BackdropFilter(
-                                          //   filter: ImageFilter.blur(
-                                          //       sigmaX: 2, sigmaY: 2),
-                                          //   child:
-                                          //       const WithdrawBottomSheet(),
-                                          // );
-                                        },
-                                      );
-                                    },
-                                    child: const CustomButton(
-                                      filled: true,
-                                      text: 'Withdraw',
-                                      icon: Icons.download,
-                                    ),
+                                  Text(
+                                    state.user?.wallet.balance
+                                            .toStringAsFixed(0) ??
+                                        "",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge
+                                        ?.copyWith(
+                                            fontSize: 32,
+                                            fontWeight: FontWeight.w700),
                                   ),
                                 ],
                               ),
-                            )
-                          ],
+                              // 4 past 24 hour money
+                              Row(
+                                children: [
+                                  Text(
+                                    '${provider.calculateTotalTransactionsInLast24Hours()} IN PAST 24 HOURS',
+                                    style:
+                                        Theme.of(context).textTheme.labelSmall,
+                                  )
+                                ],
+                              ),
+                              // buttons deposit and withdrawl
+                              const Spacer(),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 6.0),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    InkWell(
+                                      onTap: () async {
+                                        // await notifier.selectTournament(
+                                        //     widget.tournament);
+                                        lastDepositTransactionStatus ==
+                                                "requested"
+                                            ? Fluttertoast.showToast(
+                                                msg:
+                                                    "Cannot make multiple deposit requests")
+                                            : showModalBottomSheet<void>(
+                                                // enableDrag: true,
+                                                // isDismissible: false,
+                                                backgroundColor:
+                                                    AppColors.glassColor,
+                                                barrierColor:
+                                                    const Color.fromRGBO(
+                                                        7, 7, 7, 0.7),
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return const FractionallySizedBox(
+                                                    heightFactor: 1.6,
+                                                    child: DepositBottomSheet(),
+                                                  );
+                                                  // return const DepositBottomSheet();
+                                                },
+                                              );
+                                      },
+                                      child: const CustomButton(
+                                        text: 'Deposit',
+                                        icon: Icons.upload,
+                                      ),
+                                    ),
+                                    InkWell(
+                                      onTap: () async {
+                                        // await notifier.selectTournament(
+                                        //     widget.tournament);
+                                        lastWithdrawalTransactionStatus ==
+                                                "requested"
+                                            ? Fluttertoast.showToast(
+                                                msg:
+                                                    "Cannot make multiple withdrawal requests")
+                                            : showModalBottomSheet<void>(
+                                                // isDismissible: false,
+                                                // isScrollControlled: true,
+                                                // constraints: ,
+                                                backgroundColor:
+                                                    AppColors.glassColor,
+                                                barrierColor:
+                                                    const Color.fromRGBO(
+                                                        7, 7, 7, 0.7),
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return FractionallySizedBox(
+                                                    heightFactor: 1.32,
+                                                    child: BackdropFilter(
+                                                      filter: ImageFilter.blur(
+                                                          sigmaX: 2, sigmaY: 2),
+                                                      child:
+                                                          const WithdrawBottomSheet(),
+                                                    ),
+                                                  );
+                                                  // return BackdropFilter(
+                                                  //   filter: ImageFilter.blur(
+                                                  //       sigmaX: 2, sigmaY: 2),
+                                                  //   child:
+                                                  //       const WithdrawBottomSheet(),
+                                                  // );
+                                                },
+                                              );
+                                      },
+                                      child: const CustomButton(
+                                        filled: true,
+                                        text: 'Withdraw',
+                                        icon: Icons.download,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
                         )
                       ],
                     )),

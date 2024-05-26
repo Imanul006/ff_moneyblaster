@@ -146,8 +146,7 @@ class __$$QrModelImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable()
 class _$QrModelImpl implements _QrModel {
   const _$QrModelImpl(
       {required this.uid,

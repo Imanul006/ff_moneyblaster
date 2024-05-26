@@ -24,12 +24,33 @@ class _WithdrawBottomSheetState extends ConsumerState<WithdrawBottomSheet> {
   final TextEditingController _ifscController = TextEditingController();
   final TextEditingController _amountController = TextEditingController();
 
+  double? amountSelected;
+
   @override
   Widget build(BuildContext context) {
     final notifier = ref.read(walletProvider.notifier);
     final state = ref.read(walletProvider);
     final FirebaseAuth auth = FirebaseAuth.instance;
     final uid = auth.currentUser!.uid;
+
+    final List<String> withdrawLabels = [
+      '100',
+      '200',
+      '500',
+      '1000',
+      '2500',
+      '5000',
+    ];
+
+    void pickAmount(double amount) {
+      setState(() {
+        if (amountSelected != amount) {
+          amountSelected = amount;
+        } else {
+          amountSelected = null;
+        }
+      });
+    }
 
     // Calculate remaining available height after subtracting bottom view inset
     // final screenHeight = MediaQuery.of(context).size.height;
@@ -72,12 +93,58 @@ class _WithdrawBottomSheetState extends ConsumerState<WithdrawBottomSheet> {
                   ],
                 ),
                 const SizedBox(
-                  height: 30,
+                  height: 20,
                 ),
-                AppTextField(
-                  hintText: "Full Name",
-                  controller: _nameController,
-                  title: "Enter Full Name",
+                Wrap(
+                  spacing: 4,
+                  runSpacing: 4,
+                  children: List.generate(6, (index) {
+                    final isSelected =
+                        amountSelected == int.parse(withdrawLabels[index]);
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 4.0, right: 8.0),
+                      child: GestureDetector(
+                          onTap: () => pickAmount(
+                                double.parse(withdrawLabels[index]),
+                              ),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 8,
+                            ),
+                            decoration: BoxDecoration(
+                              border: Border.all(),
+                              borderRadius: BorderRadius.circular(20),
+                              color: isSelected
+                                  ? Colors.green[800]
+                                  : Colors.green[400],
+                            ),
+                            child: Text(
+                              '₹ ${withdrawLabels[index]}',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          )
+                          // Chip(
+                          //   shape: const StadiumBorder(),
+                          //   side: BorderSide.none,
+                          //   materialTapTargetSize:
+                          //       MaterialTapTargetSize.shrinkWrap,
+                          //   backgroundColor:
+                          //       isSelected ? Colors.amber : Colors.green,
+                          //   label: Text(
+                          //     '₹ ${withdrawLabels[index]}',
+                          //     style: const TextStyle(
+                          //       color: Colors.white,
+                          //       fontWeight: FontWeight.w400,
+                          //     ),
+                          //   ),
+                          // ),
+                          ),
+                    );
+                  }),
                 ),
                 const SizedBox(
                   height: 8,
@@ -100,13 +167,22 @@ class _WithdrawBottomSheetState extends ConsumerState<WithdrawBottomSheet> {
                   height: 8,
                 ),
                 AppTextField(
-                  hintText: "Withdraw Amount",
-                  controller: _amountController,
-                  keyboardType: TextInputType.number,
-                  title: "Enter Withdraw Amount",
+                  hintText: "Full Name",
+                  controller: _nameController,
+                  title: "Enter Full Name",
                 ),
+
+                // const SizedBox(
+                //   height: 8,
+                // ),
+                // AppTextField(
+                //   hintText: "Withdraw Amount",
+                //   controller: _amountController,
+                //   keyboardType: TextInputType.number,
+                //   title: "Enter Withdraw Amount",
+                // ),
                 const SizedBox(
-                  height: 22,
+                  height: 10,
                 ),
                 Column(
                   mainAxisSize: MainAxisSize.min,
@@ -120,13 +196,13 @@ class _WithdrawBottomSheetState extends ConsumerState<WithdrawBottomSheet> {
                         if (_nameController.text.isNotEmpty &&
                             _acNoController.text.isNotEmpty &&
                             _ifscController.text.isNotEmpty &&
-                            _amountController.text.isNotEmpty) {
+                            amountSelected != null) {
                           await notifier.requestWithdraw(
                             context,
                             name: _nameController.text,
                             accountNo: _acNoController.text,
                             ifscCode: _ifscController.text,
-                            amount: double.parse(_amountController.text),
+                            amount: amountSelected!,
                           );
                           await notifier.fetchUserDetails();
                         } else {

@@ -19,6 +19,7 @@ mixin _$AuthState {
   bool get isLoading => throw _privateConstructorUsedError;
   bool get isUser => throw _privateConstructorUsedError;
   bool get isUserVerified => throw _privateConstructorUsedError;
+  bool get isOtpSent => throw _privateConstructorUsedError;
   String? get gameOptionSelected => throw _privateConstructorUsedError;
   String get number => throw _privateConstructorUsedError;
 
@@ -36,6 +37,7 @@ abstract class $AuthStateCopyWith<$Res> {
       {bool isLoading,
       bool isUser,
       bool isUserVerified,
+      bool isOtpSent,
       String? gameOptionSelected,
       String number});
 }
@@ -56,6 +58,7 @@ class _$AuthStateCopyWithImpl<$Res, $Val extends AuthState>
     Object? isLoading = null,
     Object? isUser = null,
     Object? isUserVerified = null,
+    Object? isOtpSent = null,
     Object? gameOptionSelected = freezed,
     Object? number = null,
   }) {
@@ -71,6 +74,10 @@ class _$AuthStateCopyWithImpl<$Res, $Val extends AuthState>
       isUserVerified: null == isUserVerified
           ? _value.isUserVerified
           : isUserVerified // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isOtpSent: null == isOtpSent
+          ? _value.isOtpSent
+          : isOtpSent // ignore: cast_nullable_to_non_nullable
               as bool,
       gameOptionSelected: freezed == gameOptionSelected
           ? _value.gameOptionSelected
@@ -96,6 +103,7 @@ abstract class _$$AuthStateImplCopyWith<$Res>
       {bool isLoading,
       bool isUser,
       bool isUserVerified,
+      bool isOtpSent,
       String? gameOptionSelected,
       String number});
 }
@@ -114,6 +122,7 @@ class __$$AuthStateImplCopyWithImpl<$Res>
     Object? isLoading = null,
     Object? isUser = null,
     Object? isUserVerified = null,
+    Object? isOtpSent = null,
     Object? gameOptionSelected = freezed,
     Object? number = null,
   }) {
@@ -129,6 +138,10 @@ class __$$AuthStateImplCopyWithImpl<$Res>
       isUserVerified: null == isUserVerified
           ? _value.isUserVerified
           : isUserVerified // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isOtpSent: null == isOtpSent
+          ? _value.isOtpSent
+          : isOtpSent // ignore: cast_nullable_to_non_nullable
               as bool,
       gameOptionSelected: freezed == gameOptionSelected
           ? _value.gameOptionSelected
@@ -149,6 +162,7 @@ class _$AuthStateImpl extends _AuthState {
       {this.isLoading = false,
       this.isUser = false,
       this.isUserVerified = false,
+      this.isOtpSent = false,
       this.gameOptionSelected = '',
       this.number = ''})
       : super._();
@@ -164,6 +178,9 @@ class _$AuthStateImpl extends _AuthState {
   final bool isUserVerified;
   @override
   @JsonKey()
+  final bool isOtpSent;
+  @override
+  @JsonKey()
   final String? gameOptionSelected;
   @override
   @JsonKey()
@@ -171,7 +188,7 @@ class _$AuthStateImpl extends _AuthState {
 
   @override
   String toString() {
-    return 'AuthState(isLoading: $isLoading, isUser: $isUser, isUserVerified: $isUserVerified, gameOptionSelected: $gameOptionSelected, number: $number)';
+    return 'AuthState(isLoading: $isLoading, isUser: $isUser, isUserVerified: $isUserVerified, isOtpSent: $isOtpSent, gameOptionSelected: $gameOptionSelected, number: $number)';
   }
 
   @override
@@ -184,6 +201,8 @@ class _$AuthStateImpl extends _AuthState {
             (identical(other.isUser, isUser) || other.isUser == isUser) &&
             (identical(other.isUserVerified, isUserVerified) ||
                 other.isUserVerified == isUserVerified) &&
+            (identical(other.isOtpSent, isOtpSent) ||
+                other.isOtpSent == isOtpSent) &&
             (identical(other.gameOptionSelected, gameOptionSelected) ||
                 other.gameOptionSelected == gameOptionSelected) &&
             (identical(other.number, number) || other.number == number));
@@ -191,7 +210,7 @@ class _$AuthStateImpl extends _AuthState {
 
   @override
   int get hashCode => Object.hash(runtimeType, isLoading, isUser,
-      isUserVerified, gameOptionSelected, number);
+      isUserVerified, isOtpSent, gameOptionSelected, number);
 
   @JsonKey(ignore: true)
   @override
@@ -205,6 +224,7 @@ abstract class _AuthState extends AuthState {
       {final bool isLoading,
       final bool isUser,
       final bool isUserVerified,
+      final bool isOtpSent,
       final String? gameOptionSelected,
       final String number}) = _$AuthStateImpl;
   const _AuthState._() : super._();
@@ -215,6 +235,8 @@ abstract class _AuthState extends AuthState {
   bool get isUser;
   @override
   bool get isUserVerified;
+  @override
+  bool get isOtpSent;
   @override
   String? get gameOptionSelected;
   @override

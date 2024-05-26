@@ -3,7 +3,9 @@ import 'package:ff_moneyblaster/core/constants.dart';
 import 'package:ff_moneyblaster/feautres/auth/domain/user_model.dart';
 import 'package:ff_moneyblaster/feautres/wallet/application/user_wallet_state.dart';
 import 'package:ff_moneyblaster/feautres/wallet/domain/i_wallet_repository.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:riverpod/riverpod.dart';
 
@@ -20,6 +22,8 @@ class WalletNotifier extends StateNotifier<UserWalletState> {
 
   List<TransactionHistory> withdrawalTransactions = [];
   List<TransactionHistory> depositTransactions = [];
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   RefreshController refreshController =
       RefreshController(initialRefresh: false);
@@ -70,46 +74,73 @@ class WalletNotifier extends StateNotifier<UserWalletState> {
     required String ifscCode,
     required double amount,
   }) async {
-    state = state.copyWith(isLoading: true);
-    Map<String, dynamic> newTransaction = {
-      'datetime': Timestamp.now(),
-      'transaction': amount,
-      'transactionStatus': 'requested',
-      'transactionType': 'withdraw',
-      'fullName': name,
-      'accountNo': accountNo,
-      'ifscCode': ifscCode,
-    };
-    bool result =
-        await _walletRepository.addTransactionToWallet(newTransaction);
-    state = state.copyWith(isLoading: false);
-    if (context.mounted) {
-      if (result) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-              'Withdraw requested. It will reflect in your bank account, once we verify.',
-            ),
-            duration: Duration(seconds: 3),
-          ),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-              'Something went wrong, please try again.',
-            ),
-            duration: Duration(seconds: 3),
-          ),
-        );
+    try {
+      state = state.copyWith(isLoading: true);
+      Map<String, dynamic> newTransaction = {
+        'datetime': Timestamp.now(),
+        'transaction': amount,
+        'transactionStatus': 'requested',
+        'transactionType': 'withdraw',
+        'fullName': name,
+        'accountNo': accountNo,
+        'ifscCode': ifscCode,
+      };
+
+      final String uid = _firebaseAuth.currentUser?.uid ?? '';
+
+      try {
+        DocumentReference userRef = _firestore.collection('appusers').doc(uid);
+        var snapshot = await userRef.get();
+        Map<String, dynamic> userData = snapshot.data() as Map<String, dynamic>;
+        // print("snapshot: ${userData["wallet"]["balance"]}");
+
+        if (userData["wallet"]["balance"] < amount) {
+          Fluttertoast.showToast(
+              msg: 'Chosen amount is more than the balance available.');
+          return;
+        }
+
+        await userRef.update({
+          'wallet.balance': userData["wallet"]["balance"] - amount,
+        });
+
+        // await fetchUserDetails();
+      } catch (error) {
+        // print('Error adding transaction: $error');
       }
-    }
+
+      bool result =
+          await _walletRepository.addTransactionToWallet(newTransaction);
+      state = state.copyWith(isLoading: false);
+      if (context.mounted) {
+        if (result) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                'Withdraw requested. It will reflect in your bank account, once we verify.',
+              ),
+              duration: Duration(seconds: 3),
+            ),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                'Something went wrong, please try again.',
+              ),
+              duration: Duration(seconds: 3),
+            ),
+          );
+        }
+      }
+    } catch (e) {}
   }
 
   Future<bool> isTransactionIdUnique(String transactionId) async {
-    UserModel user = state.user!;
-    return user.wallet.history
-        .every((transaction) => transaction.transactionId != transactionId);
+    UserModel? user = state.user;
+    return user?.wallet.history.every(
+            (transaction) => transaction.transactionId != transactionId) ??
+        false;
   }
 
   Future<bool> hasPendingDeposits() async {
@@ -188,9 +219,9 @@ class WalletNotifier extends StateNotifier<UserWalletState> {
   }
 
   Future<void> fetchUserDetails() async {
-    if (!mounted) {
-      return;
-    }
+    // if (!mounted) {
+    //   return;
+    // }
     state = state.copyWith(isLoading: true);
     try {
       UserModel user = await _walletRepository.getUserModel();
@@ -250,19 +281,20 @@ class WalletNotifier extends StateNotifier<UserWalletState> {
   }
 
   int calculateTotalTransactionsInLast24Hours() {
-    WalletModel wallet = state.user!.wallet;
+    WalletModel? wallet = state.user?.wallet;
     DateTime now = DateTime.now();
 
-    var recentTransactions = wallet.history.where((transaction) {
+    var recentTransactions = wallet?.history.where((transaction) {
       return transaction.datetime!
               .isAfter(now.subtract(const Duration(hours: 24))) &&
           transaction.transactionStatus == "success";
     });
 
-    int totalAmount = recentTransactions.fold(
-      0,
-      (sumup, current) => sumup + current.transaction,
-    );
+    int totalAmount = recentTransactions?.fold(
+          0,
+          (sumup, current) => sumup ?? 0 + current.transaction,
+        ) ??
+        0;
 
     return totalAmount;
   }

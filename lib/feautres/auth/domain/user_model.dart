@@ -46,7 +46,7 @@ class GameStats with _$GameStats {
 class WalletModel with _$WalletModel {
   @JsonSerializable()
   const factory WalletModel({
-    @Default(0) int balance,
+    @Default(0) num balance,
     @Default([]) List<TransactionHistory> history,
   }) = _WalletModel;
 

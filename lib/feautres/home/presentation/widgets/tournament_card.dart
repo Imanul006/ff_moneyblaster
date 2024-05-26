@@ -35,7 +35,7 @@ class TournamentCard extends ConsumerStatefulWidget {
       required this.isLessThan24Hours});
 
   final GameState gameState;
-  final int bal;
+  final num bal;
   final Tournament tournament;
   final bool isLessThan24Hours;
 
@@ -368,7 +368,8 @@ class _TournamentCardState extends ConsumerState<TournamentCard> {
                                                               widget.tournament
                                                                   .entryFee!)
                                                           ? JoinTournamamentWidget(
-                                                              bal: widget.bal,
+                                                              bal: widget.bal
+                                                                  as int,
                                                               tournament: widget
                                                                   .tournament,
                                                             )

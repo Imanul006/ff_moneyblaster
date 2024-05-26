@@ -649,7 +649,7 @@ WalletModel _$WalletModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$WalletModel {
-  int get balance => throw _privateConstructorUsedError;
+  num get balance => throw _privateConstructorUsedError;
   List<TransactionHistory> get history => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -664,7 +664,7 @@ abstract class $WalletModelCopyWith<$Res> {
           WalletModel value, $Res Function(WalletModel) then) =
       _$WalletModelCopyWithImpl<$Res, WalletModel>;
   @useResult
-  $Res call({int balance, List<TransactionHistory> history});
+  $Res call({num balance, List<TransactionHistory> history});
 }
 
 /// @nodoc
@@ -687,7 +687,7 @@ class _$WalletModelCopyWithImpl<$Res, $Val extends WalletModel>
       balance: null == balance
           ? _value.balance
           : balance // ignore: cast_nullable_to_non_nullable
-              as int,
+              as num,
       history: null == history
           ? _value.history
           : history // ignore: cast_nullable_to_non_nullable
@@ -704,7 +704,7 @@ abstract class _$$WalletModelImplCopyWith<$Res>
       __$$WalletModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int balance, List<TransactionHistory> history});
+  $Res call({num balance, List<TransactionHistory> history});
 }
 
 /// @nodoc
@@ -725,7 +725,7 @@ class __$$WalletModelImplCopyWithImpl<$Res>
       balance: null == balance
           ? _value.balance
           : balance // ignore: cast_nullable_to_non_nullable
-              as int,
+              as num,
       history: null == history
           ? _value._history
           : history // ignore: cast_nullable_to_non_nullable
@@ -747,7 +747,7 @@ class _$WalletModelImpl with DiagnosticableTreeMixin implements _WalletModel {
 
   @override
   @JsonKey()
-  final int balance;
+  final num balance;
   final List<TransactionHistory> _history;
   @override
   @JsonKey()
@@ -801,14 +801,14 @@ class _$WalletModelImpl with DiagnosticableTreeMixin implements _WalletModel {
 
 abstract class _WalletModel implements WalletModel {
   const factory _WalletModel(
-      {final int balance,
+      {final num balance,
       final List<TransactionHistory> history}) = _$WalletModelImpl;
 
   factory _WalletModel.fromJson(Map<String, dynamic> json) =
       _$WalletModelImpl.fromJson;
 
   @override
-  int get balance;
+  num get balance;
   @override
   List<TransactionHistory> get history;
   @override

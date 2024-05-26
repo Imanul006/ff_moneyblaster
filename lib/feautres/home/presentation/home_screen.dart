@@ -23,8 +23,8 @@ class HomeScreen extends ConsumerStatefulWidget {
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   void dispose() {
-    final provider = ref.read(homeProvider.notifier);
-    provider.dispose();
+    // final provider = ref.read(homeProvider.notifier);
+    // provider.dispose();
     super.dispose();
   }
 
@@ -165,7 +165,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ),
             // tab bar
             SizedBox(
-              height: 64.5.h,
+              // height: 64.5.h,
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -175,7 +175,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   const Filter(),
                   SingleChildScrollView(
                     child: SizedBox(
-                      height: 50.h,
+                      height: 46.h,
                       child: homeState.isLoading
                           ? const Center(child: CircularProgressIndicator())
                           : homeState.errorMessage.isNotEmpty
