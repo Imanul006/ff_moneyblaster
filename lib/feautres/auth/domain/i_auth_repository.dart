@@ -17,6 +17,20 @@ abstract class IAuthRepository {
     required String refferedBy,
   });
 
+  Future<bool> signUpWithPhoneNumber({
+    required String username,
+
+    required String phoneNumber,
+    
+    required BuildContext context,
+  });
+
+  Future<bool> signInWithPhoneNumber({
+    required String phoneNumber,
+
+    required BuildContext context,
+  });
+
   Future<void> logout();
 
   Future<bool> isUserLoggedIn();

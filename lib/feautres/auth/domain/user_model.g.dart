@@ -44,6 +44,7 @@ _$GameStatsImpl _$$GameStatsImplFromJson(Map<String, dynamic> json) =>
       totalKills: (json['totalKills'] as num?)?.toInt() ?? 0,
       totalWins: (json['totalWins'] as num?)?.toInt() ?? 0,
       totalWinAmount: (json['totalWinAmount'] as num?)?.toInt() ?? 0,
+      totalEarned: (json['totalEarned'] as num?)?.toInt() ?? 0,
     );
 
 Map<String, dynamic> _$$GameStatsImplToJson(_$GameStatsImpl instance) =>
@@ -53,6 +54,7 @@ Map<String, dynamic> _$$GameStatsImplToJson(_$GameStatsImpl instance) =>
       'totalKills': instance.totalKills,
       'totalWins': instance.totalWins,
       'totalWinAmount': instance.totalWinAmount,
+      'totalEarned': instance.totalEarned,
     };
 
 _$WalletModelImpl _$$WalletModelImplFromJson(Map<String, dynamic> json) =>

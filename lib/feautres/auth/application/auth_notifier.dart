@@ -5,6 +5,7 @@ import 'dart:async';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ff_moneyblaster/core/utils/toast.dart';
 import 'package:ff_moneyblaster/feautres/auth/application/auth_state.dart';
 import 'package:ff_moneyblaster/feautres/auth/domain/i_auth_repository.dart';
 import 'package:ff_moneyblaster/feautres/auth/domain/user_model.dart';
@@ -23,6 +24,8 @@ class AuthNotifier extends StateNotifier<AuthState> {
   UserModel? get user => _user;
 
   AuthNotifier(this._authRepository) : super(const AuthState());
+
+  Map<String, dynamic> signupData = {};
 
   void selectGame(String gameSelected) {
     state = state.copyWith(gameOptionSelected: gameSelected, isLoading: false);
@@ -111,14 +114,22 @@ class AuthNotifier extends StateNotifier<AuthState> {
   }
 
   Future<void> signIn(BuildContext context,
-      {required String username, required String password}) async {
+      {required String phone}) async {
     state = state.copyWith(isLoading: true);
-    try {
-      bool res = await _authRepository.signInWithUsernameAndPassword(
-          username, password);
-      if (res && context.mounted) {
-        await context.router.replaceAll([const LoadingScreen()]);
+    final bool isPhoneTaken = await isPhoneNumberTaken(phone.trim());
+
+      if (!isPhoneTaken) {
+        if (context.mounted) {
+          showToastMessage("Phone number not found. Please sign up first.");
+          
+          state = state.copyWith(isLoading: false);
+          return;
+        }
       }
+
+    try {
+      bool res = await _authRepository.signInWithPhoneNumber(phoneNumber: phone, context: context);
+   
       state = state.copyWith(isLoading: false);
     } catch (e) {
       state = state.copyWith(isLoading: false);
@@ -141,8 +152,11 @@ class AuthNotifier extends StateNotifier<AuthState> {
       return null;
     }
   }
+  
 
-  Future<void> signUp(
+ 
+
+  Future<void> validateAndProceedSignUp(
     BuildContext context, {
     required String username,
     required String gameId,
@@ -170,23 +184,87 @@ class AuthNotifier extends StateNotifier<AuthState> {
         }
       }
 
-      final result = await _authRepository.signUpWithUsernameAndPassword(
+      final bool isUserNameTaken = await isUsernameTaken(username.trim());
+
+      if (isUserNameTaken) {
+        if (context.mounted) {
+          showToastMessage("Username already taken. Please try another username.");
+          
+          state = state.copyWith(isLoading: false);
+          return;
+        }
+      }
+
+      final bool isPhoneTaken = await isPhoneNumberTaken(phoneNumber.trim());
+
+      if (isPhoneTaken) {
+        if (context.mounted) {
+          showToastMessage("Phone number already exists. Please try another phone number.");
+          
+          state = state.copyWith(isLoading: false);
+          return;
+        }
+      }
+
+      signupData = {
+        'username': username,
+        'gameId': gameId,
+        'phoneNumber': phoneNumber,
+        'isVerified': false,
+        'gameStats': GameStats(game: state.gameOptionSelected!).toJson(),
+        'wallet': const WalletModel().toJson(),
+        'referredBy': referredBy ?? '',
+        'gameOptionSelected': state.gameOptionSelected!,
+        'createdAt': DateTime.now(),
+      };
+
+      final result = await _authRepository.signUpWithPhoneNumber(
+        context: context,
         username: username,
-        gameId: gameId,
+        
         phoneNumber: phoneNumber,
-        password: password,
-        refferedBy: referredBy ?? '',
-        gameOptionSelected: state.gameOptionSelected!,
+       
       );
 
-      if (result) {
-        voidCallback?.call();
-      } else {}
+      // if (result) {
+      //   voidCallback?.call();
+      // } else {}
       state = state.copyWith(isLoading: false);
     } catch (e) {
       state = state.copyWith(isLoading: false);
       rethrow;
     }
+  }
+
+  Future<void> createUser(BuildContext context, {required String uid}) async {
+    signupData.addAll({'id': uid});
+    DocumentReference doc = _firestore.collection('appusers').doc(uid);
+    DocumentSnapshot docSnapshot = await doc.get();
+    if(!docSnapshot.exists) {
+    await doc.set(signupData).then((value) async => {
+      await context.router.replaceAll([const LoadingScreen()]),
+    });} else {
+      await context.router.replaceAll([const LoadingScreen()]);
+    }
+    
+  }
+
+  Future<bool> isUsernameTaken(String username) async {
+    QuerySnapshot querySnapshot = await _firestore
+        .collection('appusers')
+        .where('username', isEqualTo: username.trim())
+        .get();
+
+    return querySnapshot.docs.isNotEmpty;
+  }
+
+  Future<bool> isPhoneNumberTaken(String phone) async {
+    QuerySnapshot querySnapshot = await _firestore
+        .collection('appusers')
+        .where('phoneNumber', isEqualTo: phone.trim())
+        .get();
+
+    return querySnapshot.docs.isNotEmpty;
   }
 
   Future<void> logout() async {
@@ -195,7 +273,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
   Future<void> verifyNumber(
       BuildContext context, VoidCallback? voidCallback) async {
-        state = state.copyWith(isOtpSent: true);
+    state = state.copyWith(isOtpSent: true);
     try {
       await _authRepository.verifyNumber(
           number: state.number,

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:auto_route/auto_route.dart';
 import 'package:ff_moneyblaster/core/constants.dart';
 import 'package:ff_moneyblaster/core/widgets/animated_background.dart';
+import 'package:ff_moneyblaster/feautres/auth/presentation/submit_otp_bottom_sheeet.dart';
 import 'package:ff_moneyblaster/feautres/auth/shared/provider.dart';
 import 'package:ff_moneyblaster/feautres/profile/presentation/profile_screen.dart';
 import 'package:ff_moneyblaster/routes/app_router.gr.dart';
@@ -185,49 +186,49 @@ class SignupScreenState extends ConsumerState<SignupScreen> {
                               hintText: "Enter your phone number",
                               controller: _phoneNumberController,
                               textInputType: TextInputType.phone,
-                              onChanged: (val) {
-                                if (val.length > 9) {
-                                  notifier
-                                      .setNumber(_phoneNumberController.text);
-                                }
-                                setState(() {});
-                              },
+                              // onChanged: (val) {
+                              //   if (val.length > 9) {
+                              //     notifier
+                              //         .setNumber(_phoneNumberController.text);
+                              //   }
+                              //   setState(() {});
+                              // },
                             ),
-                            _phoneNumberController.text.length > 9
-                                ? GestureDetector(
-                                    onTap: () {
-                                      notifier.verifyNumber(context, () {});
-                                    },
-                                    child: const Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        CustomButton(
-                                          text: 'Verify OTP',
-                                          icon: Icons.sms,
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                : const SizedBox.shrink(),
-                            Visibility(
-                              visible: state.isOtpSent,
-                              child: LoginTextField(
-                                title: "Enter OTP",
-                                hintText: "Enter OTP",
-                                controller: _otpController,
-                              ),
-                            ),    
-                            LoginTextField(
-                              title: "Create Password",
-                              hintText: "Enter password",
-                              controller: _passwordController,
-                            ),
-                            LoginTextField(
-                              title: "Confirm Password",
-                              hintText: "Confirm your password",
-                              controller: _confirmPasswordController,
-                            ),
+                            // _phoneNumberController.text.length > 9
+                            //     ? GestureDetector(
+                            //         onTap: () {
+                            //           notifier.verifyNumber(context, () {});
+                            //         },
+                            //         child: const Row(
+                            //           mainAxisSize: MainAxisSize.max,
+                            //           mainAxisAlignment: MainAxisAlignment.end,
+                            //           children: [
+                            //             CustomButton(
+                            //               text: 'Verify OTP',
+                            //               icon: Icons.sms,
+                            //             ),
+                            //           ],
+                            //         ),
+                            //       )
+                            //     : const SizedBox.shrink(),
+                            // Visibility(
+                            //   visible: state.isOtpSent,
+                            //   child: LoginTextField(
+                            //     title: "Enter OTP",
+                            //     hintText: "Enter OTP",
+                            //     controller: _otpController,
+                            //   ),
+                            // ),    
+                            // LoginTextField(
+                            //   title: "Create Password",
+                            //   hintText: "Enter password",
+                            //   controller: _passwordController,
+                            // ),
+                            // LoginTextField(
+                            //   title: "Confirm Password",
+                            //   hintText: "Confirm your password",
+                            //   controller: _confirmPasswordController,
+                            // ),
                             LoginTextField(
                               title: "Referral Code",
                               hintText: "Enter referral code (if any)",
@@ -289,6 +290,7 @@ class SignupScreenState extends ConsumerState<SignupScreen> {
                         onTap: () {
                           if (!isLoading) {
                             _handleSignup(context);
+                            
                           }
                         },
                         child: isLoading
@@ -338,6 +340,18 @@ class SignupScreenState extends ConsumerState<SignupScreen> {
     );
   }
 
+
+  // void _openOtpBottomSheet(BuildContext context) {
+  //   showModalBottomSheet(
+  //     context: context,
+  //     isScrollControlled: true,
+  //     backgroundColor: Colors.transparent,
+  //     builder: (BuildContext context) {
+  //       return const SubmitOtpBottomSheet();
+  //     },
+  //   );
+  // }
+
   @override
   void dispose() {
     super.dispose();
@@ -346,16 +360,16 @@ class SignupScreenState extends ConsumerState<SignupScreen> {
   void _handleSignup(BuildContext context) async {
     try {
       final notifier = ref.read(authProvider.notifier);
-      await notifier.signUp(
+      await notifier.validateAndProceedSignUp(
         context,
         username: _usernameController.text,
         gameId: _gameIdController.text,
         phoneNumber: _phoneNumberController.text,
         password: _passwordController.text,
         referralCode: _referralCodeController.text,
-        voidCallback: () async {
-          await context.router.replaceAll([const LoadingScreen()]);
-        },
+        // voidCallback: () async {
+        //   await context.router.replaceAll([const LoadingScreen()]);
+        // },
       );
     } catch (e) {
       if (e is FirebaseAuthException) {

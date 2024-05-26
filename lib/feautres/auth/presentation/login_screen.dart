@@ -22,7 +22,7 @@ class LoginScreen extends ConsumerStatefulWidget {
 class LoginScreenState extends ConsumerState<LoginScreen> {
   final VideoPlayerController _controller =
       VideoPlayerController.asset('assets/animations/background.mp4');
-  final TextEditingController _userIdController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   @override
@@ -93,9 +93,9 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                               child: Padding(
                                 padding: const EdgeInsets.all(2.0),
                                 child: LoginTextField(
-                                  title: "User ID",
-                                  hintText: "Create an user ID",
-                                  controller: _userIdController,
+                                  title: "Phone Number",
+                                  hintText: "Enter Phone Number",
+                                  controller: _phoneController,
                                 ),
                               ),
                             ),
@@ -106,14 +106,14 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                             //     controller: TextEditingController(),
                             //   ),
                             // ),
-                            Expanded(
-                              child: LoginTextField(
-                                title: "Password",
-                                isPassword: true,
-                                hintText: "Enter Password",
-                                controller: _passwordController,
-                              ),
-                            ),
+                            // Expanded(
+                            //   child: LoginTextField(
+                            //     title: "Password",
+                            //     isPassword: true,
+                            //     hintText: "Enter Password",
+                            //     controller: _passwordController,
+                            //   ),
+                            // ),
                           ],
                         ),
                       ),
@@ -125,8 +125,8 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                           if (!isLoading) {
                             ref.read(authProvider.notifier).signIn(
                                   context,
-                                  username: _userIdController.text,
-                                  password: _passwordController.text,
+                                  phone: _phoneController.text,
+                                  
                                 );
                           }
                         },

@@ -5,6 +5,7 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ff_moneyblaster/feautres/auth/domain/i_auth_repository.dart';
 import 'package:ff_moneyblaster/feautres/auth/domain/user_model.dart';
+import 'package:ff_moneyblaster/feautres/auth/presentation/submit_otp_bottom_sheeet.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -48,6 +49,88 @@ class FirebaseAuthRepository implements IAuthRepository {
     }
 
     return newCode;
+  }
+
+  @override
+  Future<bool> signUpWithPhoneNumber({
+    required String username,
+    required String phoneNumber,
+
+    required BuildContext context,
+  }) async {
+    try {
+      var existingUsername =
+          await _firestore.collection('usernames').doc(username).get();
+      if (existingUsername.exists) {
+        throw FirebaseAuthException(
+          code: 'username-already-in-use',
+          message: 'Username is already taken.',
+        );
+      }
+
+      // Trigger the OTP verification
+      await _firebaseAuth.verifyPhoneNumber(
+        phoneNumber: '+91${phoneNumber.trim()}',
+        verificationCompleted: (PhoneAuthCredential credential) async {
+          // Handle automatic verification (Android only)
+          await _firebaseAuth.signInWithCredential(credential);
+        },
+        verificationFailed: (FirebaseAuthException e) {
+          // Handle error
+          throw e;
+        },
+        codeSent: (String verificationId, int? resendToken) {
+          // Show the OTP dialog
+          showSubmitOtpPopup(
+            context,
+            verificationId,
+            phoneNumber,
+            
+          );
+        },
+        codeAutoRetrievalTimeout: (String verificationId) {},
+      );
+
+      return true;
+    } on FirebaseAuthException catch (e) {
+      debugPrint(e.message);
+      rethrow;
+    }
+  }
+  @override
+  Future<bool> signInWithPhoneNumber({
+    required String phoneNumber,
+
+    required BuildContext context,
+  }) async {
+    try {
+      await _firebaseAuth.verifyPhoneNumber(
+        phoneNumber: '+91${phoneNumber.trim()}',
+        verificationCompleted: (PhoneAuthCredential credential) async {
+          
+          await _firebaseAuth.signInWithCredential(credential);
+        },
+        verificationFailed: (FirebaseAuthException e) {
+          // Handle error
+          throw e;
+        },
+        codeSent: (String verificationId, int? resendToken) {
+          // Show the OTP dialog
+          showSubmitOtpPopup(
+            context,
+            verificationId,
+            phoneNumber,
+            
+          );
+        },
+        codeAutoRetrievalTimeout: (String verificationId) {},
+      );
+
+      return true;
+    } on FirebaseAuthException catch (e) {
+      debugPrint(e.message);
+      rethrow;
+    }
   }
 
   @override
