@@ -2,6 +2,7 @@
 // ignore_for_file: unnecessary_const
 
 import 'dart:async';
+import 'dart:math';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -153,6 +154,42 @@ class AuthNotifier extends StateNotifier<AuthState> {
     }
   }
   
+  String _generateUniqueCode() {
+    var now = DateTime.now().millisecondsSinceEpoch;
+
+    var base36Encoded = now.toRadixString(36).toUpperCase();
+
+    if (base36Encoded.length > 8) {
+      base36Encoded = base36Encoded.substring(base36Encoded.length - 8);
+    } else if (base36Encoded.length < 8) {
+      int neededPadding = 8 - base36Encoded.length;
+      var rng = Random();
+      String padding = List.generate(neededPadding,
+          (_) => rng.nextInt(36).toRadixString(36).toUpperCase()).join('');
+      base36Encoded = padding + base36Encoded;
+    }
+
+    return base36Encoded;
+  }
+
+  Future<String> _generateUniqueReferralCode() async {
+    String newCode = '';
+    bool isUnique = false;
+
+    while (!isUnique) {
+      newCode = _generateUniqueCode();
+      var existingCode = await _firestore
+          .collection('usernames')
+          .where('referralCode', isEqualTo: newCode)
+          .get();
+
+      if (existingCode.docs.isEmpty) {
+        isUnique = true;
+      }
+    }
+
+    return newCode;
+  }
 
  
 
@@ -202,6 +239,8 @@ class AuthNotifier extends StateNotifier<AuthState> {
         }
       }
 
+      final String myReferralCode = await _generateUniqueReferralCode();
+
       signupData = {
         'username': username,
         'gameId': gameId,
@@ -212,6 +251,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
         'referredBy': referredBy ?? '',
         'gameOptionSelected': state.gameOptionSelected!,
         'createdAt': DateTime.now(),
+        'referralCode': myReferralCode,
       };
 
       final result = await _authRepository.signUpWithPhoneNumber(
