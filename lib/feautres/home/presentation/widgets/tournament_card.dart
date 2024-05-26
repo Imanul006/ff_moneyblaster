@@ -108,7 +108,7 @@ class _TournamentCardState extends ConsumerState<TournamentCard> {
       padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
       child: Container(
         width: 100,
-        height: 180,
+        height: 220,
         decoration: BoxDecoration(
           boxShadow: const [
             BoxShadow(
@@ -362,11 +362,17 @@ class _TournamentCardState extends ConsumerState<TournamentCard> {
                                                           ? 1.15
                                                           : 0.82,
                                                       child: (walletState
-                                                                  .user!
-                                                                  .wallet
-                                                                  .balance >
+                                                                      .user!
+                                                                      .wallet
+                                                                      .balance >
+                                                                  widget
+                                                                      .tournament
+                                                                      .entryFee! ||
                                                               widget.tournament
-                                                                  .entryFee!)
+                                                                  .registeredPlayersId
+                                                                  .contains(walletState
+                                                                      .user
+                                                                      ?.id))
                                                           ? JoinTournamamentWidget(
                                                               bal: widget.bal
                                                                   as int,
@@ -415,7 +421,7 @@ class _TournamentCardState extends ConsumerState<TournamentCard> {
                   ),
                 ),
                 Align(
-                  alignment: const AlignmentDirectional(-1, 0.2),
+                  alignment: const AlignmentDirectional(-1, 0.1),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -504,6 +510,42 @@ class _TournamentCardState extends ConsumerState<TournamentCard> {
                           ),
                         ),
                       ),
+                    ],
+                  ),
+                ),
+                Align(
+                  alignment: const AlignmentDirectional(-1, 0.45),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Container(
+                        width: 70.w,
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: LinearProgressIndicator(
+                            color: Colors.orange,
+                            minHeight: 6,
+                            semanticsLabel: 'asdfsdf',
+                            value: ((widget
+                                        .tournament.registeredPlayersId.length /
+                                    widget.tournament.totalPlayersAllowed!) *
+                                1),
+                            semanticsValue: widget
+                                .tournament.registeredPlayersId.length
+                                .toString(),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Container(
+                        child: Text(
+                          '${widget.tournament.registeredPlayersId.length.toString()}/${widget.tournament.totalPlayersAllowed} Slots',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      )
                     ],
                   ),
                 ),

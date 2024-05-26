@@ -216,19 +216,33 @@ class ResultdScreen extends ConsumerWidget {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.center,
                                           children: [
-                                            Text(
-                                              result?[index]
-                                                      ?.playerKills
-                                                      .toString() ??
-                                                  '',
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyLarge
-                                                  ?.copyWith(
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      color: AppColors.blue),
-                                            ),
+                                            if (result?[index]?.playerKills !=
+                                                null)
+                                              Text(
+                                                result?[index]
+                                                        ?.playerKills
+                                                        .toString() ??
+                                                    '',
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyLarge
+                                                    ?.copyWith(
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        color: AppColors.blue),
+                                              ),
+                                            if (result?[index]?.playerKills ==
+                                                null)
+                                              Text(
+                                                '0',
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyLarge
+                                                    ?.copyWith(
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        color: AppColors.blue),
+                                              ),
                                             Text(
                                               ' kills',
                                               style: Theme.of(context)

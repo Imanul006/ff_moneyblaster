@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:ff_moneyblaster/feautres/home/domain/i_home_repository.dart';
 import 'package:ff_moneyblaster/feautres/home/domain/tournament.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -61,7 +62,8 @@ class HomeRepository implements IHomeRepository {
         }
       } else {
         // to execute if solo
-        if (data['registeredPlayersId'].length < totalPlayersAllowed) {
+        final val = data['registeredPlayersId'] ?? [];
+        if (val.length < totalPlayersAllowed) {
           await tournamentRef.update({
             'registeredPlayersId': FieldValue.arrayUnion([id])
           });

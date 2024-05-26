@@ -196,7 +196,9 @@ class _WithdrawBottomSheetState extends ConsumerState<WithdrawBottomSheet> {
                         if (_nameController.text.isNotEmpty &&
                             _acNoController.text.isNotEmpty &&
                             _ifscController.text.isNotEmpty &&
-                            amountSelected != null) {
+                            _amountController.text.isNotEmpty &&
+                            state.user!.wallet.balance >
+                                int.parse(_amountController.text)) {
                           await notifier.requestWithdraw(
                             context,
                             name: _nameController.text,
@@ -209,7 +211,7 @@ class _WithdrawBottomSheetState extends ConsumerState<WithdrawBottomSheet> {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text(
-                                'All fields are mandatory.',
+                                'Invalid Form Data',
                               ),
                               duration: Duration(seconds: 3),
                             ),

@@ -53,13 +53,14 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
     final bottomInset = MediaQuery.of(context).viewInsets.bottom;
     final remainingHeight = screenHeight - bottomInset;
 
-    final lastDepositTransactionStatus = provider.depositTransactions.isNotEmpty
-        ? provider.depositTransactions.reversed.first.transactionStatus
-        : [];
+    final lastDepositTransactionStatus =
+        provider.depositTransactions.reversed.length != 0
+            ? provider.depositTransactions.reversed.first.transactionStatus
+            : '';
     final lastWithdrawalTransactionStatus =
-        provider.withdrawalTransactions.isNotEmpty
+        provider.withdrawalTransactions.reversed.length != 0
             ? provider.withdrawalTransactions.reversed.first.transactionStatus
-            : [];
+            : "";
 
     return isLoading
         ? Container(
@@ -207,7 +208,7 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
                                                 msg:
                                                     "Cannot make multiple deposit requests")
                                             : showModalBottomSheet<void>(
-                                                // enableDrag: true,
+                                                enableDrag: true,
                                                 // isDismissible: false,
                                                 backgroundColor:
                                                     AppColors.glassColor,
