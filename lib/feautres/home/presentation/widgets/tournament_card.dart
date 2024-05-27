@@ -538,7 +538,7 @@ class _TournamentCardState extends ConsumerState<TournamentCard> {
                         ),
                       ),
                       SizedBox(
-                        width: 8,
+                        width: 2,
                       ),
                       Container(
                         child: Text(

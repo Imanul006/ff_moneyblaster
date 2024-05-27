@@ -22,6 +22,8 @@ mixin _$UserWalletState {
   String get errorMessage => throw _privateConstructorUsedError;
   List<UserModel> get referredList => throw _privateConstructorUsedError;
   QrModel? get qr => throw _privateConstructorUsedError;
+  int get adClicked => throw _privateConstructorUsedError;
+  double? get lastAdReward => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $UserWalletStateCopyWith<UserWalletState> get copyWith =>
@@ -40,7 +42,9 @@ abstract class $UserWalletStateCopyWith<$Res> {
       UserModel? user,
       String errorMessage,
       List<UserModel> referredList,
-      QrModel? qr});
+      QrModel? qr,
+      int adClicked,
+      double? lastAdReward});
 
   $UserModelCopyWith<$Res>? get user;
   $QrModelCopyWith<$Res>? get qr;
@@ -65,6 +69,8 @@ class _$UserWalletStateCopyWithImpl<$Res, $Val extends UserWalletState>
     Object? errorMessage = null,
     Object? referredList = null,
     Object? qr = freezed,
+    Object? adClicked = null,
+    Object? lastAdReward = freezed,
   }) {
     return _then(_value.copyWith(
       selectedWalletTab: null == selectedWalletTab
@@ -91,6 +97,14 @@ class _$UserWalletStateCopyWithImpl<$Res, $Val extends UserWalletState>
           ? _value.qr
           : qr // ignore: cast_nullable_to_non_nullable
               as QrModel?,
+      adClicked: null == adClicked
+          ? _value.adClicked
+          : adClicked // ignore: cast_nullable_to_non_nullable
+              as int,
+      lastAdReward: freezed == lastAdReward
+          ? _value.lastAdReward
+          : lastAdReward // ignore: cast_nullable_to_non_nullable
+              as double?,
     ) as $Val);
   }
 
@@ -133,7 +147,9 @@ abstract class _$$UserWalletStateImplCopyWith<$Res>
       UserModel? user,
       String errorMessage,
       List<UserModel> referredList,
-      QrModel? qr});
+      QrModel? qr,
+      int adClicked,
+      double? lastAdReward});
 
   @override
   $UserModelCopyWith<$Res>? get user;
@@ -158,6 +174,8 @@ class __$$UserWalletStateImplCopyWithImpl<$Res>
     Object? errorMessage = null,
     Object? referredList = null,
     Object? qr = freezed,
+    Object? adClicked = null,
+    Object? lastAdReward = freezed,
   }) {
     return _then(_$UserWalletStateImpl(
       selectedWalletTab: null == selectedWalletTab
@@ -184,6 +202,14 @@ class __$$UserWalletStateImplCopyWithImpl<$Res>
           ? _value.qr
           : qr // ignore: cast_nullable_to_non_nullable
               as QrModel?,
+      adClicked: null == adClicked
+          ? _value.adClicked
+          : adClicked // ignore: cast_nullable_to_non_nullable
+              as int,
+      lastAdReward: freezed == lastAdReward
+          ? _value.lastAdReward
+          : lastAdReward // ignore: cast_nullable_to_non_nullable
+              as double?,
     ));
   }
 }
@@ -197,7 +223,9 @@ class _$UserWalletStateImpl extends _UserWalletState {
       this.user,
       this.errorMessage = '',
       final List<UserModel> referredList = const [],
-      this.qr})
+      this.qr,
+      this.adClicked = 0,
+      this.lastAdReward})
       : _referredList = referredList,
         super._();
 
@@ -223,10 +251,15 @@ class _$UserWalletStateImpl extends _UserWalletState {
 
   @override
   final QrModel? qr;
+  @override
+  @JsonKey()
+  final int adClicked;
+  @override
+  final double? lastAdReward;
 
   @override
   String toString() {
-    return 'UserWalletState(selectedWalletTab: $selectedWalletTab, isLoading: $isLoading, user: $user, errorMessage: $errorMessage, referredList: $referredList, qr: $qr)';
+    return 'UserWalletState(selectedWalletTab: $selectedWalletTab, isLoading: $isLoading, user: $user, errorMessage: $errorMessage, referredList: $referredList, qr: $qr, adClicked: $adClicked, lastAdReward: $lastAdReward)';
   }
 
   @override
@@ -243,7 +276,11 @@ class _$UserWalletStateImpl extends _UserWalletState {
                 other.errorMessage == errorMessage) &&
             const DeepCollectionEquality()
                 .equals(other._referredList, _referredList) &&
-            (identical(other.qr, qr) || other.qr == qr));
+            (identical(other.qr, qr) || other.qr == qr) &&
+            (identical(other.adClicked, adClicked) ||
+                other.adClicked == adClicked) &&
+            (identical(other.lastAdReward, lastAdReward) ||
+                other.lastAdReward == lastAdReward));
   }
 
   @override
@@ -254,7 +291,9 @@ class _$UserWalletStateImpl extends _UserWalletState {
       user,
       errorMessage,
       const DeepCollectionEquality().hash(_referredList),
-      qr);
+      qr,
+      adClicked,
+      lastAdReward);
 
   @JsonKey(ignore: true)
   @override
@@ -271,7 +310,9 @@ abstract class _UserWalletState extends UserWalletState {
       final UserModel? user,
       final String errorMessage,
       final List<UserModel> referredList,
-      final QrModel? qr}) = _$UserWalletStateImpl;
+      final QrModel? qr,
+      final int adClicked,
+      final double? lastAdReward}) = _$UserWalletStateImpl;
   const _UserWalletState._() : super._();
 
   @override
@@ -286,6 +327,10 @@ abstract class _UserWalletState extends UserWalletState {
   List<UserModel> get referredList;
   @override
   QrModel? get qr;
+  @override
+  int get adClicked;
+  @override
+  double? get lastAdReward;
   @override
   @JsonKey(ignore: true)
   _$$UserWalletStateImplCopyWith<_$UserWalletStateImpl> get copyWith =>

@@ -87,6 +87,32 @@ class TermsConditionsPage extends ConsumerWidget {
                       'Entry fees are non-refundable, and failure to join the tournament on time will result in forfeiture of the entry fee.',
                       style: TextStyle(fontSize: 16),
                     ),
+                    SizedBox(height: 16),
+                    Text(
+                      '3.  Fair Play:\n'
+                      '• The use of hacks, cheats, or any form of unfair advantage is strictly prohibited.\n'
+                      'Players found to be engaging in unfair practices will be banned from the tournament, and their accounts will be suspended pending investigation.',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    SizedBox(height: 16),
+                    Text(
+                      '4.  Account Suspension:\n'
+                      'Any complaints regarding player conduct or suspected cheating will result in the immediate suspension of the accused player\'s account.\n'
+                      '• Our team will conduct a thorough investigation within 24 hours. If found innocent, the account suspension will be lifted.',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    SizedBox(height: 16),
+                    Text(
+                      '5.  Live Streaming:\n'
+                      'All tournament matches will be live- streamed on our official YouTube channel for transparency and entertainment purposes.\n',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    Text(
+                      '6.   Withdrawal Policy:\n'
+                      '• Withdrawals can be made between 10:00 AM and 8:00 PM daily, except on major bank holidays, where the withdrawal processing time extends to 48 hours.\n'
+                      '• The minimum withdrawal amount is 150 INR, and the maximum is 10000 INR per day',
+                      style: TextStyle(fontSize: 16),
+                    ),
                     // Add other terms as needed
                     SizedBox(height: 16),
                     Text(
@@ -103,6 +129,7 @@ class TermsConditionsPage extends ConsumerWidget {
                       'By participating in Money Blaster Tournament, players agree to abide by all rules and regulations outlined in these terms and conditions.',
                       style: TextStyle(fontSize: 16),
                     ),
+                    SizedBox(height: 20),
                   ],
                 ),
               ),

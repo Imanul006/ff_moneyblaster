@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:auto_route/auto_route.dart';
 import 'package:ff_moneyblaster/core/assets.dart';
 import 'package:ff_moneyblaster/core/constants.dart';
+import 'package:ff_moneyblaster/core/utils/toast.dart';
 import 'package:ff_moneyblaster/feautres/auth/domain/user_model.dart';
 import 'package:ff_moneyblaster/feautres/wallet/application/wallet_notifier.dart';
 import 'package:ff_moneyblaster/feautres/wallet/presentation/widgets/deposit_bottom_sheets.dart';
@@ -11,6 +12,7 @@ import 'package:ff_moneyblaster/feautres/wallet/presentation/widgets/withdraw_bo
 import 'package:ff_moneyblaster/feautres/wallet/shared/provider.dart';
 import 'package:ff_moneyblaster/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
@@ -119,6 +121,7 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
                           padding: const EdgeInsets.only(
                             top: 50,
                             left: 20,
+                            right: 20,
                             bottom: 20,
                           ),
                           child: Column(
@@ -127,6 +130,9 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
                             children: [
                               // wallet title
                               Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     'WALLET',
@@ -134,7 +140,60 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
                                         .textTheme
                                         .headlineMedium
                                         ?.copyWith(fontWeight: FontWeight.bold),
-                                  )
+                                  ),
+                                  if (state.user!.wallet.balance < 100.00)
+                                    GestureDetector(
+                                      onTap: () async {
+                                        if (!state.isLoading) {
+                                          if (state.adClicked < 10) {
+                                            // sfsfs
+                                            await provider.launchInWebView(
+                                                Uri.parse(AppConstants.adUrl));
+                                            showToastMessage(
+                                                'You Won Ad Reward ${state.lastAdReward ?? 0} !');
+                                          } else {
+                                            showToastMessage(
+                                                'Warning ! Do not Spam');
+                                          }
+                                        }
+                                      },
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            decoration: customDecoration,
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 4, horizontal: 8),
+                                            child: const Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Icon(
+                                                  Icons.video_collection,
+                                                  color: Colors.white,
+                                                ),
+                                                SizedBox(
+                                                  width: 6,
+                                                ),
+                                                Text('Watch & Earn')
+                                              ],
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 4,
+                                          ),
+                                          Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Text(
+                                                '${state.lastAdReward ?? 0} LAST AD REWARD',
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .labelSmall,
+                                              )
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    )
                                 ],
                               ),
                               // 2 current wallet balance row
@@ -167,7 +226,7 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
                                   ),
                                   Text(
                                     state.user?.wallet.balance
-                                            .toStringAsFixed(0) ??
+                                            .toStringAsFixed(2) ??
                                         "",
                                     style: Theme.of(context)
                                         .textTheme
@@ -188,6 +247,7 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
                                   )
                                 ],
                               ),
+
                               // buttons deposit and withdrawl
                               const Spacer(),
                               Padding(

@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ff_moneyblaster/core/constants.dart';
+import 'package:ff_moneyblaster/core/utils/toast.dart';
 import 'package:ff_moneyblaster/feautres/auth/domain/user_model.dart';
 import 'package:ff_moneyblaster/feautres/wallet/application/user_wallet_state.dart';
 import 'package:ff_moneyblaster/feautres/wallet/domain/i_wallet_repository.dart';
@@ -8,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:riverpod/riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 enum WalletTab {
   withdraw,
@@ -45,6 +49,51 @@ class WalletNotifier extends StateNotifier<UserWalletState> {
     // if failed,use refreshFailed()
     refreshController.refreshCompleted();
     // scrollController.jumpTo(_scrollPosition);
+  }
+
+  double generateRandomNumber() {
+    // Create a random number generator
+    Random random = Random();
+
+    // Generate a random number between 0 and 1
+    double randomNumber = random.nextDouble();
+
+    // Scale and shift the number to the desired range [0.25, 0.50]
+    double scaledNumber = 0.05 + (0.25 - 0.05) * randomNumber;
+
+    // Convert the number to a string with 2 decimal places and then back to a double
+    double formattedNumber = double.parse(scaledNumber.toStringAsFixed(2));
+
+    return formattedNumber;
+  }
+
+  Future<void> launchInWebView(Uri url) async {
+    if (await launchUrl(url, mode: LaunchMode.platformDefault)) {
+      await Future.delayed(const Duration(seconds: 2));
+      final id = FirebaseAuth.instance.currentUser?.uid;
+      final ref = FirebaseFirestore.instance.collection('appusers').doc(id);
+      try {
+        final doc = await ref.get();
+        if (doc.exists) {
+          final user = UserModel.fromJson(doc.data()!);
+          final randomNumber = generateRandomNumber();
+          final balance = doc.data()!["wallet"]["balance"] + randomNumber;
+          await ref.update({
+            'wallet.balance': balance,
+          }).then((value) {
+            state = state.copyWith(
+                adClicked: state.adClicked + 1, lastAdReward: randomNumber);
+          });
+
+          showToastMessage('You Won ₹$randomNumber !');
+          await fetchUserDetails();
+        }
+      } catch (e) {
+        rethrow;
+      }
+    } else {
+      throw Exception('Could not launch $url');
+    }
   }
 
   void onLoading() async {

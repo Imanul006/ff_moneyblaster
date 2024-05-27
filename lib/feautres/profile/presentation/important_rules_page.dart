@@ -109,6 +109,7 @@ class ImportantRulesPage extends ConsumerWidget {
                       "Send all the details game No. player Name & ID No. screen recording and wait until 24 hours. Our official Team will check if your proof is right so we are bane that account and refund your money.",
                       style: TextStyle(fontSize: 14, color: Colors.white),
                     ),
+                    const SizedBox(height: 20),
                   ],
                 ),
               ),

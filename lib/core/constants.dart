@@ -17,6 +17,10 @@ class AppConstants {
   static const List<String> gameOption = ['BGMI', 'FREEFIRE'];
   static const List<String> cameraOptions = ['TPP', 'FPP'];
   static const List<String> teamOptions = ['SOLO', 'SQUAD'];
+
+  // AdsTerra
+  static const String adUrl =
+      'https://www.highcpmgate.com/xp77pev6?key=12e806d3bd43af4e266d90e49a33d198';
 }
 
 class AppColors {

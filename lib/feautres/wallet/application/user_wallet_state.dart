@@ -14,6 +14,8 @@ class UserWalletState with _$UserWalletState {
     @Default('') String errorMessage,
     @Default([]) List<UserModel> referredList,
     QrModel? qr,
+    @Default(0) int adClicked,
+    double? lastAdReward,
   }) = _UserWalletState;
 
   const UserWalletState._();
