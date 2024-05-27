@@ -78,8 +78,10 @@ class WalletNotifier extends StateNotifier<UserWalletState> {
           final user = UserModel.fromJson(doc.data()!);
           final randomNumber = generateRandomNumber();
           final balance = doc.data()!["wallet"]["balance"] + randomNumber;
+          final adSum = doc.data()!["wallet"]["adRevenue"] + randomNumber;
           await ref.update({
             'wallet.balance': balance,
+            'wallet.adRevenue': adSum,
           }).then((value) {
             state = state.copyWith(
                 adClicked: state.adClicked + 1, lastAdReward: randomNumber);

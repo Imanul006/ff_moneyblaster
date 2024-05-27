@@ -673,6 +673,7 @@ WalletModel _$WalletModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$WalletModel {
   num get balance => throw _privateConstructorUsedError;
+  double get adRevenue => throw _privateConstructorUsedError;
   List<TransactionHistory> get history => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -687,7 +688,7 @@ abstract class $WalletModelCopyWith<$Res> {
           WalletModel value, $Res Function(WalletModel) then) =
       _$WalletModelCopyWithImpl<$Res, WalletModel>;
   @useResult
-  $Res call({num balance, List<TransactionHistory> history});
+  $Res call({num balance, double adRevenue, List<TransactionHistory> history});
 }
 
 /// @nodoc
@@ -704,6 +705,7 @@ class _$WalletModelCopyWithImpl<$Res, $Val extends WalletModel>
   @override
   $Res call({
     Object? balance = null,
+    Object? adRevenue = null,
     Object? history = null,
   }) {
     return _then(_value.copyWith(
@@ -711,6 +713,10 @@ class _$WalletModelCopyWithImpl<$Res, $Val extends WalletModel>
           ? _value.balance
           : balance // ignore: cast_nullable_to_non_nullable
               as num,
+      adRevenue: null == adRevenue
+          ? _value.adRevenue
+          : adRevenue // ignore: cast_nullable_to_non_nullable
+              as double,
       history: null == history
           ? _value.history
           : history // ignore: cast_nullable_to_non_nullable
@@ -727,7 +733,7 @@ abstract class _$$WalletModelImplCopyWith<$Res>
       __$$WalletModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({num balance, List<TransactionHistory> history});
+  $Res call({num balance, double adRevenue, List<TransactionHistory> history});
 }
 
 /// @nodoc
@@ -742,6 +748,7 @@ class __$$WalletModelImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? balance = null,
+    Object? adRevenue = null,
     Object? history = null,
   }) {
     return _then(_$WalletModelImpl(
@@ -749,6 +756,10 @@ class __$$WalletModelImplCopyWithImpl<$Res>
           ? _value.balance
           : balance // ignore: cast_nullable_to_non_nullable
               as num,
+      adRevenue: null == adRevenue
+          ? _value.adRevenue
+          : adRevenue // ignore: cast_nullable_to_non_nullable
+              as double,
       history: null == history
           ? _value._history
           : history // ignore: cast_nullable_to_non_nullable
@@ -762,7 +773,9 @@ class __$$WalletModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$WalletModelImpl with DiagnosticableTreeMixin implements _WalletModel {
   const _$WalletModelImpl(
-      {this.balance = 0, final List<TransactionHistory> history = const []})
+      {this.balance = 0,
+      this.adRevenue = 0.0,
+      final List<TransactionHistory> history = const []})
       : _history = history;
 
   factory _$WalletModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -771,6 +784,9 @@ class _$WalletModelImpl with DiagnosticableTreeMixin implements _WalletModel {
   @override
   @JsonKey()
   final num balance;
+  @override
+  @JsonKey()
+  final double adRevenue;
   final List<TransactionHistory> _history;
   @override
   @JsonKey()
@@ -782,7 +798,7 @@ class _$WalletModelImpl with DiagnosticableTreeMixin implements _WalletModel {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'WalletModel(balance: $balance, history: $history)';
+    return 'WalletModel(balance: $balance, adRevenue: $adRevenue, history: $history)';
   }
 
   @override
@@ -791,6 +807,7 @@ class _$WalletModelImpl with DiagnosticableTreeMixin implements _WalletModel {
     properties
       ..add(DiagnosticsProperty('type', 'WalletModel'))
       ..add(DiagnosticsProperty('balance', balance))
+      ..add(DiagnosticsProperty('adRevenue', adRevenue))
       ..add(DiagnosticsProperty('history', history));
   }
 
@@ -800,13 +817,15 @@ class _$WalletModelImpl with DiagnosticableTreeMixin implements _WalletModel {
         (other.runtimeType == runtimeType &&
             other is _$WalletModelImpl &&
             (identical(other.balance, balance) || other.balance == balance) &&
+            (identical(other.adRevenue, adRevenue) ||
+                other.adRevenue == adRevenue) &&
             const DeepCollectionEquality().equals(other._history, _history));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, balance, const DeepCollectionEquality().hash(_history));
+  int get hashCode => Object.hash(runtimeType, balance, adRevenue,
+      const DeepCollectionEquality().hash(_history));
 
   @JsonKey(ignore: true)
   @override
@@ -825,6 +844,7 @@ class _$WalletModelImpl with DiagnosticableTreeMixin implements _WalletModel {
 abstract class _WalletModel implements WalletModel {
   const factory _WalletModel(
       {final num balance,
+      final double adRevenue,
       final List<TransactionHistory> history}) = _$WalletModelImpl;
 
   factory _WalletModel.fromJson(Map<String, dynamic> json) =
@@ -832,6 +852,8 @@ abstract class _WalletModel implements WalletModel {
 
   @override
   num get balance;
+  @override
+  double get adRevenue;
   @override
   List<TransactionHistory> get history;
   @override

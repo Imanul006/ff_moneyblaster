@@ -60,6 +60,7 @@ Map<String, dynamic> _$$GameStatsImplToJson(_$GameStatsImpl instance) =>
 _$WalletModelImpl _$$WalletModelImplFromJson(Map<String, dynamic> json) =>
     _$WalletModelImpl(
       balance: json['balance'] as num? ?? 0,
+      adRevenue: (json['adRevenue'] as num?)?.toDouble() ?? 0.0,
       history: (json['history'] as List<dynamic>?)
               ?.map(
                   (e) => TransactionHistory.fromJson(e as Map<String, dynamic>))
@@ -70,6 +71,7 @@ _$WalletModelImpl _$$WalletModelImplFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$WalletModelImplToJson(_$WalletModelImpl instance) =>
     <String, dynamic>{
       'balance': instance.balance,
+      'adRevenue': instance.adRevenue,
       'history': instance.history,
     };
 

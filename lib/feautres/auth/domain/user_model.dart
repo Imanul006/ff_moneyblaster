@@ -48,6 +48,7 @@ class WalletModel with _$WalletModel {
   @JsonSerializable()
   const factory WalletModel({
     @Default(0) num balance,
+    @Default(0.0) double adRevenue,
     @Default([]) List<TransactionHistory> history,
   }) = _WalletModel;
 
