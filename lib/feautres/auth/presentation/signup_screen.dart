@@ -133,7 +133,7 @@ class SignupScreenState extends ConsumerState<SignupScreen> {
                 child: Column(
                   children: [
                     Expanded(
-                      flex: 2,
+                      flex: 4,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -164,7 +164,7 @@ class SignupScreenState extends ConsumerState<SignupScreen> {
                     Expanded(
                       flex: 8,
                       child: Container(
-                        height: 30.h,
+                        
                         padding: const EdgeInsets.symmetric(horizontal: 15),
                         child: ListView(
                           // physics: const NeverScrollableScrollPhysics(),

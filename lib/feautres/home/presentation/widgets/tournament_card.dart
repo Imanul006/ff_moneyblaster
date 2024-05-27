@@ -6,6 +6,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:ff_moneyblaster/core/assets.dart';
 import 'package:ff_moneyblaster/core/constants.dart';
+import 'package:ff_moneyblaster/core/utils/toast.dart';
 import 'package:ff_moneyblaster/feautres/base/shared/providers.dart';
 import 'package:ff_moneyblaster/feautres/home/domain/tournament.dart';
 import 'package:ff_moneyblaster/feautres/home/shared/provider.dart';
@@ -1212,25 +1213,40 @@ class _JoinTournamamentWidgetState
                               .contains(FirebaseAuth.instance.currentUser!.uid))
                             GestureDetector(
                               onTap: () async {
+                                if (widget.tournament.gameType?.teamOption ==
+                                    "SQUAD") {
+                                  if (playerOneId.text.isEmpty ||
+                                      playerTwoId.text.isEmpty ||
+                                      playerThreeId.text.isEmpty) {
+                                    showToastMessage('Please enter all player IDs');
+                                    return;
+                                  }
+                                }
+
                                 await notifier
                                     .drawWallet(widget.tournament.entryFee!);
-                                widget.tournament.gameType?.teamOption ==
-                                        "SQUAD"
-                                    ? await notifier.registerForTournament(
-                                        t: state.selectedTournament!,
-                                        squadPlayerIds: [
-                                            playerOneId.text,
-                                            playerTwoId.text,
-                                            playerThreeId.text,
-                                          ]).then((value) {
-                                        context.maybePop();
-                                      })
-                                    : await notifier
-                                        .registerForTournament(
-                                            t: state.selectedTournament!)
-                                        .then((value) {
-                                        context.maybePop();
-                                      });
+
+                                if (widget.tournament.gameType?.teamOption ==
+                                    "SQUAD") {
+                                  await notifier.registerForTournament(
+                                    t: state.selectedTournament!,
+                                    squadPlayerIds: [
+                                      playerOneId.text,
+                                      playerTwoId.text,
+                                      playerThreeId.text,
+                                    ],
+                                  ).then((value) {
+                                    context.maybePop();
+                                  });
+                                } else {
+                                  await notifier
+                                      .registerForTournament(
+                                    t: state.selectedTournament!,
+                                  )
+                                      .then((value) {
+                                    context.maybePop();
+                                  });
+                                }
                               },
                               child: Container(
                                 width: double.infinity,

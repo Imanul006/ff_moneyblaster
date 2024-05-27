@@ -48,7 +48,7 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                 child: Column(
                   children: [
                     Expanded(
-                      flex: 2,
+                      flex: 4,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -79,7 +79,7 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                       ),
                     ),
                     const Expanded(
-                      flex: 5,
+                      flex: 12,
                       child: SizedBox.expand(),
                     ),
                     Expanded(
@@ -119,7 +119,7 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                       ),
                     ),
                     Expanded(
-                      flex: 1,
+                      flex: 2,
                       child: GlazedButton(
                         onTap: () {
                           if (!isLoading) {
