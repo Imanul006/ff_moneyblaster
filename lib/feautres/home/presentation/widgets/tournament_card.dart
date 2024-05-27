@@ -374,8 +374,7 @@ class _TournamentCardState extends ConsumerState<TournamentCard> {
                                                                       .user
                                                                       ?.id))
                                                           ? JoinTournamamentWidget(
-                                                              bal: widget.bal
-                                                                  as int,
+                                                              bal: widget.bal,
                                                               tournament: widget
                                                                   .tournament,
                                                             )
@@ -527,10 +526,17 @@ class _TournamentCardState extends ConsumerState<TournamentCard> {
                             color: Colors.orange,
                             minHeight: 6,
                             semanticsLabel: 'asdfsdf',
-                            value: ((widget
-                                        .tournament.registeredPlayersId.length /
-                                    widget.tournament.totalPlayersAllowed!) *
-                                1),
+                            value:
+                                widget.tournament.gameType?.teamOption == 'SOLO'
+                                    ? ((widget.tournament.registeredPlayersId
+                                                .length /
+                                            widget.tournament
+                                                .totalPlayersAllowed!) *
+                                        1)
+                                    : ((widget.tournament.registeredPlayersId
+                                                .length /
+                                            12) *
+                                        1),
                             semanticsValue: widget
                                 .tournament.registeredPlayersId.length
                                 .toString(),
@@ -540,10 +546,20 @@ class _TournamentCardState extends ConsumerState<TournamentCard> {
                       SizedBox(
                         width: 2,
                       ),
-                      Container(
-                        child: Text(
-                          '${widget.tournament.registeredPlayersId.length.toString()}/${widget.tournament.totalPlayersAllowed} Slots',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                      Visibility(
+                        visible:
+                            widget.tournament.gameType?.teamOption == 'SOLO',
+                        replacement: Container(
+                          child: Text(
+                            '${widget.tournament.registeredPlayersId.length.toString()}/12 Slots',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        child: Container(
+                          child: Text(
+                            '${widget.tournament.registeredPlayersId.length.toString()}/${widget.tournament.totalPlayersAllowed} Slots',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
                         ),
                       )
                     ],
@@ -722,7 +738,7 @@ class _TournamentCardState extends ConsumerState<TournamentCard> {
 
 class JoinTournamamentWidget extends ConsumerStatefulWidget {
   final Tournament tournament;
-  final int bal;
+  final num bal;
   const JoinTournamamentWidget({
     required this.tournament,
     required this.bal,
@@ -786,6 +802,7 @@ class _JoinTournamamentWidgetState
           BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
             child: ListView(
+              // physics: NeverScrollableScrollPhysics(),
               children: [
                 Container(
                   // height: MediaQuery.of(context).size.height * 0.5,
@@ -1174,7 +1191,7 @@ class _JoinTournamamentWidgetState
                                 'You have ',
                                 style: Theme.of(context).textTheme.bodySmall,
                               ),
-                              Text('₹${widget.bal}',
+                              Text('₹${widget.bal.toStringAsFixed(2)}',
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodySmall

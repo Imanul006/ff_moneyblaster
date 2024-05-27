@@ -114,23 +114,23 @@ class AuthNotifier extends StateNotifier<AuthState> {
     return isUser;
   }
 
-  Future<void> signIn(BuildContext context,
-      {required String phone}) async {
+  Future<void> signIn(BuildContext context, {required String phone}) async {
     state = state.copyWith(isLoading: true);
     final bool isPhoneTaken = await isPhoneNumberTaken(phone.trim());
 
-      if (!isPhoneTaken) {
-        if (context.mounted) {
-          showToastMessage("Phone number not found. Please sign up first.");
-          
-          state = state.copyWith(isLoading: false);
-          return;
-        }
+    if (!isPhoneTaken) {
+      if (context.mounted) {
+        showToastMessage("Phone number not found. Please sign up first.");
+
+        state = state.copyWith(isLoading: false);
+        return;
       }
+    }
 
     try {
-      bool res = await _authRepository.signInWithPhoneNumber(phoneNumber: phone, context: context);
-   
+      bool res = await _authRepository.signInWithPhoneNumber(
+          phoneNumber: phone, context: context);
+
       state = state.copyWith(isLoading: false);
     } catch (e) {
       state = state.copyWith(isLoading: false);
@@ -153,7 +153,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
       return null;
     }
   }
-  
+
   String _generateUniqueCode() {
     var now = DateTime.now().millisecondsSinceEpoch;
 
@@ -191,8 +191,6 @@ class AuthNotifier extends StateNotifier<AuthState> {
     return newCode;
   }
 
- 
-
   Future<void> validateAndProceedSignUp(
     BuildContext context, {
     required String username,
@@ -210,7 +208,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
         if (referredBy == null) {
           if (context.mounted) {
             showToastMessage("Please enter a valid referral code.");
-           
+
             state = state.copyWith(isLoading: false);
             return;
           }
@@ -221,8 +219,9 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
       if (isUserNameTaken) {
         if (context.mounted) {
-          showToastMessage("Username already taken. Please try another username.");
-          
+          showToastMessage(
+              "Username already taken. Please try another username.");
+
           state = state.copyWith(isLoading: false);
           return;
         }
@@ -232,8 +231,9 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
       if (isPhoneTaken) {
         if (context.mounted) {
-          showToastMessage("Phone number already exists. Please try another phone number.");
-          
+          showToastMessage(
+              "Phone number already exists. Please try another phone number.");
+
           state = state.copyWith(isLoading: false);
           return;
         }
@@ -254,18 +254,21 @@ class AuthNotifier extends StateNotifier<AuthState> {
         'referralCode': myReferralCode,
       };
 
-      final result = await _authRepository.signUpWithPhoneNumber(
+      // state = state.copyWith(isLoading: true);
+
+      final result = await _authRepository
+          .signUpWithPhoneNumber(
         context: context,
         username: username,
-        
         phoneNumber: phoneNumber,
-       
-      );
+      )
+          .then((value) {
+        state = state.copyWith(isLoading: false);
+      });
 
       // if (result) {
       //   voidCallback?.call();
       // } else {}
-      state = state.copyWith(isLoading: false);
     } catch (e) {
       state = state.copyWith(isLoading: false);
       rethrow;
@@ -273,16 +276,18 @@ class AuthNotifier extends StateNotifier<AuthState> {
   }
 
   Future<void> createUser(BuildContext context, {required String uid}) async {
+    state = state.copyWith(isLoading: true);
     signupData.addAll({'id': uid});
     DocumentReference doc = _firestore.collection('appusers').doc(uid);
     DocumentSnapshot docSnapshot = await doc.get();
-    if(!docSnapshot.exists) {
-    await doc.set(signupData).then((value) async => {
-      await context.router.replaceAll([const LoadingScreen()]),
-    });} else {
+    state = state.copyWith(isLoading: false);
+    if (!docSnapshot.exists) {
+      await doc.set(signupData).then((value) async => {
+            await context.router.replaceAll([const LoadingScreen()]),
+          });
+    } else {
       await context.router.replaceAll([const LoadingScreen()]);
     }
-    
   }
 
   Future<bool> isUsernameTaken(String username) async {

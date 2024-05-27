@@ -116,7 +116,7 @@ class SignupScreenState extends ConsumerState<SignupScreen> {
     final isLoading =
         ref.watch(authProvider.select((state) => state.isLoading));
     final notifier = ref.read(authProvider.notifier);
-    final state = ref.read(authProvider);
+    final state = ref.watch(authProvider);
     return SafeArea(
       top: false,
       left: false,
@@ -218,7 +218,7 @@ class SignupScreenState extends ConsumerState<SignupScreen> {
                             //     hintText: "Enter OTP",
                             //     controller: _otpController,
                             //   ),
-                            // ),    
+                            // ),
                             // LoginTextField(
                             //   title: "Create Password",
                             //   hintText: "Enter password",
@@ -290,7 +290,6 @@ class SignupScreenState extends ConsumerState<SignupScreen> {
                         onTap: () {
                           if (!isLoading) {
                             _handleSignup(context);
-                            
                           }
                         },
                         child: isLoading
@@ -339,7 +338,6 @@ class SignupScreenState extends ConsumerState<SignupScreen> {
       ),
     );
   }
-
 
   // void _openOtpBottomSheet(BuildContext context) {
   //   showModalBottomSheet(

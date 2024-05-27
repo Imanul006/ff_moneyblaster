@@ -14,13 +14,12 @@ import 'package:ff_moneyblaster/widgets/app_text_field.dart';
 
 class SubmitOtpPopup extends ConsumerStatefulWidget {
   final String verificationId;
-  
+
   final String phoneNumber;
 
   const SubmitOtpPopup({
     super.key,
     required this.verificationId,
-   
     required this.phoneNumber,
   });
 
@@ -33,8 +32,6 @@ class _SubmitOtpPopupState extends ConsumerState<SubmitOtpPopup> {
   Timer? _timer;
   int _start = 60;
   bool _isResendAllowed = false;
-
-  
 
   @override
   void initState() {
@@ -68,7 +65,7 @@ class _SubmitOtpPopupState extends ConsumerState<SubmitOtpPopup> {
   @override
   Widget build(BuildContext context) {
     final notifier = ref.read(authProvider.notifier);
-    final state = ref.read(authProvider);
+    final state = ref.watch(authProvider);
     return Dialog(
       backgroundColor: Colors.transparent,
       child: Container(
@@ -153,18 +150,14 @@ class _SubmitOtpPopupState extends ConsumerState<SubmitOtpPopup> {
                       credential,
                     );
 
-                    await notifier.createUser(context, uid: userCredential.user!.uid);
-
-                    
-                 
+                    await notifier.createUser(context,
+                        uid: userCredential.user!.uid);
                   } catch (e) {
                     showToastMessage('Failed to verify OTP. Please try again.');
                     print('Error: $e');
                   }
                 } else {
                   showToastMessage('Please enter OTP');
-                 
-                 
                 }
               },
               child: Container(
@@ -182,12 +175,21 @@ class _SubmitOtpPopupState extends ConsumerState<SubmitOtpPopup> {
                   ),
                 ),
                 child: Center(
-                  child: Text(
-                    'Submit',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          fontWeight: FontWeight.w700,
-                          color: Colors.white,
-                        ),
+                  child: Visibility(
+                    visible: !state.isLoading,
+                    replacement: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                      ),
+                    ),
+                    child: Text(
+                      'Submit',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white,
+                          ),
+                    ),
                   ),
                 ),
               ),
@@ -212,7 +214,6 @@ void showSubmitOtpPopup(
         child: SubmitOtpPopup(
           verificationId: verificationId,
           phoneNumber: phoneNumber,
-   
         ),
       );
     },
