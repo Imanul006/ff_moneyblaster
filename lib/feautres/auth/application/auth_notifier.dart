@@ -45,28 +45,28 @@ class AuthNotifier extends StateNotifier<AuthState> {
     state = state.copyWith(isLoading: false);
   }
 
-  Future<void> calculateAndUpdateTotalEarning() async {
-    User? currentUser = _auth.currentUser;
-    if (currentUser != null) {
-      final userDocRef = _firestore.collection('appusers').doc(currentUser.uid);
-      DocumentSnapshot userDoc = await userDocRef.get();
-      if (userDoc.exists) {
-        UserModel user =
-            UserModel.fromJson(userDoc.data() as Map<String, dynamic>);
+  // Future<void> calculateAndUpdateTotalEarning() async {
+  //   User? currentUser = _auth.currentUser;
+  //   if (currentUser != null) {
+  //     final userDocRef = _firestore.collection('appusers').doc(currentUser.uid);
+  //     DocumentSnapshot userDoc = await userDocRef.get();
+  //     if (userDoc.exists) {
+  //       UserModel user =
+  //           UserModel.fromJson(userDoc.data() as Map<String, dynamic>);
 
-        double totalEarning = 0;
+  //       double totalEarning = 0;
 
-        for (var element in user.wallet.history) {
-          if (element.transaction > 0 &&
-              element.transactionStatus != "success") {
-            totalEarning += element.transaction;
-          }
-        }
+  //       // for (var element in user.wallet.history) {
+  //       //   if (element.transaction > 0 &&
+  //       //       element.transactionStatus != "success") {
+  //       //     totalEarning += element.transaction;
+  //       //   }
+  //       // }
 
-        await userDocRef.update({'gameStats.totalWinAmount': totalEarning});
-      }
-    }
-  }
+  //       await userDocRef.update({'gameStats.totalWinAmount': totalEarning});
+  //     }
+  //   }
+  // }
 
   Future<bool> isCurrentUserVerified(BuildContext context,
       {required Timer timer}) async {
@@ -140,7 +140,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
   Future<String?> findUserIdByReferralCode(String referralCode) async {
     QuerySnapshot querySnapshot = await _firestore
-        .collection('usernames')
+        .collection('appusers')
         .where('referralCode', isEqualTo: referralCode.trim())
         .get();
 
@@ -148,7 +148,8 @@ class AuthNotifier extends StateNotifier<AuthState> {
     if (querySnapshot.docs.isNotEmpty) {
       Map<String, dynamic> data =
           querySnapshot.docs.first.data() as Map<String, dynamic>;
-      return data['userId'] as String?;
+      return data['id'] as String;
+      
     } else {
       return null;
     }
@@ -197,23 +198,11 @@ class AuthNotifier extends StateNotifier<AuthState> {
     required String gameId,
     required String phoneNumber,
     required String password,
-    required String referralCode,
+    required String referredBy,
     VoidCallback? voidCallback,
   }) async {
     try {
       state = state.copyWith(isLoading: true);
-      String? referredBy;
-      if (referralCode.trim().isNotEmpty) {
-        referredBy = await findUserIdByReferralCode(referralCode);
-        if (referredBy == null) {
-          if (context.mounted) {
-            showToastMessage("Please enter a valid referral code.");
-
-            state = state.copyWith(isLoading: false);
-            return;
-          }
-        }
-      }
 
       final bool isUserNameTaken = await isUsernameTaken(username.trim());
 

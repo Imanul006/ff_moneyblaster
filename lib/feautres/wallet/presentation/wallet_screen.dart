@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:auto_route/auto_route.dart';
@@ -16,6 +17,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
 @RoutePage(name: 'WalletScreen')
@@ -27,6 +29,8 @@ class WalletScreen extends ConsumerStatefulWidget {
 }
 
 class _WalletScreenState extends ConsumerState<WalletScreen> {
+  int adClicked = 0;
+  final int maxTapsPerDay = 15;
   @override
   void dispose() {
     // final provider = ref.read(walletProvider.notifier);
@@ -39,8 +43,29 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       final notifier = ref.read(walletProvider.notifier);
       await notifier.fetchUserDetails();
+      _loadAdClickData();
     });
     super.initState();
+  }
+
+  Future<void> _loadAdClickData() async {
+    final prefs = await SharedPreferences.getInstance();
+    final today = DateTime.now().toIso8601String().split('T').first;
+    final savedDate = prefs.getString('adClickDate') ?? today;
+    if (savedDate == today) {
+      adClicked = prefs.getInt('adClickCount') ?? 0;
+    } else {
+      prefs.setString('adClickDate', today);
+      prefs.setInt('adClickCount', 0);
+    }
+  }
+
+  Future<void> _incrementAdClick() async {
+    final prefs = await SharedPreferences.getInstance();
+    final today = DateTime.now().toIso8601String().split('T').first;
+    adClicked += 1;
+    prefs.setString('adClickDate', today);
+    prefs.setInt('adClickCount', adClicked);
   }
 
   @override
@@ -145,15 +170,20 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
                                     GestureDetector(
                                       onTap: () async {
                                         if (!state.isLoading) {
-                                          if (state.adClicked < 10) {
+                                          if (adClicked <
+                                              (maxTapsPerDay +
+                                                  Random().nextInt(6))) {
                                             // sfsfs
                                             await provider.launchInWebView(
                                                 Uri.parse(AppConstants.adUrl));
+                                            await _incrementAdClick();
                                             showToastMessage(
                                                 'You Won Ad Reward ${state.lastAdReward ?? 0} !');
                                           } else {
                                             showToastMessage(
-                                                'Warning ! Do not Spam');
+                                                'Ad Limit Reached !');
+                                            // showToastMessage(
+                                            //     'try after some time !');
                                           }
                                         }
                                       },

@@ -135,7 +135,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           children: [
             Container(
               width: double.infinity,
-              // height: MediaQuery.sizeOf(context).height * 0.22,
+              height: MediaQuery.sizeOf(context).height * 0.23,
               decoration: BoxDecoration(
                 image: DecorationImage(
                   scale: 2.1,
@@ -175,7 +175,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   // const Filter(),
                   SingleChildScrollView(
                     child: SizedBox(
-                      height: 46.h,
+                      height: 58.h,
                       child: homeState.isLoading
                           ? const Center(child: CircularProgressIndicator())
                           : homeState.errorMessage.isNotEmpty

@@ -2,17 +2,15 @@ import 'dart:io';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:ff_moneyblaster/core/constants.dart';
+import 'package:ff_moneyblaster/core/utils/toast.dart';
 import 'package:ff_moneyblaster/core/widgets/animated_background.dart';
-import 'package:ff_moneyblaster/feautres/auth/presentation/submit_otp_bottom_sheeet.dart';
 import 'package:ff_moneyblaster/feautres/auth/shared/provider.dart';
-import 'package:ff_moneyblaster/feautres/profile/presentation/profile_screen.dart';
 import 'package:ff_moneyblaster/routes/app_router.gr.dart';
 import 'package:ff_moneyblaster/widgets/glazed_button.dart';
 import 'package:ff_moneyblaster/widgets/login_text_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
@@ -164,7 +162,6 @@ class SignupScreenState extends ConsumerState<SignupScreen> {
                     Expanded(
                       flex: 8,
                       child: Container(
-                        
                         padding: const EdgeInsets.symmetric(horizontal: 15),
                         child: ListView(
                           // physics: const NeverScrollableScrollPhysics(),
@@ -287,9 +284,30 @@ class SignupScreenState extends ConsumerState<SignupScreen> {
                     SizedBox(
                       height: 70,
                       child: GlazedButtonFilled(
-                        onTap: () {
+                        onTap: () async {
                           if (!isLoading) {
-                            _handleSignup(context);
+                            if (_referralCodeController.text.isNotEmpty) {
+                              final result =
+                                  await notifier.findUserIdByReferralCode(
+                                      _referralCodeController.text
+                                          .trim()
+                                          .toUpperCase());
+                              if (result == null || result.toString().isEmpty) {
+                                showToastMessage('Invalid Referral Code');
+                                showToastMessage(
+                                    'Please Verify code Before Continuing');
+                              } else {
+                                showToastMessage(
+                                    'SignUp in Process. Wait for OTP');
+                                _handleSignup(
+                                    context: context,
+                                    referredById: result.toString());
+                              }
+                            } else {
+                              showToastMessage(
+                                  'SignUp in Process. Wait for OTP');
+                              _handleSignup(context: context);
+                            }
                           }
                         },
                         child: isLoading
@@ -355,7 +373,8 @@ class SignupScreenState extends ConsumerState<SignupScreen> {
     super.dispose();
   }
 
-  void _handleSignup(BuildContext context) async {
+  void _handleSignup(
+      {required BuildContext context, String? referredById}) async {
     try {
       final notifier = ref.read(authProvider.notifier);
       await notifier.validateAndProceedSignUp(
@@ -364,7 +383,7 @@ class SignupScreenState extends ConsumerState<SignupScreen> {
         gameId: _gameIdController.text,
         phoneNumber: _phoneNumberController.text,
         password: _passwordController.text,
-        referralCode: _referralCodeController.text,
+        referredBy: referredById ?? '',
         // voidCallback: () async {
         //   await context.router.replaceAll([const LoadingScreen()]);
         // },

@@ -94,8 +94,8 @@ class _DepositBottomSheetState extends ConsumerState<DepositBottomSheet> {
           height: 24,
         ),
         Container(
-          // height: MediaQuery.of(context).size.width * 0.5,
-          // width: MediaQuery.of(context).size.width * 0.5,
+          height: MediaQuery.of(context).size.width * 0.6,
+          width: MediaQuery.of(context).size.width * 0.6,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(20),

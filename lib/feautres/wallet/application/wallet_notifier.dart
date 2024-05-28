@@ -59,7 +59,7 @@ class WalletNotifier extends StateNotifier<UserWalletState> {
     double randomNumber = random.nextDouble();
 
     // Scale and shift the number to the desired range [0.25, 0.50]
-    double scaledNumber = 0.05 + (0.25 - 0.05) * randomNumber;
+    double scaledNumber = 0.01 + (0.15 - 0.01) * randomNumber;
 
     // Convert the number to a string with 2 decimal places and then back to a double
     double formattedNumber = double.parse(scaledNumber.toStringAsFixed(2));
