@@ -39,6 +39,7 @@ _$TournamentImpl _$$TournamentImplFromJson(Map<String, dynamic> json) =>
           (json['status'] as List<dynamic>?)?.map((e) => e as String).toList(),
       totalPlayersAllowed: (json['totalPlayersAllowed'] as num?)?.toInt(),
       tournamentName: json['tournamentName'] as String?,
+      bgImage: json['bgImage'] as String?,
       registeredPlayersId: (json['registeredPlayersId'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
@@ -74,6 +75,7 @@ Map<String, dynamic> _$$TournamentImplToJson(_$TournamentImpl instance) =>
       'status': instance.status,
       'totalPlayersAllowed': instance.totalPlayersAllowed,
       'tournamentName': instance.tournamentName,
+      'bgImage': instance.bgImage,
       'registeredPlayersId': instance.registeredPlayersId,
       'lobby': instance.lobby,
       'lobbyPassword': instance.lobbyPassword,

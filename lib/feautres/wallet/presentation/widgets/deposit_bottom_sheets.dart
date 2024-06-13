@@ -11,6 +11,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:sizer/sizer.dart';
 
 class DepositBottomSheet extends ConsumerStatefulWidget {
   const DepositBottomSheet({
@@ -43,23 +44,39 @@ class _DepositBottomSheetState extends ConsumerState<DepositBottomSheet> {
     final state = ref.watch(walletProvider);
     final FirebaseAuth auth = FirebaseAuth.instance;
     final uid = auth.currentUser!.uid;
-    return BackdropFilter(
-      filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
-      child: ListView(
-        children: [
-          Container(
-            width: MediaQuery.of(context).size.width,
-            padding: const EdgeInsets.all(20),
-            decoration: customDecoration.copyWith(
-                color: AppColors.popUpColor,
-                borderRadius: BorderRadius.circular(20)),
-            child: _isForm
-                ? depositForm(
-                    context,
-                  )
-                : depositQR(context),
-          ),
-        ],
+    final isKeyboard = MediaQuery.of(context).viewInsets.bottom > 0.0;
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
+      backgroundColor: Colors.transparent,
+      body: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
+        child: Builder(builder: (context) {
+          return SingleChildScrollView(
+            child: SafeArea(
+              child: Column(
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 76.h,
+                    padding: const EdgeInsets.all(20),
+                    decoration: customDecoration.copyWith(
+                        color: AppColors.popUpColor,
+                        borderRadius: BorderRadius.circular(20)),
+                    child: _isForm
+                        ? depositForm(
+                            context,
+                          )
+                        : depositQR(context),
+                  ),
+                  if (isKeyboard)
+                    SizedBox(
+                      height: 120,
+                    )
+                ],
+              ),
+            ),
+          );
+        }),
       ),
     );
   }
@@ -70,6 +87,8 @@ class _DepositBottomSheetState extends ConsumerState<DepositBottomSheet> {
         "https://via.placeholder.com/500x500.png/a59090/000000?Text=500x500";
     const String upiId = "9876543210@okaxis";
     return Column(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
         Row(
           mainAxisSize: MainAxisSize.max,
@@ -90,12 +109,10 @@ class _DepositBottomSheetState extends ConsumerState<DepositBottomSheet> {
             ),
           ],
         ),
-        const SizedBox(
-          height: 24,
-        ),
+        Spacer(),
         Container(
-          height: MediaQuery.of(context).size.width * 0.6,
-          width: MediaQuery.of(context).size.width * 0.6,
+          height: MediaQuery.of(context).size.width * 0.5,
+          width: MediaQuery.of(context).size.width * 0.5,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(20),
@@ -193,7 +210,7 @@ class _DepositBottomSheetState extends ConsumerState<DepositBottomSheet> {
           ),
         ),
         const SizedBox(
-          height: 40,
+          height: 20,
         ),
       ],
     );
@@ -204,7 +221,8 @@ class _DepositBottomSheetState extends ConsumerState<DepositBottomSheet> {
     final state = ref.read(walletProvider);
 
     return Column(
-      mainAxisSize: MainAxisSize.min,
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
@@ -226,45 +244,30 @@ class _DepositBottomSheetState extends ConsumerState<DepositBottomSheet> {
             ),
           ],
         ),
-        const SizedBox(
-          height: 50,
-        ),
-        AppTextField(
-          hintText: "Transaction ID",
-          controller: _transactionIdController,
-          title: "Enter Transaction ID",
-        ),
-        const SizedBox(
-          height: 8,
-        ),
-        AppTextField(
-          hintText: "Deposit Amount",
-          controller: _amountController,
-          keyboardType: TextInputType.number,
-          title: "Enter Deposit Amount",
-        ),
-        const SizedBox(
-          height: 22,
-        ),
+        // const Spacer(),
         Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            AppTextField(
+              hintText: "Transaction ID",
+              controller: _transactionIdController,
+              title: "Enter Transaction ID",
+            ),
             const SizedBox(
-              height: 12,
+              height: 8,
+            ),
+            AppTextField(
+              hintText: "Deposit Amount",
+              controller: _amountController,
+              keyboardType: TextInputType.number,
+              title: "Enter Deposit Amount",
+            ),
+            const SizedBox(
+              height: 30,
             ),
             GestureDetector(
               onTap: () async {
-                if (_transactionIdController.text.isNotEmpty &&
-                    _amountController.text.isNotEmpty) {
-                  await notifier.requestDeposit(
-                    context,
-                    transactionId:
-                        _transactionIdController.text.toLowerCase().trim(),
-                    amount: double.parse(_amountController.text),
-                  );
-                  await notifier.fetchUserDetails();
-                } else {
+                if (_transactionIdController.text.isEmpty &&
+                    _amountController.text.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text(
@@ -273,6 +276,23 @@ class _DepositBottomSheetState extends ConsumerState<DepositBottomSheet> {
                       duration: Duration(seconds: 3),
                     ),
                   );
+                } else if (int.parse(_amountController.text) < 20) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text(
+                        'Deposit minumim of Rs 20',
+                      ),
+                      duration: Duration(seconds: 3),
+                    ),
+                  );
+                } else {
+                  await notifier.requestDeposit(
+                    context,
+                    transactionId:
+                        _transactionIdController.text.toLowerCase().trim(),
+                    amount: double.parse(_amountController.text),
+                  );
+                  await notifier.fetchUserDetails();
                 }
                 if (context.mounted) {
                   context.maybePop();
@@ -304,8 +324,11 @@ class _DepositBottomSheetState extends ConsumerState<DepositBottomSheet> {
                 ),
               ),
             ),
+            SizedBox(
+              height: 20,
+            )
           ],
-        )
+        ),
       ],
     );
   }

@@ -14,7 +14,9 @@ import 'package:ff_moneyblaster/feautres/wallet/shared/provider.dart';
 import 'package:ff_moneyblaster/routes/app_router.gr.dart';
 import 'package:ff_moneyblaster/theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
@@ -105,6 +107,17 @@ class _TournamentCardState extends ConsumerState<TournamentCard> {
     final FirebaseAuth auth = FirebaseAuth.instance;
     final walletState = ref.read(walletProvider);
     final uid = auth.currentUser!.uid;
+    final kGameOption = widget.tournament.gameOption;
+    final kTotalPlayer = widget.tournament.registeredPlayersId.length;
+    final kGameType = widget.tournament.gameType!.teamOption;
+
+    final roomNotFull = kGameType == 'SOLO'
+        ? (kTotalPlayer < widget.tournament.totalPlayersAllowed!)
+        : kGameType == 'TDM'
+            ? (kTotalPlayer < 2)
+            : (kGameType == 'SQUAD' && kGameOption == 'BGMI')
+                ? (kTotalPlayer < 24)
+                : (kTotalPlayer < 12);
     return Padding(
       padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
       child: Container(
@@ -159,13 +172,21 @@ class _TournamentCardState extends ConsumerState<TournamentCard> {
                     opacity: 0.6,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8),
-                      child: Image.asset(
-                        widget.tournament.gameOption == "BGMI"
-                            ? 'assets/images/home_card_bg_pubg.png'
-                            : 'assets/images/home_card_bg_ff.png',
-                        width: 300,
-                        height: 200,
-                        fit: BoxFit.cover,
+                      child: Visibility(
+                        visible: (widget.tournament.bgImage == null ||
+                            widget.tournament.bgImage.toString().isEmpty),
+                        replacement: Image.network(
+                          widget.tournament.bgImage!,
+                          fit: BoxFit.cover,
+                        ),
+                        child: Image.asset(
+                          widget.tournament.gameOption == "BGMI"
+                              ? 'assets/images/home_card_bg_pubg.png'
+                              : 'assets/images/home_card_bg_ff.png',
+                          width: 300,
+                          height: 200,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                   ),
@@ -255,7 +276,9 @@ class _TournamentCardState extends ConsumerState<TournamentCard> {
                                   padding:
                                       const EdgeInsets.symmetric(horizontal: 4),
                                   child: InkWell(
-                                    onTap: () {},
+                                    onTap: () {
+                                      _launchURL(widget.tournament.liveLink!);
+                                    },
                                     child: buildButton(
                                         context,
                                         'Watch Live',
@@ -333,89 +356,98 @@ class _TournamentCardState extends ConsumerState<TournamentCard> {
                                           ),
                                         )
                                       : const SizedBox.shrink(),
-                                  Expanded(
-                                    child: GestureDetector(
-                                      onTap: () async {
-                                        if (walletState.user?.gameStats.game ==
-                                            widget.tournament.gameOption) {
-                                          await notifier.selectTournament(
-                                              widget.tournament);
-                                          final notifierWallet =
-                                              ref.read(walletProvider.notifier);
-                                          await notifierWallet
-                                              .fetchUserDetails();
-                                          walletState.isLoading == false
-                                              ? showModalBottomSheet<void>(
-                                                  backgroundColor:
-                                                      AppColors.glassColor,
-                                                  barrierColor:
-                                                      const Color.fromRGBO(
-                                                          7, 7, 7, 0.7),
-                                                  context: context,
-                                                  builder:
-                                                      (BuildContext context) {
-                                                    return FractionallySizedBox(
-                                                      heightFactor: widget
-                                                                  .tournament
-                                                                  .gameType
-                                                                  ?.teamOption ==
-                                                              "SQUAD"
-                                                          ? 1.15
-                                                          : 0.82,
-                                                      child: (walletState
-                                                                      .user!
-                                                                      .wallet
-                                                                      .balance >
-                                                                  widget
-                                                                      .tournament
-                                                                      .entryFee! ||
-                                                              widget.tournament
-                                                                  .registeredPlayersId
-                                                                  .contains(walletState
-                                                                      .user
-                                                                      ?.id))
-                                                          ? JoinTournamamentWidget(
-                                                              bal: widget.bal,
-                                                              tournament: widget
-                                                                  .tournament,
-                                                            )
-                                                          : DepositBeforeJoining(
-                                                              balance:
-                                                                  walletState
-                                                                      .user!
-                                                                      .wallet
-                                                                      .balance,
-                                                              tournament: widget
-                                                                  .tournament),
-                                                    );
-                                                  },
-                                                )
-                                              : const CircularProgressIndicator();
-                                        } else {
-                                          Fluttertoast.showToast(
-                                                  msg:
-                                                      'You can Join ${walletState.user?.gameStats.game} games only')
-                                              .then((value) =>
-                                                  Fluttertoast.showToast(
-                                                      msg:
-                                                          'Register new account with ${widget.tournament.gameOption} Game'));
-                                        }
-                                      },
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 4),
-                                        child: buildButton(
-                                            context,
-                                            widget.tournament
-                                                    .registeredPlayersId
-                                                    .contains(uid)
-                                                ? 'Get Details'
-                                                : 'Join',
-                                            const Color(0xFF11BDBD),
-                                            const Color(0xFF006262)),
+                                  if (roomNotFull)
+                                    Expanded(
+                                      child: GestureDetector(
+                                        onTap: () async {
+                                          if (walletState
+                                                  .user?.gameStats.game ==
+                                              widget.tournament.gameOption) {
+                                            await notifier.selectTournament(
+                                                widget.tournament);
+                                            final notifierWallet = ref
+                                                .read(walletProvider.notifier);
+                                            await notifierWallet
+                                                .fetchUserDetails();
+                                            walletState.isLoading == false
+                                                ? showModalBottomSheet<void>(
+                                                    backgroundColor:
+                                                        AppColors.glassColor,
+                                                    barrierColor:
+                                                        const Color.fromRGBO(
+                                                            7, 7, 7, 0.7),
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return FractionallySizedBox(
+                                                        heightFactor: (widget
+                                                                        .tournament
+                                                                        .gameType
+                                                                        ?.teamOption ==
+                                                                    "SQUAD" ||
+                                                                widget
+                                                                        .tournament
+                                                                        .gameType
+                                                                        ?.teamOption ==
+                                                                    "TDM")
+                                                            ? 1.15
+                                                            : 0.82,
+                                                        child: (walletState
+                                                                        .user!
+                                                                        .wallet
+                                                                        .balance >=
+                                                                    widget
+                                                                        .tournament
+                                                                        .entryFee! ||
+                                                                widget
+                                                                    .tournament
+                                                                    .registeredPlayersId
+                                                                    .contains(
+                                                                        walletState
+                                                                            .user
+                                                                            ?.id))
+                                                            ? JoinTournamamentWidget(
+                                                                bal: widget.bal,
+                                                                tournament: widget
+                                                                    .tournament,
+                                                              )
+                                                            : DepositBeforeJoining(
+                                                                balance:
+                                                                    walletState
+                                                                        .user!
+                                                                        .wallet
+                                                                        .balance,
+                                                                tournament: widget
+                                                                    .tournament),
+                                                      );
+                                                    },
+                                                  )
+                                                : const CircularProgressIndicator();
+                                          } else {
+                                            Fluttertoast.showToast(
+                                                    msg:
+                                                        'You can Join ${walletState.user?.gameStats.game} games only')
+                                                .then((value) =>
+                                                    Fluttertoast.showToast(
+                                                        msg:
+                                                            'Register new account with ${widget.tournament.gameOption} Game'));
+                                          }
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 4),
+                                          child: buildButton(
+                                              context,
+                                              widget.tournament
+                                                      .registeredPlayersId
+                                                      .contains(uid)
+                                                  ? 'Get Details'
+                                                  : 'Join',
+                                              const Color(0xFF11BDBD),
+                                              const Color(0xFF006262)),
+                                        ),
                                       ),
                                     ),
-                                  ),
                                 ],
                               ),
                   ),
@@ -426,41 +458,45 @@ class _TournamentCardState extends ConsumerState<TournamentCard> {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        decoration: const BoxDecoration(),
-                        child: Padding(
-                          padding:
-                              const EdgeInsetsDirectional.fromSTEB(8, 4, 4, 4),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Per Kill: ',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium
-                                    ?.copyWith(
-                                      fontFamily: 'Readex Pro',
-                                      color: Colors.white,
-                                      fontSize: 10,
-                                      letterSpacing: 0,
-                                    ),
-                              ),
-                              Text(
-                                '₹${widget.tournament.perKill}',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium
-                                    ?.copyWith(
-                                      fontFamily: 'Readex Pro',
-                                      color: Colors.white,
-                                      fontSize: 10,
-                                      letterSpacing: 0,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                              ),
-                            ],
+                      Visibility(
+                        visible: (widget.tournament.perKill != null &&
+                            widget.tournament.perKill != 0),
+                        child: Container(
+                          decoration: const BoxDecoration(),
+                          child: Padding(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                8, 4, 4, 4),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Per Kill: ',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.copyWith(
+                                        fontFamily: 'Readex Pro',
+                                        color: Colors.white,
+                                        fontSize: 10,
+                                        letterSpacing: 0,
+                                      ),
+                                ),
+                                Text(
+                                  '₹${widget.tournament.perKill}',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.copyWith(
+                                        fontFamily: 'Readex Pro',
+                                        color: Colors.white,
+                                        fontSize: 10,
+                                        letterSpacing: 0,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -534,10 +570,20 @@ class _TournamentCardState extends ConsumerState<TournamentCard> {
                                             widget.tournament
                                                 .totalPlayersAllowed!) *
                                         1)
-                                    : ((widget.tournament.registeredPlayersId
-                                                .length /
-                                            12) *
-                                        1),
+                                    : widget.tournament.gameType?.teamOption ==
+                                            'SQUAD'
+                                        ? ((widget
+                                                    .tournament
+                                                    .registeredPlayersId
+                                                    .length /
+                                                12) *
+                                            1)
+                                        : ((widget
+                                                    .tournament
+                                                    .registeredPlayersId
+                                                    .length /
+                                                2) *
+                                            1),
                             semanticsValue: widget
                                 .tournament.registeredPlayersId.length
                                 .toString(),
@@ -552,7 +598,7 @@ class _TournamentCardState extends ConsumerState<TournamentCard> {
                             widget.tournament.gameType?.teamOption == 'SOLO',
                         replacement: Container(
                           child: Text(
-                            '${widget.tournament.registeredPlayersId.length.toString()}/12 Slots',
+                            '${widget.tournament.registeredPlayersId.length.toString()}/${widget.tournament.gameType?.teamOption == 'TDM' ? '2' : '12'} Slots',
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ),
@@ -806,7 +852,9 @@ class _JoinTournamamentWidgetState
               // physics: NeverScrollableScrollPhysics(),
               children: [
                 Container(
-                  // height: MediaQuery.of(context).size.height * 0.5,
+                  height: widget.tournament.gameType?.teamOption == 'SOLO'
+                      ? MediaQuery.of(context).size.height * 0.5
+                      : MediaQuery.of(context).size.height * 0.6,
                   padding: const EdgeInsets.all(20),
                   decoration: customDecoration.copyWith(
                       color: AppColors.popUpColor,
@@ -863,25 +911,27 @@ class _JoinTournamamentWidgetState
                               ),
                             ],
                           ),
-                          Container(
-                            width: 1,
-                            height: 50,
-                            color: AppColors.glassColor,
-                          ),
-                          Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Per Kill',
-                                style: Theme.of(context).textTheme.bodyMedium,
-                              ),
-                              Text(
-                                '₹${widget.tournament.perKill}',
-                                style: Theme.of(context).textTheme.bodyLarge,
-                              ),
-                            ],
-                          ),
+                          if (widget.tournament.perKill != null) ...[
+                            Container(
+                              width: 1,
+                              height: 50,
+                              color: AppColors.glassColor,
+                            ),
+                            Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Per Kill',
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                ),
+                                Text(
+                                  '₹${widget.tournament.perKill}',
+                                  style: Theme.of(context).textTheme.bodyLarge,
+                                ),
+                              ],
+                            ),
+                          ],
                           Container(
                             width: 1,
                             height: 50,
@@ -910,33 +960,38 @@ class _JoinTournamamentWidgetState
                       Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Container(
-                            // width: 66,
-                            // height: 22,
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 4),
-                            margin: const EdgeInsets.only(
-                              right: 8,
-                            ),
-                            decoration: BoxDecoration(
-                              color: const Color(0x68FFFFFF),
-                              borderRadius: BorderRadius.circular(35),
-                              shape: BoxShape.rectangle,
-                            ),
-                            alignment: const AlignmentDirectional(0, 0),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  widget.tournament.gameType?.gameMap ?? "",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall
-                                      ?.copyWith(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w700),
-                                ),
-                              ],
+                          Visibility(
+                            visible: widget.tournament.gameType?.gameMap !=
+                                    null &&
+                                widget.tournament.gameType!.gameMap!.isNotEmpty,
+                            child: Container(
+                              // width: 66,
+                              // height: 22,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 4),
+                              margin: const EdgeInsets.only(
+                                right: 8,
+                              ),
+                              decoration: BoxDecoration(
+                                color: const Color(0x68FFFFFF),
+                                borderRadius: BorderRadius.circular(35),
+                                shape: BoxShape.rectangle,
+                              ),
+                              alignment: const AlignmentDirectional(0, 0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    widget.tournament.gameType?.gameMap ?? "",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall
+                                        ?.copyWith(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w700),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                           Container(
@@ -1098,8 +1153,8 @@ class _JoinTournamamentWidgetState
                         height: 32,
                       ),
                       // // player Id list details
-                      if (widget.tournament.gameType?.teamOption == 'SQUAD' &&
-                          !widget.tournament.registeredPlayersId.contains(uid))
+                      if ((widget.tournament.gameType?.teamOption == 'SQUAD' ||
+                          widget.tournament.gameType?.teamOption == "TDM"))
                         Column(
                           children: [
                             Container(
@@ -1179,100 +1234,102 @@ class _JoinTournamamentWidgetState
                             )
                           ],
                         ),
+                      Spacer(),
                       // proceed
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                      Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'You have ',
-                                style: Theme.of(context).textTheme.bodySmall,
-                              ),
-                              Text('₹${widget.bal.toStringAsFixed(2)}',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall
-                                      ?.copyWith(
-                                        fontWeight: FontWeight.w700,
-                                        color: AppColors.blue,
-                                      )),
-                              Text(
-                                ' in your wallet',
-                                style: Theme.of(context).textTheme.bodySmall,
-                              ),
-                            ],
+                          Text(
+                            'You have ',
+                            style: Theme.of(context).textTheme.bodySmall,
                           ),
-                          const SizedBox(
-                            height: 12,
+                          Text('₹${widget.bal.toStringAsFixed(2)}',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                    color: AppColors.blue,
+                                  )),
+                          Text(
+                            ' in your wallet',
+                            style: Theme.of(context).textTheme.bodySmall,
                           ),
-                          if (!widget.tournament.registeredPlayersId
-                              .contains(FirebaseAuth.instance.currentUser!.uid))
-                            GestureDetector(
-                              onTap: () async {
-                                if (widget.tournament.gameType?.teamOption ==
-                                    "SQUAD") {
-                                  if (playerOneId.text.isEmpty ||
-                                      playerTwoId.text.isEmpty ||
-                                      playerThreeId.text.isEmpty) {
-                                    showToastMessage('Please enter all player IDs');
-                                    return;
-                                  }
-                                }
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      if (!widget.tournament.registeredPlayersId
+                          .contains(FirebaseAuth.instance.currentUser!.uid))
+                        GestureDetector(
+                          onTap: () async {
+                            if (widget.tournament.gameType?.teamOption ==
+                                    "SQUAD" ||
+                                widget.tournament.gameType?.teamOption ==
+                                    "TDM") {
+                              if (playerOneId.text.isEmpty ||
+                                  playerTwoId.text.isEmpty ||
+                                  playerThreeId.text.isEmpty) {
+                                showToastMessage('Please enter all player IDs');
+                                return;
+                              }
+                            }
 
-                                await notifier
-                                    .drawWallet(widget.tournament.entryFee!);
+                            await notifier
+                                .drawWallet(widget.tournament.entryFee!);
 
-                                if (widget.tournament.gameType?.teamOption ==
-                                    "SQUAD") {
-                                  await notifier.registerForTournament(
-                                    t: state.selectedTournament!,
-                                    squadPlayerIds: [
-                                      playerOneId.text,
-                                      playerTwoId.text,
-                                      playerThreeId.text,
-                                    ],
-                                  ).then((value) {
-                                    context.maybePop();
-                                  });
-                                } else {
-                                  await notifier
-                                      .registerForTournament(
-                                    t: state.selectedTournament!,
-                                  )
-                                      .then((value) {
-                                    context.maybePop();
-                                  });
-                                }
-                              },
-                              child: Container(
-                                width: double.infinity,
-                                height: 45,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                  gradient: const LinearGradient(
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
-                                      colors: [
-                                        Color.fromRGBO(206, 59, 59, 1),
-                                        Color.fromRGBO(95, 18, 55, 1),
-                                      ]),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    'Pay ₹${widget.tournament.entryFee}',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall
-                                        ?.copyWith(fontWeight: FontWeight.w700),
-                                  ),
-                                ),
+                            if (widget.tournament.gameType?.teamOption ==
+                                    "SQUAD" ||
+                                widget.tournament.gameType?.teamOption ==
+                                    "TDM") {
+                              await notifier.registerForTournament(
+                                t: state.selectedTournament!,
+                                squadPlayerIds: [
+                                  playerOneId.text,
+                                  playerTwoId.text,
+                                  playerThreeId.text,
+                                ],
+                              ).then((value) {
+                                context.maybePop();
+                              });
+                            } else {
+                              await notifier
+                                  .registerForTournament(
+                                t: state.selectedTournament!,
+                              )
+                                  .then((value) {
+                                context.maybePop();
+                              });
+                            }
+                          },
+                          child: Container(
+                            width: double.infinity,
+                            height: 45,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              gradient: const LinearGradient(
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                  colors: [
+                                    Color.fromRGBO(206, 59, 59, 1),
+                                    Color.fromRGBO(95, 18, 55, 1),
+                                  ]),
+                            ),
+                            child: Center(
+                              child: Text(
+                                'Pay ₹${widget.tournament.entryFee}',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.copyWith(fontWeight: FontWeight.w700),
                               ),
                             ),
-                        ],
+                          ),
+                        ),
+                      SizedBox(
+                        height: 30,
                       )
                     ],
                   ),
@@ -1347,18 +1404,34 @@ class _DepositBeforeJoiningState extends ConsumerState<DepositBeforeJoining> {
         BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
           child: Container(
-              height: MediaQuery.of(context).size.height * 0.2,
+              // height: MediaQuery.of(context).size.height * 0.2,
               padding: const EdgeInsets.all(20),
               decoration: customDecoration.copyWith(
                   color: AppColors.popUpColor,
                   borderRadius: BorderRadius.circular(20)),
               child: Column(
                 mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   // 1 title and x
-                  // const Spacer(),
+                  const Spacer(),
+                  Container(
+                    width: 30.w,
+                    height: 30.w,
+                    padding: EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: AppColors.white, width: 10)),
+                    child: Image.asset(
+                      Assets.walletDeposit,
+                      color: AppColors.white,
+                    ),
+                  ),
+
+                  SizedBox(
+                    height: 30,
+                  ),
                   Row(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,

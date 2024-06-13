@@ -8,19 +8,19 @@ part of 'user_model.dart';
 
 _$UserModelImpl _$$UserModelImplFromJson(Map<String, dynamic> json) =>
     _$UserModelImpl(
-      id: json['id'] as String,
-      username: json['username'] as String,
-      gameId: json['gameId'] as String,
-      phoneNumber: json['phoneNumber'] as String,
+      id: json['id'] as String? ?? '',
+      username: json['username'] as String? ?? '',
+      gameId: json['gameId'] as String? ?? '',
+      phoneNumber: json['phoneNumber'] as String? ?? '',
       isVerified: json['isVerified'] as bool? ?? false,
       tournamentIds: (json['tournamentIds'] as List<dynamic>?)
-              ?.map((e) => e as String)
+              ?.map((e) => e as String?)
               .toList() ??
           const [],
-      referralCode: json['referralCode'] as String?,
+      referralCode: json['referralCode'] as String? ?? '',
       gameStats: GameStats.fromJson(json['gameStats'] as Map<String, dynamic>),
       wallet: WalletModel.fromJson(json['wallet'] as Map<String, dynamic>),
-      referredBy: json['referredBy'] as String?,
+      referredBy: json['referredBy'] as String? ?? '',
     );
 
 Map<String, dynamic> _$$UserModelImplToJson(_$UserModelImpl instance) =>

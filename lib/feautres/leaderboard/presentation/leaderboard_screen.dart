@@ -214,7 +214,7 @@ class LeaderbaordScreen extends ConsumerWidget {
                                     ),
                                   ),
                                   Text(
-                                    '₹${state.topUsers.isNotEmpty ? state.topUsers[1].gameStats.totalWinAmount : ""}',
+                                    '${state.topUsers.isNotEmpty ? state.topUsers[1].gameStats.totalKills : ""} kills',
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodySmall
@@ -283,7 +283,7 @@ class LeaderbaordScreen extends ConsumerWidget {
                                   ),
                                 ),
                                 Text(
-                                  '₹${state.topUsers.isNotEmpty ? state.topUsers[0].gameStats.totalWinAmount : ""}',
+                                  '${state.topUsers.isNotEmpty ? state.topUsers[0].gameStats.totalKills : ""} kills',
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodySmall
@@ -357,7 +357,7 @@ class LeaderbaordScreen extends ConsumerWidget {
                                     ),
                                   ),
                                   Text(
-                                    '₹${state.topUsers.isNotEmpty ? state.topUsers[2].gameStats.totalWinAmount : ""}',
+                                    '${state.topUsers.isNotEmpty ? state.topUsers[2].gameStats.totalKills : "0"} kills',
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodyMedium
@@ -382,51 +382,36 @@ class LeaderbaordScreen extends ConsumerWidget {
             ),
           ),
           // tab bar
-          SizedBox(
-            height: 60.h,
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // const TabBarHome(),
-                // const Filter(),
-                SingleChildScrollView(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    height: 50.h,
-                    child: FutureBuilder<List<UserModel>>(
-                      future: provider.getTop10Users(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Center(
-                            child: CircularProgressIndicator(
-                              color: Colors.white,
-                            ),
-                          );
-                        } else if (snapshot.hasError) {
-                          return Center(
-                              child: Text('Error: ${snapshot.error}'));
-                        } else {
-                          return ListView.separated(
-                            shrinkWrap: true,
-                            itemCount: snapshot.data!.length,
-                            separatorBuilder:
-                                (BuildContext context, int index) =>
-                                    const SizedBox(height: 12),
-                            itemBuilder: (context, index) {
-                              return LeaderboardItem(
-                                  count: index + 1,
-                                  user: snapshot.data![index]);
-                            },
-                          );
-                        }
+          SingleChildScrollView(
+            physics: const ClampingScrollPhysics(),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              height: 60.h,
+              child: FutureBuilder<List<UserModel>>(
+                future: provider.getTop10Users(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                      ),
+                    );
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  } else {
+                    return ListView.separated(
+                      shrinkWrap: true,
+                      itemCount: snapshot.data!.length,
+                      separatorBuilder: (BuildContext context, int index) =>
+                          const SizedBox(height: 12),
+                      itemBuilder: (context, index) {
+                        return LeaderboardItem(
+                            count: index + 1, user: snapshot.data![index]);
                       },
-                    ),
-                  ),
-                ),
-              ],
+                    );
+                  }
+                },
+              ),
             ),
           ),
         ],
@@ -501,14 +486,14 @@ class LeaderboardItem extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  '₹',
+                  user.gameStats.totalKills.toString(),
                   style: Theme.of(context)
                       .textTheme
                       .bodyMedium
                       ?.copyWith(fontWeight: FontWeight.w700),
                 ),
                 Text(
-                  user.gameStats.totalWinAmount.toString(),
+                  ' kills',
                   style: Theme.of(context)
                       .textTheme
                       .bodyMedium

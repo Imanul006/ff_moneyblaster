@@ -170,12 +170,12 @@ class SignupScreenState extends ConsumerState<SignupScreen> {
                           children: [
                             LoginTextField(
                               title: "Username",
-                              hintText: "Enter your username",
+                              hintText: "Enter your game username",
                               controller: _usernameController,
                             ),
                             LoginTextField(
                               title: "Game ID",
-                              hintText: "Enter game ID",
+                              hintText: "Enter your game ID",
                               controller: _gameIdController,
                             ),
                             LoginTextField(

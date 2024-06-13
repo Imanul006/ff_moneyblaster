@@ -15,7 +15,7 @@ class LeaderboardNotifier extends StateNotifier<LeaderboardState> {
     // state = state.copyWith(isLoading: true);
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection('appusers')
-        .orderBy('gameStats.totalWinAmount', descending: true)
+        .orderBy('gameStats.totalKills', descending: true)
         .limit(10)
         .get();
 
@@ -31,7 +31,7 @@ class LeaderboardNotifier extends StateNotifier<LeaderboardState> {
   void updateStateTopUsers() async {
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection('appusers')
-        .orderBy('gameStats.totalWinAmount', descending: true)
+        .orderBy('gameStats.totalKills', descending: true)
         .limit(3)
         .get();
 

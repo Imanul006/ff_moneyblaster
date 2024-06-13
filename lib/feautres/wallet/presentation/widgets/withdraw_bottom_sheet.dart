@@ -7,6 +7,7 @@ import 'package:ff_moneyblaster/widgets/app_text_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sizer/sizer.dart';
 
 class WithdrawBottomSheet extends ConsumerStatefulWidget {
   const WithdrawBottomSheet({
@@ -64,13 +65,14 @@ class _WithdrawBottomSheetState extends ConsumerState<WithdrawBottomSheet> {
         children: [
           Container(
             padding: const EdgeInsets.all(20),
-            // height: 40.h,
+            height: 75.h,
             decoration: customDecoration.copyWith(
                 color: AppColors.popUpColor,
                 borderRadius: BorderRadius.circular(20)),
             child: Column(
-              mainAxisSize: MainAxisSize.min,
+              mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 // 1 title and x
                 Row(
@@ -92,104 +94,98 @@ class _WithdrawBottomSheetState extends ConsumerState<WithdrawBottomSheet> {
                     ),
                   ],
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Wrap(
-                  spacing: 4,
-                  runSpacing: 4,
-                  children: List.generate(6, (index) {
-                    final isSelected =
-                        amountSelected == int.parse(withdrawLabels[index]);
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 4.0, right: 8.0),
-                      child: GestureDetector(
-                          onTap: () => pickAmount(
-                                double.parse(withdrawLabels[index]),
-                              ),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 8,
-                            ),
-                            decoration: BoxDecoration(
-                              border: Border.all(),
-                              borderRadius: BorderRadius.circular(20),
-                              color: isSelected
-                                  ? Colors.green[800]
-                                  : Colors.green[400],
-                            ),
-                            child: Text(
-                              '₹ ${withdrawLabels[index]}',
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          )
-                          // Chip(
-                          //   shape: const StadiumBorder(),
-                          //   side: BorderSide.none,
-                          //   materialTapTargetSize:
-                          //       MaterialTapTargetSize.shrinkWrap,
-                          //   backgroundColor:
-                          //       isSelected ? Colors.amber : Colors.green,
-                          //   label: Text(
-                          //     '₹ ${withdrawLabels[index]}',
-                          //     style: const TextStyle(
-                          //       color: Colors.white,
-                          //       fontWeight: FontWeight.w400,
-                          //     ),
-                          //   ),
-                          // ),
-                          ),
-                    );
-                  }),
-                ),
-                const SizedBox(
-                  height: 8,
-                ),
-                AppTextField(
-                  hintText: "Account Number",
-                  controller: _acNoController,
-                  keyboardType: TextInputType.number,
-                  title: "Enter Account Number",
-                ),
-                const SizedBox(
-                  height: 8,
-                ),
-                AppTextField(
-                  hintText: "IFSC Code",
-                  controller: _ifscController,
-                  title: "Enter IFSC Code",
-                ),
-                const SizedBox(
-                  height: 8,
-                ),
-                AppTextField(
-                  hintText: "Full Name",
-                  controller: _nameController,
-                  title: "Enter Full Name",
-                ),
 
-                // const SizedBox(
-                //   height: 8,
-                // ),
-                // AppTextField(
-                //   hintText: "Withdraw Amount",
-                //   controller: _amountController,
-                //   keyboardType: TextInputType.number,
-                //   title: "Enter Withdraw Amount",
-                // ),
-                const SizedBox(
-                  height: 10,
-                ),
                 Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    Wrap(
+                      spacing: 4,
+                      runSpacing: 4,
+                      children: List.generate(6, (index) {
+                        final isSelected =
+                            amountSelected == int.parse(withdrawLabels[index]);
+                        return Padding(
+                          padding:
+                              const EdgeInsets.only(bottom: 4.0, right: 8.0),
+                          child: GestureDetector(
+                              onTap: () => pickAmount(
+                                    double.parse(withdrawLabels[index]),
+                                  ),
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 8,
+                                ),
+                                decoration: BoxDecoration(
+                                  border: Border.all(),
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: isSelected
+                                      ? Colors.green[800]
+                                      : Colors.green[400],
+                                ),
+                                child: Text(
+                                  '₹ ${withdrawLabels[index]}',
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              )
+                              // Chip(
+                              //   shape: const StadiumBorder(),
+                              //   side: BorderSide.none,
+                              //   materialTapTargetSize:
+                              //       MaterialTapTargetSize.shrinkWrap,
+                              //   backgroundColor:
+                              //       isSelected ? Colors.amber : Colors.green,
+                              //   label: Text(
+                              //     '₹ ${withdrawLabels[index]}',
+                              //     style: const TextStyle(
+                              //       color: Colors.white,
+                              //       fontWeight: FontWeight.w400,
+                              //     ),
+                              //   ),
+                              // ),
+                              ),
+                        );
+                      }),
+                    ),
                     const SizedBox(
-                      height: 12,
+                      height: 8,
+                    ),
+                    AppTextField(
+                      hintText: "Account Number",
+                      controller: _acNoController,
+                      keyboardType: TextInputType.number,
+                      title: "Enter Account Number",
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    AppTextField(
+                      hintText: "IFSC Code",
+                      controller: _ifscController,
+                      title: "Enter IFSC Code",
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    AppTextField(
+                      hintText: "Full Name",
+                      controller: _nameController,
+                      title: "Enter Full Name",
+                    ),
+
+                    // const SizedBox(
+                    //   height: 8,
+                    // ),
+                    // AppTextField(
+                    //   hintText: "Withdraw Amount",
+                    //   controller: _amountController,
+                    //   keyboardType: TextInputType.number,
+                    //   title: "Enter Withdraw Amount",
+                    // ),
+                    const SizedBox(
+                      height: 10,
                     ),
                     GestureDetector(
                       onTap: () async {

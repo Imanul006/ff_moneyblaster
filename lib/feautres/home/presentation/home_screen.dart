@@ -45,17 +45,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     List<Tournament> upcomingTournaments = homeState.tournaments
         .where((tournament) =>
-            provider.getDifferenceInMilliseconds(tournament.dateTime!) <= 0)
+            provider.getDifferenceInMilliseconds(tournament.dateTime!) <= 0 &&
+            tournament.result == null)
         .toList();
 
     upcomingTournaments.sort((a, b) => a.dateTime!.compareTo(b.dateTime!));
 
     List<Tournament> pastTournaments = homeState.tournaments
         .where((tournament) =>
-            provider.getDifferenceInMilliseconds(tournament.dateTime!) > 0 &&
+            /**provider.getDifferenceInMilliseconds(tournament.dateTime!) > 0 || */
             tournament.result != null)
         .toList();
-    pastTournaments.sort((a, b) => a.dateTime!.compareTo(b.dateTime!));
+    pastTournaments.sort((a, b) => b.dateTime!.compareTo(a.dateTime!));
 
     List<Widget> adsList = List.generate(
       homeState.adsList.length,

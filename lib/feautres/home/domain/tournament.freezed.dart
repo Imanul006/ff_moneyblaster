@@ -236,6 +236,8 @@ mixin _$Tournament {
   int? get totalPlayersAllowed => throw _privateConstructorUsedError;
   @JsonKey(name: 'tournamentName')
   String? get tournamentName => throw _privateConstructorUsedError;
+  @JsonKey(name: 'bgImage')
+  String? get bgImage => throw _privateConstructorUsedError;
   @JsonKey(name: 'registeredPlayersId')
   List<String> get registeredPlayersId => throw _privateConstructorUsedError;
   @JsonKey(name: 'lobby')
@@ -280,6 +282,7 @@ abstract class $TournamentCopyWith<$Res> {
       @JsonKey(name: 'status') List<String>? status,
       @JsonKey(name: 'totalPlayersAllowed') int? totalPlayersAllowed,
       @JsonKey(name: 'tournamentName') String? tournamentName,
+      @JsonKey(name: 'bgImage') String? bgImage,
       @JsonKey(name: 'registeredPlayersId') List<String> registeredPlayersId,
       @JsonKey(name: 'lobby') String? lobby,
       @JsonKey(name: 'lobbyPassword') String? lobbyPassword,
@@ -316,6 +319,7 @@ class _$TournamentCopyWithImpl<$Res, $Val extends Tournament>
     Object? status = freezed,
     Object? totalPlayersAllowed = freezed,
     Object? tournamentName = freezed,
+    Object? bgImage = freezed,
     Object? registeredPlayersId = null,
     Object? lobby = freezed,
     Object? lobbyPassword = freezed,
@@ -372,6 +376,10 @@ class _$TournamentCopyWithImpl<$Res, $Val extends Tournament>
       tournamentName: freezed == tournamentName
           ? _value.tournamentName
           : tournamentName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      bgImage: freezed == bgImage
+          ? _value.bgImage
+          : bgImage // ignore: cast_nullable_to_non_nullable
               as String?,
       registeredPlayersId: null == registeredPlayersId
           ? _value.registeredPlayersId
@@ -442,6 +450,7 @@ abstract class _$$TournamentImplCopyWith<$Res>
       @JsonKey(name: 'status') List<String>? status,
       @JsonKey(name: 'totalPlayersAllowed') int? totalPlayersAllowed,
       @JsonKey(name: 'tournamentName') String? tournamentName,
+      @JsonKey(name: 'bgImage') String? bgImage,
       @JsonKey(name: 'registeredPlayersId') List<String> registeredPlayersId,
       @JsonKey(name: 'lobby') String? lobby,
       @JsonKey(name: 'lobbyPassword') String? lobbyPassword,
@@ -477,6 +486,7 @@ class __$$TournamentImplCopyWithImpl<$Res>
     Object? status = freezed,
     Object? totalPlayersAllowed = freezed,
     Object? tournamentName = freezed,
+    Object? bgImage = freezed,
     Object? registeredPlayersId = null,
     Object? lobby = freezed,
     Object? lobbyPassword = freezed,
@@ -534,6 +544,10 @@ class __$$TournamentImplCopyWithImpl<$Res>
           ? _value.tournamentName
           : tournamentName // ignore: cast_nullable_to_non_nullable
               as String?,
+      bgImage: freezed == bgImage
+          ? _value.bgImage
+          : bgImage // ignore: cast_nullable_to_non_nullable
+              as String?,
       registeredPlayersId: null == registeredPlayersId
           ? _value._registeredPlayersId
           : registeredPlayersId // ignore: cast_nullable_to_non_nullable
@@ -586,6 +600,7 @@ class _$TournamentImpl implements _Tournament {
       @JsonKey(name: 'status') final List<String>? status,
       @JsonKey(name: 'totalPlayersAllowed') this.totalPlayersAllowed,
       @JsonKey(name: 'tournamentName') this.tournamentName,
+      @JsonKey(name: 'bgImage') this.bgImage,
       @JsonKey(name: 'registeredPlayersId')
       final List<String> registeredPlayersId = const [],
       @JsonKey(name: 'lobby') this.lobby,
@@ -657,6 +672,9 @@ class _$TournamentImpl implements _Tournament {
   @override
   @JsonKey(name: 'tournamentName')
   final String? tournamentName;
+  @override
+  @JsonKey(name: 'bgImage')
+  final String? bgImage;
   final List<String> _registeredPlayersId;
   @override
   @JsonKey(name: 'registeredPlayersId')
@@ -703,7 +721,7 @@ class _$TournamentImpl implements _Tournament {
 
   @override
   String toString() {
-    return 'Tournament(createdAt: $createdAt, dateTime: $dateTime, uid: $uid, entryFee: $entryFee, gameType: $gameType, gameOption: $gameOption, lastUpdatedAt: $lastUpdatedAt, perKill: $perKill, prizePool: $prizePool, status: $status, totalPlayersAllowed: $totalPlayersAllowed, tournamentName: $tournamentName, registeredPlayersId: $registeredPlayersId, lobby: $lobby, lobbyPassword: $lobbyPassword, liveLink: $liveLink, result: $result, teamsRegistered: $teamsRegistered, teams: $teams)';
+    return 'Tournament(createdAt: $createdAt, dateTime: $dateTime, uid: $uid, entryFee: $entryFee, gameType: $gameType, gameOption: $gameOption, lastUpdatedAt: $lastUpdatedAt, perKill: $perKill, prizePool: $prizePool, status: $status, totalPlayersAllowed: $totalPlayersAllowed, tournamentName: $tournamentName, bgImage: $bgImage, registeredPlayersId: $registeredPlayersId, lobby: $lobby, lobbyPassword: $lobbyPassword, liveLink: $liveLink, result: $result, teamsRegistered: $teamsRegistered, teams: $teams)';
   }
 
   @override
@@ -732,6 +750,7 @@ class _$TournamentImpl implements _Tournament {
                 other.totalPlayersAllowed == totalPlayersAllowed) &&
             (identical(other.tournamentName, tournamentName) ||
                 other.tournamentName == tournamentName) &&
+            (identical(other.bgImage, bgImage) || other.bgImage == bgImage) &&
             const DeepCollectionEquality()
                 .equals(other._registeredPlayersId, _registeredPlayersId) &&
             (identical(other.lobby, lobby) || other.lobby == lobby) &&
@@ -761,6 +780,7 @@ class _$TournamentImpl implements _Tournament {
         const DeepCollectionEquality().hash(_status),
         totalPlayersAllowed,
         tournamentName,
+        bgImage,
         const DeepCollectionEquality().hash(_registeredPlayersId),
         lobby,
         lobbyPassword,
@@ -802,6 +822,7 @@ abstract class _Tournament implements Tournament {
           @JsonKey(name: 'status') final List<String>? status,
           @JsonKey(name: 'totalPlayersAllowed') final int? totalPlayersAllowed,
           @JsonKey(name: 'tournamentName') final String? tournamentName,
+          @JsonKey(name: 'bgImage') final String? bgImage,
           @JsonKey(name: 'registeredPlayersId')
           final List<String> registeredPlayersId,
           @JsonKey(name: 'lobby') final String? lobby,
@@ -853,6 +874,9 @@ abstract class _Tournament implements Tournament {
   @override
   @JsonKey(name: 'tournamentName')
   String? get tournamentName;
+  @override
+  @JsonKey(name: 'bgImage')
+  String? get bgImage;
   @override
   @JsonKey(name: 'registeredPlayersId')
   List<String> get registeredPlayersId;

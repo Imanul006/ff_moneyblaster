@@ -52,7 +52,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBvgs8lUMznCjs4G_rpOZ4Wrs5gpJfod70',
-    appId: '1:372704960907:android:3e240e99c4763a64494f8e',
+    appId: '1:372704960907:android:211c2d416fd57df0494f8e',
     messagingSenderId: '372704960907',
     projectId: 'money-blaster-c39fc',
     storageBucket: 'money-blaster-c39fc.appspot.com',
@@ -60,11 +60,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyDXsEi6Xe-_-LkvPjXJmmWVeMRT-ERjVak',
-    appId: '1:372704960907:ios:6b677cc0e65d62a9494f8e',
+    appId: '1:372704960907:ios:28826caee6ce15e8494f8e',
     messagingSenderId: '372704960907',
     projectId: 'money-blaster-c39fc',
     storageBucket: 'money-blaster-c39fc.appspot.com',
-    iosBundleId: 'com.example.ffMoneyblaster',
+    iosBundleId: 'com.moneyblaster.moneyblaster',
   );
 
 }

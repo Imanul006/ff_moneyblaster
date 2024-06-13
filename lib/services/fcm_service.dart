@@ -65,11 +65,18 @@ class FCMService {
 
     // Store FCM token in Firestore
     final user = FirebaseAuth.instance.currentUser;
+
     if (user != null) {
-      await _firestore
+      final doc = await FirebaseFirestore.instance
           .collection('appusers')
           .doc(user.uid)
-          .set({'fcmToken': fcmToken}, SetOptions(merge: true));
+          .get();
+      if (doc.exists) {
+        await _firestore
+            .collection('appusers')
+            .doc(user.uid)
+            .set({'fcmToken': fcmToken}, SetOptions(merge: true));
+      }
     }
 
     // Handle background messages

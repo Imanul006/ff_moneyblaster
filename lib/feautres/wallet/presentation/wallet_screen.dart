@@ -166,64 +166,64 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
                                         .headlineMedium
                                         ?.copyWith(fontWeight: FontWeight.bold),
                                   ),
-                                  if (state.user!.wallet.balance < 100.00)
-                                    GestureDetector(
-                                      onTap: () async {
-                                        if (!state.isLoading) {
-                                          if (adClicked <
-                                              (maxTapsPerDay +
-                                                  Random().nextInt(6))) {
-                                            // sfsfs
-                                            await provider.launchInWebView(
-                                                Uri.parse(AppConstants.adUrl));
-                                            await _incrementAdClick();
-                                            showToastMessage(
-                                                'You Won Ad Reward ${state.lastAdReward ?? 0} !');
-                                          } else {
-                                            showToastMessage(
-                                                'Ad Limit Reached !');
-                                            // showToastMessage(
-                                            //     'try after some time !');
-                                          }
-                                        }
-                                      },
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                            decoration: customDecoration,
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 4, horizontal: 8),
-                                            child: const Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                Icon(
-                                                  Icons.video_collection,
-                                                  color: Colors.white,
-                                                ),
-                                                SizedBox(
-                                                  width: 6,
-                                                ),
-                                                Text('Watch & Earn')
-                                              ],
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 4,
-                                          ),
-                                          Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Text(
-                                                '${state.lastAdReward ?? 0} LAST AD REWARD',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .labelSmall,
-                                              )
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    )
+                                  // if (state.user!.wallet.balance < 20.00)
+                                  //   GestureDetector(
+                                  //     onTap: () async {
+                                  //       if (!state.isLoading) {
+                                  //         if (adClicked <
+                                  //             (maxTapsPerDay +
+                                  //                 Random().nextInt(6))) {
+                                  //           // sfsfs
+                                  //           await provider.launchInWebView(
+                                  //               Uri.parse(AppConstants.adUrl));
+                                  //           await _incrementAdClick();
+                                  //           showToastMessage(
+                                  //               'You Won Ad Reward ${state.lastAdReward ?? 0} !');
+                                  //         } else {
+                                  //           showToastMessage(
+                                  //               'Ad Limit Reached !');
+                                  //           // showToastMessage(
+                                  //           //     'try after some time !');
+                                  //         }
+                                  //       }
+                                  //     },
+                                  //     child: Column(
+                                  //       children: [
+                                  //         Container(
+                                  //           decoration: customDecoration,
+                                  //           padding: const EdgeInsets.symmetric(
+                                  //               vertical: 4, horizontal: 8),
+                                  //           child: const Row(
+                                  //             mainAxisSize: MainAxisSize.min,
+                                  //             children: [
+                                  //               Icon(
+                                  //                 Icons.video_collection,
+                                  //                 color: Colors.white,
+                                  //               ),
+                                  //               SizedBox(
+                                  //                 width: 6,
+                                  //               ),
+                                  //               Text('Watch & Earn')
+                                  //             ],
+                                  //           ),
+                                  //         ),
+                                  //         SizedBox(
+                                  //           height: 4,
+                                  //         ),
+                                  //         Row(
+                                  //           mainAxisSize: MainAxisSize.min,
+                                  //           children: [
+                                  //             Text(
+                                  //               '${state.lastAdReward ?? 0} LAST AD REWARD',
+                                  //               style: Theme.of(context)
+                                  //                   .textTheme
+                                  //                   .labelSmall,
+                                  //             )
+                                  //           ],
+                                  //         )
+                                  //       ],
+                                  //     ),
+                                  //   )
                                 ],
                               ),
                               // 2 current wallet balance row
@@ -277,9 +277,19 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
                                   )
                                 ],
                               ),
-
-                              // buttons deposit and withdrawl
                               const Spacer(),
+                              // note
+                              Row(
+                                children: [
+                                  Text(
+                                    'Minimum deposit amount : ₹20',
+                                    style:
+                                        Theme.of(context).textTheme.labelSmall,
+                                  )
+                                ],
+                              ),
+                              // buttons deposit and withdrawl
+
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 16.0),
@@ -309,7 +319,7 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
                                                 builder:
                                                     (BuildContext context) {
                                                   return const FractionallySizedBox(
-                                                    heightFactor: 1.6,
+                                                    heightFactor: 1.7,
                                                     child: DepositBottomSheet(),
                                                   );
                                                   // return const DepositBottomSheet();
@@ -343,7 +353,7 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
                                                 builder:
                                                     (BuildContext context) {
                                                   return FractionallySizedBox(
-                                                    heightFactor: 1.32,
+                                                    heightFactor: 1.72,
                                                     child: BackdropFilter(
                                                       filter: ImageFilter.blur(
                                                           sigmaX: 2, sigmaY: 2),
@@ -445,7 +455,7 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
                       children: [
                         TextSpan(
                             text:
-                                '${provider.getTransactionTypeText(transaction.transactionType)} of ',
+                                '${provider.getTransactionTypeText(transaction.transactionType ?? '')} of ',
                             style: Theme.of(context).textTheme.bodyMedium),
                         TextSpan(
                           text: ' ₹ ',
@@ -620,7 +630,3 @@ class Filter extends StatelessWidget {
             ),
           
  */
-
-
-
-

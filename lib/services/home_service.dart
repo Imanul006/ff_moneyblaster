@@ -36,17 +36,24 @@ class HomeRepository implements IHomeRepository {
     final teamsRegistered = data["teamsRegistered"] ?? 0;
     final totalPlayersAllowed = data["totalPlayersAllowed"];
     final isSquad = data["gameType"]["teamOption"] == 'SQUAD';
+    final isTDM = data["gameType"]["teamOption"] == 'TDM';
     final gameName = data['gameOption'];
+    bool isRoomFull = false;
 
     if (tournamentDetails.exists) {
-      if (isSquad) {
+      if (isSquad || isTDM) {
         // to execute if squad
 
-        if (squadPlayerIds == null) {
+        if (squadPlayerIds == null || squadPlayerIds.isEmpty) {
           Fluttertoast.showToast(msg: 'Please enter squad player ids');
         } else if (teamsRegistered >= 12 && gameName == 'FREE FIRE') {
+          isRoomFull = true;
           Fluttertoast.showToast(msg: 'Room already full');
         } else if (teamsRegistered >= 24 && gameName == 'BGMI') {
+          isRoomFull = true;
+          Fluttertoast.showToast(msg: 'Room already full');
+        } else if (teamsRegistered >= 2 && isTDM) {
+          isRoomFull = true;
           Fluttertoast.showToast(msg: 'Room already full');
         } else {
           final team = TeamModel(
@@ -59,6 +66,7 @@ class HomeRepository implements IHomeRepository {
             'registeredPlayersId': FieldValue.arrayUnion([id]),
             'teams': FieldValue.arrayUnion([team.toJson()]),
             'teamsRegistered': teamsRegistered + 1,
+            // 'isRoomFull': isRoomFull,
           });
 
           Fluttertoast.showToast(msg: 'Your team has been created.');

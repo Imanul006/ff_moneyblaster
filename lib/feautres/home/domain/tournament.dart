@@ -37,6 +37,7 @@ class Tournament with _$Tournament {
     @JsonKey(name: 'status') List<String>? status,
     @JsonKey(name: 'totalPlayersAllowed') int? totalPlayersAllowed,
     @JsonKey(name: 'tournamentName') String? tournamentName,
+    @JsonKey(name: 'bgImage') String? bgImage,
     @Default([])
     @JsonKey(name: 'registeredPlayersId')
     List<String> registeredPlayersId,

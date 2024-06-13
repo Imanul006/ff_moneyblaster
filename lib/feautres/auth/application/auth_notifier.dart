@@ -149,7 +149,6 @@ class AuthNotifier extends StateNotifier<AuthState> {
       Map<String, dynamic> data =
           querySnapshot.docs.first.data() as Map<String, dynamic>;
       return data['id'] as String;
-      
     } else {
       return null;
     }
@@ -205,11 +204,19 @@ class AuthNotifier extends StateNotifier<AuthState> {
       state = state.copyWith(isLoading: true);
 
       final bool isUserNameTaken = await isUsernameTaken(username.trim());
-
+      final bool isGameIdTken = await isGameIdTaken(gameId.trim());
       if (isUserNameTaken) {
         if (context.mounted) {
           showToastMessage(
               "Username already taken. Please try another username.");
+
+          state = state.copyWith(isLoading: false);
+          return;
+        }
+      }
+      if (isGameIdTken) {
+        if (context.mounted) {
+          showToastMessage("GameId  already taken. Please check your Game ID.");
 
           state = state.copyWith(isLoading: false);
           return;
@@ -283,6 +290,15 @@ class AuthNotifier extends StateNotifier<AuthState> {
     QuerySnapshot querySnapshot = await _firestore
         .collection('appusers')
         .where('username', isEqualTo: username.trim())
+        .get();
+
+    return querySnapshot.docs.isNotEmpty;
+  }
+
+  Future<bool> isGameIdTaken(String gameId) async {
+    QuerySnapshot querySnapshot = await _firestore
+        .collection('appusers')
+        .where('gameId', isEqualTo: gameId.trim())
         .get();
 
     return querySnapshot.docs.isNotEmpty;

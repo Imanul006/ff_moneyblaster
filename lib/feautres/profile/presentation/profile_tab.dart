@@ -133,17 +133,39 @@ class _ProfileTabState extends ConsumerState<ProfileTab> {
                     height: 20,
                   ),
                   // 3 matches played
+                  // Row(
+                  //   mainAxisSize: MainAxisSize.max,
+                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //   children: [
+                  //     Text(
+                  //       'Leaderboard Score',
+                  //       style: Theme.of(context).textTheme.bodyMedium,
+                  //     ),
+                  //     Text(
+                  //       provider.user?.gameStats.totalWinAmount.toString() ??
+                  //           '',
+                  //       style: Theme.of(context)
+                  //           .textTheme
+                  //           .bodyMedium
+                  //           ?.copyWith(fontWeight: FontWeight.w700),
+                  //     ),
+                  //   ],
+                  // ),
+                  // const SizedBox(
+                  //   height: 20,
+                  // ),
+
+                  // kills
                   Row(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Leaderboard Score',
+                        'Total Kills',
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       Text(
-                        provider.user?.gameStats.totalWinAmount.toString() ??
-                            '',
+                        provider.user?.gameStats.totalKills.toString() ?? '',
                         style: Theme.of(context)
                             .textTheme
                             .bodyMedium
@@ -151,8 +173,9 @@ class _ProfileTabState extends ConsumerState<ProfileTab> {
                       ),
                     ],
                   ),
+
                   const SizedBox(
-                    height: 20,
+                    height: 12,
                   ),
                   Row(
                     mainAxisSize: MainAxisSize.max,
@@ -192,27 +215,6 @@ class _ProfileTabState extends ConsumerState<ProfileTab> {
                       ),
                     ],
                   ),
-                  // kills
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Total Kills',
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      Text(
-                        provider.user?.gameStats.totalKills.toString() ?? '',
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium
-                            ?.copyWith(fontWeight: FontWeight.w700),
-                      ),
-                    ],
-                  )
                 ],
               ),
             ),

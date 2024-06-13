@@ -25,11 +25,11 @@ mixin _$UserModel {
   String get gameId => throw _privateConstructorUsedError;
   String get phoneNumber => throw _privateConstructorUsedError;
   bool get isVerified => throw _privateConstructorUsedError;
-  List<String> get tournamentIds => throw _privateConstructorUsedError;
+  List<String?> get tournamentIds => throw _privateConstructorUsedError;
   String? get referralCode => throw _privateConstructorUsedError;
   GameStats get gameStats => throw _privateConstructorUsedError;
   WalletModel get wallet => throw _privateConstructorUsedError;
-  String? get referredBy => throw _privateConstructorUsedError;
+  String get referredBy => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -48,11 +48,11 @@ abstract class $UserModelCopyWith<$Res> {
       String gameId,
       String phoneNumber,
       bool isVerified,
-      List<String> tournamentIds,
+      List<String?> tournamentIds,
       String? referralCode,
       GameStats gameStats,
       WalletModel wallet,
-      String? referredBy});
+      String referredBy});
 
   $GameStatsCopyWith<$Res> get gameStats;
   $WalletModelCopyWith<$Res> get wallet;
@@ -80,7 +80,7 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
     Object? referralCode = freezed,
     Object? gameStats = null,
     Object? wallet = null,
-    Object? referredBy = freezed,
+    Object? referredBy = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -106,7 +106,7 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
       tournamentIds: null == tournamentIds
           ? _value.tournamentIds
           : tournamentIds // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+              as List<String?>,
       referralCode: freezed == referralCode
           ? _value.referralCode
           : referralCode // ignore: cast_nullable_to_non_nullable
@@ -119,10 +119,10 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
           ? _value.wallet
           : wallet // ignore: cast_nullable_to_non_nullable
               as WalletModel,
-      referredBy: freezed == referredBy
+      referredBy: null == referredBy
           ? _value.referredBy
           : referredBy // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
     ) as $Val);
   }
 
@@ -157,11 +157,11 @@ abstract class _$$UserModelImplCopyWith<$Res>
       String gameId,
       String phoneNumber,
       bool isVerified,
-      List<String> tournamentIds,
+      List<String?> tournamentIds,
       String? referralCode,
       GameStats gameStats,
       WalletModel wallet,
-      String? referredBy});
+      String referredBy});
 
   @override
   $GameStatsCopyWith<$Res> get gameStats;
@@ -189,7 +189,7 @@ class __$$UserModelImplCopyWithImpl<$Res>
     Object? referralCode = freezed,
     Object? gameStats = null,
     Object? wallet = null,
-    Object? referredBy = freezed,
+    Object? referredBy = null,
   }) {
     return _then(_$UserModelImpl(
       id: null == id
@@ -215,7 +215,7 @@ class __$$UserModelImplCopyWithImpl<$Res>
       tournamentIds: null == tournamentIds
           ? _value._tournamentIds
           : tournamentIds // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+              as List<String?>,
       referralCode: freezed == referralCode
           ? _value.referralCode
           : referralCode // ignore: cast_nullable_to_non_nullable
@@ -228,10 +228,10 @@ class __$$UserModelImplCopyWithImpl<$Res>
           ? _value.wallet
           : wallet // ignore: cast_nullable_to_non_nullable
               as WalletModel,
-      referredBy: freezed == referredBy
+      referredBy: null == referredBy
           ? _value.referredBy
           : referredBy // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
     ));
   }
 }
@@ -241,49 +241,55 @@ class __$$UserModelImplCopyWithImpl<$Res>
 @JsonSerializable(explicitToJson: true)
 class _$UserModelImpl with DiagnosticableTreeMixin implements _UserModel {
   const _$UserModelImpl(
-      {required this.id,
-      required this.username,
-      required this.gameId,
-      required this.phoneNumber,
+      {this.id = '',
+      this.username = '',
+      this.gameId = '',
+      this.phoneNumber = '',
       this.isVerified = false,
-      final List<String> tournamentIds = const [],
-      this.referralCode,
+      final List<String?> tournamentIds = const [],
+      this.referralCode = '',
       required this.gameStats,
       required this.wallet,
-      this.referredBy})
+      this.referredBy = ''})
       : _tournamentIds = tournamentIds;
 
   factory _$UserModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserModelImplFromJson(json);
 
   @override
+  @JsonKey()
   final String id;
   @override
+  @JsonKey()
   final String username;
   @override
+  @JsonKey()
   final String gameId;
   @override
+  @JsonKey()
   final String phoneNumber;
   @override
   @JsonKey()
   final bool isVerified;
-  final List<String> _tournamentIds;
+  final List<String?> _tournamentIds;
   @override
   @JsonKey()
-  List<String> get tournamentIds {
+  List<String?> get tournamentIds {
     if (_tournamentIds is EqualUnmodifiableListView) return _tournamentIds;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_tournamentIds);
   }
 
   @override
+  @JsonKey()
   final String? referralCode;
   @override
   final GameStats gameStats;
   @override
   final WalletModel wallet;
   @override
-  final String? referredBy;
+  @JsonKey()
+  final String referredBy;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -362,16 +368,16 @@ class _$UserModelImpl with DiagnosticableTreeMixin implements _UserModel {
 
 abstract class _UserModel implements UserModel {
   const factory _UserModel(
-      {required final String id,
-      required final String username,
-      required final String gameId,
-      required final String phoneNumber,
+      {final String id,
+      final String username,
+      final String gameId,
+      final String phoneNumber,
       final bool isVerified,
-      final List<String> tournamentIds,
+      final List<String?> tournamentIds,
       final String? referralCode,
       required final GameStats gameStats,
       required final WalletModel wallet,
-      final String? referredBy}) = _$UserModelImpl;
+      final String referredBy}) = _$UserModelImpl;
 
   factory _UserModel.fromJson(Map<String, dynamic> json) =
       _$UserModelImpl.fromJson;
@@ -387,7 +393,7 @@ abstract class _UserModel implements UserModel {
   @override
   bool get isVerified;
   @override
-  List<String> get tournamentIds;
+  List<String?> get tournamentIds;
   @override
   String? get referralCode;
   @override
@@ -395,7 +401,7 @@ abstract class _UserModel implements UserModel {
   @override
   WalletModel get wallet;
   @override
-  String? get referredBy;
+  String get referredBy;
   @override
   @JsonKey(ignore: true)
   _$$UserModelImplCopyWith<_$UserModelImpl> get copyWith =>

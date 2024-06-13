@@ -11,16 +11,16 @@ part 'user_model.g.dart';
 class UserModel with _$UserModel {
   @JsonSerializable(explicitToJson: true)
   const factory UserModel({
-    required String id,
-    required String username,
-    required String gameId,
-    required String phoneNumber,
+    @Default('') String id,
+    @Default('') String username,
+    @Default('') String gameId,
+    @Default('') String phoneNumber,
     @Default(false) bool isVerified,
-    @Default([]) List<String> tournamentIds,
-    String? referralCode,
+    @Default([]) List<String?> tournamentIds,
+    @Default('') String? referralCode,
     required GameStats gameStats,
     required WalletModel wallet,
-    String? referredBy,
+    @Default('') String referredBy,
   }) = _UserModel;
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>
@@ -30,14 +30,13 @@ class UserModel with _$UserModel {
 @freezed
 class GameStats with _$GameStats {
   @JsonSerializable()
-  const factory GameStats({
-    required String game,
-    @Default(0) int totalGames,
-    @Default(0) int totalKills,
-    @Default(0) int totalWins,
-    @Default(0) int totalWinAmount,
-    @Default(0) int totalEarned
-  }) = _GameStats;
+  const factory GameStats(
+      {required String game,
+      @Default(0) int totalGames,
+      @Default(0) int totalKills,
+      @Default(0) int totalWins,
+      @Default(0) int totalWinAmount,
+      @Default(0) int totalEarned}) = _GameStats;
 
   factory GameStats.fromJson(Map<String, dynamic> json) =>
       _$GameStatsFromJson(json);
